@@ -8,7 +8,7 @@ import static org.bytedeco.javacpp.avutil.AV_PIX_FMT_RGB24;
 /**
  * Created by nicolasmachado on 4/28/16.
  */
-public class AxisCamera extends Camera
+public class AxisCamera implements Camera
 {
 	private FFmpegFrameGrabber src;
 	public enum AxisSetting
@@ -47,7 +47,7 @@ public class AxisCamera extends Camera
 			throw new IOException(e);
 		}
 	}
-	public void stop() throws IOException
+	public void stop()
 	{
 		try
 		{
@@ -55,7 +55,7 @@ public class AxisCamera extends Camera
 		}
 		catch(FrameGrabber.Exception e)
 		{
-			throw new IOException(e);
+			e.printStackTrace();
 		}
 	}
 	public void setOption(AxisSetting s, String v)

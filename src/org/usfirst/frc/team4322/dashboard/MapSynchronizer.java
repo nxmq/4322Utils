@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4322.dashboard;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
@@ -9,6 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import org.usfirst.frc.team4322.logging.RobotLogger;
+import org.usfirst.frc.team4322.vision.FrameGrabber;
 
 /**
  * Created by nicolasmachado on 3/30/16.
@@ -27,21 +30,11 @@ public class MapSynchronizer implements ITableListener
 	private HashMap<String,Field> valMap = new HashMap<>();
 	private static MapSynchronizer _instance = new MapSynchronizer();
 
-	private static HashMap<Class<?>,Method> primitiveMap = new HashMap<Class<?>,Method>();
-	static {
-		try {
-			primitiveMap.put(boolean.class, Boolean.class.getMethod("parseBoolean",String.class));
-			primitiveMap.put(byte.class, Byte.class.getMethod("parseByte",String.class));
-			primitiveMap.put(short.class, Short.class.getMethod("parseShort",String.class));
-			primitiveMap.put(int.class, Integer.class.getMethod("parseInt",String.class));
-			primitiveMap.put(long.class, Long.class.getMethod("parseLong",String.class));
-			primitiveMap.put(float.class, Float.class.getMethod("parseFloat",String.class));
-			primitiveMap.put(double.class, Double.class.getMethod("parseDouble",String.class));
-		} catch (NoSuchMethodException | SecurityException ex) {
-			RobotLogger.getInstance().err("Exception caught in MapSynchronizer", ex);
-		}
-	}
 
+	private MapSynchronizer()
+	{
+		NetworkTable.getTable("SmartDashboard").addTableListener(this);
+	}
 	public static MapSynchronizer getInstance()
 	{
 		return _instance;
@@ -54,37 +47,69 @@ public class MapSynchronizer implements ITableListener
 		{
 			try
 			{
+
 				if(valMap.get(key).getType().isEnum())
 				{
+					RobotLogger.getInstance().info("Setting field \"%s\" to \"%s.\".",key,((SendableChooser)value).getSelected().toString());
 					valMap.get(key).set(null,((SendableChooser)value).getSelected());
 				}
 				else
 				{
-				valMap.get(key).set(null, value);
+					if(valMap.get(key).getType().isPrimitive())
+					{
+						RobotLogger.getInstance().debug("Reflection field is a primitive!\n");
+						if(valMap.get(key).getType() == int.class)
+						{
+							valMap.get(key).setInt(null,((Double)value).intValue());
+						}
+						else if(valMap.get(key).getType() == byte.class)
+						{
+							valMap.get(key).setByte(null,((Double)value).byteValue());
+						}
+						else if(valMap.get(key).getType() == boolean.class)
+						{
+							valMap.get(key).set(null,value);
+						}
+						else if(valMap.get(key).getType() == short.class)
+						{
+							valMap.get(key).setShort(null,((Double)value).shortValue());
+						}
+						else if(valMap.get(key).getType() == long.class)
+						{
+							valMap.get(key).setLong(null,((Double)value).longValue());
+						}
+						else if(valMap.get(key).getType() == float.class)
+						{
+							valMap.get(key).setFloat(null,((Double)value).floatValue());
+						}
+						else if(valMap.get(key).getType() == double.class)
+						{
+							valMap.get(key).setDouble(null,((Double)value).doubleValue());
+						}
+					}
+					else
+					{
+						valMap.get(key).set(null, value);
+					}
+					RobotLogger.getInstance().info("Setting field \"%s\" to \"%s.\".",key,value.toString());
 				}
 
 			}
-			catch(IllegalAccessException e)
+			catch(Exception e)
 			{
 				e.printStackTrace();
 			}
+		}
+		else
+		{
+			RobotLogger.getInstance().debug("Unknown key %s changed!",key);
 		}
 	}
 
 	@Override
 	public void valueChangedEx(ITable source, String key, Object value, int flags)
 	{
-		if(valMap.containsKey(key))
-		{
-			try
-			{
-				valMap.get(key).set(null,value);
-			}
-			catch(IllegalAccessException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		valueChanged(source,key,value,false);
 	}
 
 	public void link(Class<?> robotMap)
@@ -105,18 +130,26 @@ public class MapSynchronizer implements ITableListener
 				if(f.getType() == double.class || f.getType() == float.class)
 				{
 					SmartDashboard.putNumber(field.field(), f.getDouble(null));
+					valMap.put(field.field(),f);
+
 				}
 				else if(f.getType() == long.class || f.getType() == int.class || f.getType() == short.class || f.getType() == byte.class)
 				{
 					SmartDashboard.putNumber(field.field(), f.getLong(null));
+					valMap.put(field.field(),f);
+
 				}
 				else if(f.getType() == boolean.class)
 				{
 					SmartDashboard.putBoolean(field.field(), f.getBoolean(null));
+					valMap.put(field.field(),f);
+
 				}
 				else if(f.getType() == String.class)
 				{
 					SmartDashboard.putString(field.field(), (String)f.get(null));
+					valMap.put(field.field(),f);
+
 				}
 				else if(f.getType().isEnum())
 				{
@@ -126,17 +159,18 @@ public class MapSynchronizer implements ITableListener
 						enumChooser.addObject(f.getType().getEnumConstants()[i].toString(),f.getType().getEnumConstants()[i]);
 					}
 					SmartDashboard.putData(field.field(), enumChooser);
+					new SendableChooserListener(enumChooser,f);
 				}
 				else
 				{
 					RobotLogger.getInstance().err("The type of field %s is unsupported by MapUtils at this time. This will not be synchronized with the SmartDashboard.", f.getName());
 				}
+
 			}
 			catch(IllegalAccessException ex)
 			{
 				RobotLogger.getInstance().err("MapUtils.initUpdater()",ex);
 			}
-			valMap.put(field.field(),f);
 		}
 	}
 }

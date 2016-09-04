@@ -14,9 +14,6 @@ public class VisionPipeline
 	private ArrayList<Transform<Frame,Frame>> frameOps;
 	private ArrayList<Transform<MatVector,MatVector>> matOps;
 	private Transform<Frame,MatVector> frameToMat;
-	public static void initVision()
-	{
-	}
 	public VisionPipeline(Camera c)
 	{
 		cam = c;

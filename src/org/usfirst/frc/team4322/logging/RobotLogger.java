@@ -1,7 +1,10 @@
 package org.usfirst.frc.team4322.logging;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4322.dashboard.DashboardField;
+import sun.rmi.runtime.Log;
 
 import java.io.*;
 import java.nio.file.FileSystem;
@@ -73,7 +76,7 @@ public class RobotLogger
 	private boolean closed = true;
 	// Logging Level
 	@DashboardField(field = "Logging Level")
-	private static LogLevel currentLogLevel = LogLevel.DEBUG;
+	public static LogLevel currentLogLevel = LogLevel.DEBUG;
 
 	// This is the static getInstance() method that provides easy access to the RobotLogger singleton class.
 	public static RobotLogger getInstance()
@@ -167,6 +170,23 @@ public class RobotLogger
 		}
 	}
 
+	public void setLogLevel(LogLevel l)
+	{
+		currentLogLevel = l;
+		SendableChooser enumChooser = new SendableChooser();
+		for(int i = 0; i < LogLevel.class.getEnumConstants().length; i++)
+		{
+			if(i == l.ordinal())
+			{
+				enumChooser.addDefault(LogLevel.class.getEnumConstants()[i].toString(),LogLevel.class.getEnumConstants()[i]);
+			}
+			else
+			{
+				enumChooser.addObject(LogLevel.class.getEnumConstants()[i].toString(),LogLevel.class.getEnumConstants()[i]);
+			}
+		}
+		SmartDashboard.putData("Logging Level", enumChooser);
+	}
 	/*
 	 * If there already is a file, write the data to it.
 	 * If there is not, create the file.
