@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4322.dashboard;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -8,10 +7,8 @@ import edu.wpi.first.wpilibj.tables.ITable;
 import edu.wpi.first.wpilibj.tables.ITableListener;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import org.usfirst.frc.team4322.logging.RobotLogger;
-import org.usfirst.frc.team4322.vision.FrameGrabber;
 
 /**
  * Created by nicolasmachado on 3/30/16.
@@ -57,7 +54,7 @@ public class MapSynchronizer implements ITableListener
 				{
 					if(valMap.get(key).getType().isPrimitive())
 					{
-						RobotLogger.getInstance().debug("Reflection field is a primitive!\n");
+						RobotLogger.getInstance().debug("Reflection field is a primitive!");
 						if(valMap.get(key).getType() == int.class)
 						{
 							valMap.get(key).setInt(null,((Double)value).intValue());
@@ -91,7 +88,7 @@ public class MapSynchronizer implements ITableListener
 					{
 						valMap.get(key).set(null, value);
 					}
-					RobotLogger.getInstance().info("Setting field \"%s\" to \"%s.\".",key,value.toString());
+					RobotLogger.getInstance().info("Setting field \"%s\" to \"%s\".",key,value.toString());
 				}
 
 			}
@@ -116,11 +113,11 @@ public class MapSynchronizer implements ITableListener
 	{
 		for( Field f : robotMap.getFields())
 		{
-			if(!f.isAnnotationPresent(DashboardField.class))
+			if(!f.isAnnotationPresent(DashboardInputField.class))
 			{
 				continue;
 			}
-			DashboardField field = f.getAnnotation(DashboardField.class);
+			DashboardInputField field = f.getAnnotation(DashboardInputField.class);
 			if(f.getType().isArray())
 			{
 				RobotLogger.getInstance().err("Arrays are not supported by MapUtils at this time. The field %s will not be synchronized with the SmartDashboard.", f.getName());

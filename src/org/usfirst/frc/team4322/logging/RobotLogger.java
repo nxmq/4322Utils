@@ -3,8 +3,7 @@ package org.usfirst.frc.team4322.logging;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.usfirst.frc.team4322.dashboard.DashboardField;
-import sun.rmi.runtime.Log;
+import org.usfirst.frc.team4322.dashboard.DashboardInputField;
 
 import java.io.*;
 import java.nio.file.FileSystem;
@@ -75,7 +74,7 @@ public class RobotLogger
 	// Log File status
 	private boolean closed = true;
 	// Logging Level
-	@DashboardField(field = "Logging Level")
+	@DashboardInputField(field = "Logging Level")
 	public static LogLevel currentLogLevel = LogLevel.DEBUG;
 
 	// This is the static getInstance() method that provides easy access to the RobotLogger singleton class.
