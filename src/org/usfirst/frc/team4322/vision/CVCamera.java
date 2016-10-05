@@ -1,45 +1,37 @@
 package org.usfirst.frc.team4322.vision;
 
+import org.usfirst.frc.team4322.logging.RobotLogger;
+
+import static org.bytedeco.javacpp.opencv_core.Mat;
+import static org.bytedeco.javacpp.opencv_videoio.VideoCapture;
+
+import static org.bytedeco.javacpp.opencv_core.*;
+import static org.bytedeco.javacpp.opencv_videoio.*;
+
 /**
  * Created by nicolasmachado on 9/4/16.
  */
 public class CVCamera implements Camera
 {
-	private OpenCVFrameGrabber grab;
+	private VideoCapture grab;
+	private Mat temp = null;
 	public CVCamera()
 	{
-		grab = new OpenCVFrameGrabber(0);
-		try
-		{
-			grab.start();
-		}
-		catch(FrameGrabber.Exception e)
-		{
-			e.printStackTrace();
-		}
+		grab = new VideoCapture(0);
+		grab.set(CV_CAP_PROP_FRAME_WIDTH,1280);
+		grab.set(CV_CAP_PROP_FRAME_HEIGHT,720);
+		grab.open(0);
+		temp = new Mat(grab.get(CV_CAP_PROP_FRAME_WIDTH),grab.get(CV_CAP_PROP_FRAME_HEIGHT),CV_8UC3);
 	}
 	@Override
-	public Frame getFrame()
+	public Mat getFrame()
 	{
-		try
-		{
-			return grab.grab();
-		}
-		catch(FrameGrabber.Exception e)
-		{
-			e.printStackTrace();
-		}
-		return null;
+		grab.grab();
+		grab.read(temp);
+		return temp;
 	}
 	public void stop()
 	{
-		try
-		{
-			grab.stop();
-		}
-		catch(FrameGrabber.Exception e)
-		{
-			e.printStackTrace();
-		}
+		grab.release();
 	}
 }

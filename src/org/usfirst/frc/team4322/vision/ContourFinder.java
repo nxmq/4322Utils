@@ -6,13 +6,14 @@ import static org.bytedeco.javacpp.opencv_core.*;
 /**
  * Created by nicolasmachado on 4/28/16.
  */
-public class ContourFinder extends Transform<Frame,MatVector>
+public class ContourFinder extends Transform<Mat,MatVector>
 {
 	@Override
-	public MatVector apply(Frame in)
+	public MatVector apply(Mat in)
 	{
 		MatVector out = new MatVector();
-		findContours(fconv.convert(in),out,CV_RETR_TREE,CV_CHAIN_APPROX_SIMPLE);
+		Mat hierarchy = new Mat();
+		findContours(in,out,hierarchy,CV_RETR_TREE,CV_CHAIN_APPROX_SIMPLE,new Point(0,0));
 		return out;
 	}
 }

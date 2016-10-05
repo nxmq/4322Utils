@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4322.vision;
 
+import org.bytedeco.javacpp.opencv_core;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -72,7 +74,7 @@ public class AxisCamera implements Camera
 		return accessURL;
 	}
 	@Override
-	public Frame getFrame()
+	public opencv_core.Mat getFrame()
 	{
 		try
 		{

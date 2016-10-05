@@ -28,6 +28,8 @@ public class ContourAspectFilter extends Transform<MatVector,MatVector>
 		for(int i = 0; i < in.size(); i++)
 		{
 			Mat c = in.get(i);
+			if(c.address() == 0x00000000)
+				continue;
 			Rect rc =  boundingRect(c);
 			double aspect = (rc.width() > rc.height()) ? rc.width()/rc.height() : rc.height()/rc.width();
 			if(Math.abs(target-aspect) <= error)

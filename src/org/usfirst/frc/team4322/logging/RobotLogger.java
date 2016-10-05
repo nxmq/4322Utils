@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4322.dashboard.DashboardInputField;
+import org.usfirst.frc.team4322.vision.FrameGrabber;
 
 import java.io.*;
 import java.nio.file.FileSystem;
@@ -214,7 +215,7 @@ public class RobotLogger
 	//Writes throwable error to DS.
 	private void writeErrorToDS(final String message)
 	{
-		DriverStation.reportError(message, true);
+		DriverStation.reportError(message, false);
 	}
 
 	public synchronized void debug(String thisMessage, Object... args)
@@ -241,7 +242,6 @@ public class RobotLogger
 	public synchronized void exc(String thisMessage, Throwable exc)
 	{
 		writeLogEntry(thisMessage+"\n%s",LogLevel.ERR,exc.getMessage());
-		writeErrorToDS(String.format(thisMessage+"\n%s",exc.getMessage()));
 	}
 
 	private void writeLogEntry(String message, LogLevel level, Object... args)
@@ -257,6 +257,23 @@ public class RobotLogger
 		}
 		// Output logging messages to a .txt log file
 		writeToFile(datetimeFormat + message + "\n", args);
+	}
+
+	private void writeException(String message, LogLevel level, Exception exc)
+	{
+		//check current logging level
+		if(level.ordinal() < currentLogLevel.ordinal())
+			return;
+		// Output logging messages to the console with a standard format
+		String datetimeFormat = "\n [" + CurrentReadable_DateTime() + "] - Robot4322: - "+ level.name() +" - ";
+		if(!DriverStation.getInstance().isFMSAttached())
+		{
+			System.out.format(datetimeFormat + message + "\n");
+			exc.printStackTrace();
+		}
+		// Output logging messages to a .txt log file
+		writeToFile(datetimeFormat + message + "\n");
+		exc.printStackTrace(pw);
 	}
 
 	// Adds given file to given ZIP Folder
