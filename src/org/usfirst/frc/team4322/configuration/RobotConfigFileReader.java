@@ -20,7 +20,7 @@ public class RobotConfigFileReader
 	private static RobotConfigFileReader _instance = null;
 	private static Pattern arrayFinder = Pattern.compile("\\{\\s*([^}]+)\\s*\\}");
 	public final String CONFIG_FILE = "/home/lvuser/robotConfig.ini";
-	private static Map<Class<?>, Method> primitiveMap = new HashMap<Class<?>, Method>();
+	public static Map<Class<?>, Method> primitiveMap = new HashMap<Class<?>, Method>();
 	static
 	{
 		try
@@ -59,10 +59,10 @@ public class RobotConfigFileReader
 		RobotLogger.getInstance().info("Started Config Update.");
 		//Initialize INI value holder.
 		Properties p = new Properties();
-		try
+		try(FileInputStream file = new FileInputStream(CONFIG_FILE))
 		{
 			//load Values from File.
-			p.load(new FileInputStream(CONFIG_FILE));
+			p.load(file);
 		}
 		catch(IOException ex)
 		{
@@ -157,15 +157,7 @@ public class RobotConfigFileReader
 			}
 		}
 		//Deal with misc errors.
-		catch(IllegalArgumentException ex)
-		{
-			RobotLogger.getInstance().exc("Exception caught in runRobotFileReader()", ex);
-		}
-		catch(IllegalAccessException ex)
-		{
-			RobotLogger.getInstance().exc("Exception caught in runRobotFileReader()", ex);
-		}
-		catch(SecurityException ex)
+		catch(IllegalArgumentException | IllegalAccessException | SecurityException ex)
 		{
 			RobotLogger.getInstance().exc("Exception caught in runRobotFileReader()", ex);
 		}

@@ -4,6 +4,8 @@
       <root url="jar://$USER_HOME$/wpilib/java/current/lib/WPILib.jar!/" />
       <root url="jar://$USER_HOME$/wpilib/java/current/lib/NetworkTables.jar!/" />
       <root url="jar://$USER_HOME$/wpilib/navx_frc.jar!/" />
+      <root url="jar://$USER_HOME$/wpilib/java/current/lib/opencv.jar!/" />
+      <root url="jar://$USER_HOME$/wpilib/java/current/lib/cscore.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/wpilib/navx_frc.jar!/docs" />
@@ -11,6 +13,8 @@
     <SOURCES>
       <root url="jar://$USER_HOME$/wpilib/java/current/lib/NetworkTables-sources.jar!/" />
       <root url="jar://$USER_HOME$/wpilib/java/current/lib/WPILib-sources.jar!/" />
+      <root url="jar://$USER_HOME$/wpilib/java/current/lib/opencv-sources.jar!/" />
+      <root url="jar://$USER_HOME$/wpilib/java/current/lib/cscore-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
