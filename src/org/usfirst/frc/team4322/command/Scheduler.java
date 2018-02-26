@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4322.command;
 
-import edu.wpi.first.wpilibj.HLUsageReporting;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +16,6 @@ public class Scheduler
 	ArrayList<Subsystem> systems;
 	private Scheduler()
 	{
-		HLUsageReporting.reportScheduler();
 		systems = new ArrayList<>();
 		systemMap = new HashMap<>();
 		core = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
@@ -30,9 +28,10 @@ public class Scheduler
 	{
 		return _inst;
 	}
+
 	public ScheduledFuture add(Command c)
 	{
-		for(Subsystem s : c.subsystems)
+		for(Subsystem s : c.getSubsystems())
 		{
 			if(systemMap.get(s) != null)
 			{
@@ -62,11 +61,23 @@ public class Scheduler
 
 	public void remove(Command c)
 	{
+		c.cancel();
 		core.remove(c);
 		core.purge();
 		core.getQueue().removeIf((x) -> x== c);
 		systemMap.values().removeIf((x) -> x == c);
 	}
+
+	public void shutdown()
+	{
+		core.shutdown();
+	}
+
+	public boolean hasCommands()
+	{
+		return core.getQueue().size()>0;
+	}
+
 	public void reset()
 	{
 		core.shutdownNow();

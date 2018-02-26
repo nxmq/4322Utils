@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 public class CommandBuilder
 {
 	private Consumer<Command> act = ((c)->{});
+	private Consumer<Command> init = ((c)->{});
 	private Predicate<Command> cond = ((c)->false);
 	ArrayList<Subsystem> subsystems = new ArrayList<>();
 	private Consumer<Command> onEnd = (c) -> {};
@@ -19,11 +20,18 @@ public class CommandBuilder
 	{
 		return new CommandBuilder();
 	}
-	public CommandBuilder task(Consumer<Command> act)
+	public CommandBuilder execute(Consumer<Command> act)
 	{
 		this.act = act;
 		return this;
 	}
+
+	public CommandBuilder onInit(Consumer<Command> init)
+    {
+        this.init = init;
+        return this;
+    }
+
 	public CommandBuilder runForTime(long millis)
 	{
 		this.cond = (Command c) -> c.runTimeMillis() < millis;
@@ -39,7 +47,7 @@ public class CommandBuilder
 		this.cond = cond;
 		return this;
 	}
-	public CommandBuilder atEnd(Consumer<Command> onEnd)
+	public CommandBuilder onEnd(Consumer<Command> onEnd)
 	{
 		this.onEnd = onEnd;
 		return this;
@@ -54,7 +62,7 @@ public class CommandBuilder
 		subsystems.add(s);
 		return this;
 	}
-	public CommandBuilder require(Subsystem... s)
+	public CommandBuilder requires(Subsystem... s)
 	{
 		for(Subsystem sys : s)
 		{
@@ -64,6 +72,36 @@ public class CommandBuilder
 	}
 	public Command build()
 	{
-		return new Command(cond,act,subsystems,timeout,onEnd,onInt);
+		return new Command(subsystems,timeout) {
+			@Override
+            protected void initialize()
+			{
+				init.accept(this);
+			}
+
+			@Override
+            protected void end()
+			{
+				onEnd.accept(this);
+			}
+
+			@Override
+            protected void interrupted()
+			{
+				onInt.accept(this);
+			}
+
+			@Override
+            protected boolean isFinished()
+			{
+				return !cond.test(this);
+			}
+
+			@Override
+            protected void execute()
+			{
+				act.accept(this);
+			}
+		};
 	}
 }

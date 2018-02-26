@@ -1,10 +1,8 @@
 package org.usfirst.frc.team4322.dashboard;
 
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.tables.ITable;
-import edu.wpi.first.wpilibj.tables.ITableListener;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,15 +21,8 @@ import static org.usfirst.frc.team4322.configuration.RobotConfigFileReader.primi
  * Created by nicolasmachado on 3/30/16.
  */
 
-public class MapSynchronizer implements ITableListener
+public class MapSynchronizer
 {
-
-
-	//Values take from ntcore_c.h
-	private static int NT_UNASSIGNED = 0;
-	private static int NT_BOOLEAN = 0x01;
-	private static int NT_DOUBLE = 0x02;
-	private static int NT_STRING = 0x04;
 
 	private class FieldInfo
 	{
@@ -49,78 +40,76 @@ public class MapSynchronizer implements ITableListener
 	private static MapSynchronizer _instance = new MapSynchronizer();
 
 
-	private MapSynchronizer()
-	{
-		NetworkTable.getTable("SmartDashboard").addTableListener(this);
-	}
 	public static MapSynchronizer getInstance()
 	{
 		return _instance;
 	}
 
-	@Override
-	public void valueChanged(ITable source, String key, Object value, boolean isNew)
+	private class KeyListener implements TableEntryListener
 	{
-		if(valMap.containsKey(key))
+	    private final Field store;
+	    private final Class<?> type;
+        private final boolean persistent;
+
+        public KeyListener(Field store,boolean persistent)
+        {
+            this.store = store;
+            type = store.getType();
+            this.persistent = persistent;
+        }
+
+        @Override
+		public void valueChanged(NetworkTable table, String key, NetworkTableEntry entry, NetworkTableValue value, int flags)
 		{
 			try
 			{
-				Field field = valMap.get(key).field;
-				Class<?> type = field.getType();
-				if(type.isEnum())
+
+				if(type.isPrimitive())
 				{
-					RobotLogger.getInstance().info("Setting field \"%s\" to \"%s.\".",key,((SendableChooser)value).getSelected().toString());
-					field.set(null,((SendableChooser)value).getSelected());
+					RobotLogger.getInstance().debug("Reflection field is a primitive!");
+					if(type == int.class)
+					{
+                        store.setInt(null,(int)value.getDouble());
+					}
+					else if(type == byte.class)
+					{
+                        store.setByte(null,(byte)value.getDouble());
+					}
+					else if(type == boolean.class)
+					{
+                        store.set(null,value.getBoolean());
+					}
+					else if(type == short.class)
+					{
+                        store.setShort(null,(short)value.getDouble());
+					}
+					else if(type == long.class)
+					{
+                        store.setLong(null,(long)value.getDouble());
+					}
+					else if(type == float.class)
+					{
+                        store.setFloat(null,(float)value.getDouble());
+					}
+					else if(type == double.class)
+					{
+                        store.setDouble(null,value.getDouble());
+					}
 				}
 				else
 				{
-					if(type.isPrimitive())
-					{
-						RobotLogger.getInstance().debug("Reflection field is a primitive!");
-						if(type == int.class)
-						{
-							field.setInt(null,((Double)value).intValue());
-						}
-						else if(type == byte.class)
-						{
-							field.setByte(null,((Double)value).byteValue());
-						}
-						else if(type == boolean.class)
-						{
-							field.set(null,value);
-						}
-						else if(type == short.class)
-						{
-							field.setShort(null,((Double)value).shortValue());
-						}
-						else if(type == long.class)
-						{
-							field.setLong(null,((Double)value).longValue());
-						}
-						else if(type == float.class)
-						{
-							field.setFloat(null,((Double)value).floatValue());
-						}
-						else if(type == double.class)
-						{
-							field.setDouble(null,((Double)value).doubleValue());
-						}
-					}
-					else
-					{
-						field.set(null, value);
-					}
-					RobotLogger.getInstance().info("Setting field \"%s\" to \"%s\".",key,value.toString());
+					store.set(null, value);
 				}
-				if(valMap.get(key).persistent)
+				RobotLogger.getInstance().info("Setting field \"%s\" to \"%s\".",key,value.toString());
+				if(persistent)
 				{
 					if(type.isArray())
 					{
-						RobotPersistenceFileWriter.getInstance().set(key, Arrays.toString((Object[])field.get(null)).replace('[','{').replace(']','}'));
+						RobotPersistenceFileWriter.getInstance().set(key, Arrays.toString((Object[])store.get(null)).replace('[','{').replace(']','}'));
 					}
 					else
 					{
-						RobotPersistenceFileWriter.getInstance().set(key,field.get(null).toString());
+						RobotPersistenceFileWriter.getInstance().set(key,store.get(null).toString());
 					}
 				}
 			}
@@ -129,16 +118,6 @@ public class MapSynchronizer implements ITableListener
 				e.printStackTrace();
 			}
 		}
-		else
-		{
-			RobotLogger.getInstance().debug("Unknown key %s changed!",key);
-		}
-	}
-
-	@Override
-	public void valueChangedEx(ITable source, String key, Object value, int flags)
-	{
-		valueChanged(source,key,value,false);
 	}
 
 	public void loadPersistentValues()
@@ -200,25 +179,22 @@ public class MapSynchronizer implements ITableListener
 				if(type == double.class || type == float.class)
 				{
 					SmartDashboard.putNumber(field, f.getDouble(null));
-					valMap.put(field,fi);
-
+                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(field,new KeyListener(f,persistent),TableEntryListener.kUpdate);
 				}
 				else if(type == long.class || type == int.class || type == short.class || type == byte.class)
 				{
 					SmartDashboard.putNumber(field, f.getLong(null));
-					valMap.put(field,fi);
-
+                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(field,new KeyListener(f,persistent),TableEntryListener.kUpdate);
 				}
 				else if(type == boolean.class)
 				{
 					SmartDashboard.putBoolean(field, f.getBoolean(null));
-					valMap.put(field,fi);
-
+                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(field,new KeyListener(f,persistent),TableEntryListener.kUpdate);
 				}
 				else if(type == String.class)
 				{
 					SmartDashboard.putString(field, (String)f.get(null));
-					valMap.put(field,fi);
+                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(field,new KeyListener(f,persistent),TableEntryListener.kUpdate);
 
 				}
 				else if(type.isEnum())
@@ -234,7 +210,7 @@ public class MapSynchronizer implements ITableListener
 						enumChooser.addObject(type.getEnumConstants()[i].toString(),type.getEnumConstants()[i]);
 					}
 					SmartDashboard.putData(field, enumChooser);
-					new SendableChooserListener(enumChooser,f);
+					new SendableChooserListener(enumChooser,f,field);
 				}
 				else
 				{

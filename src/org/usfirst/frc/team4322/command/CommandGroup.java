@@ -18,7 +18,9 @@ public class CommandGroup extends Command
 		{
 			toDo.add(c);
 		}
-		public void run()
+
+		@Override
+        protected void initialize()
 		{
 			for(Command c : toDo)
 			{
@@ -27,50 +29,39 @@ public class CommandGroup extends Command
 					c.start();
 				}
 			}
-			toDo.removeIf(Command::isFinished);
-			if(toDo.isEmpty())
-			{
-				end();
-			}
 		}
 
 		@Override
-		public void end()
+        protected void execute()
 		{
-			super.end();
-			queue.remove(this);
+			toDo.removeIf((cmd)->!cmd.shouldRun());
 		}
 
-		@Override
-		public void interrupted()
-		{
-		}
+        @Override
+        protected void end()
+        {
+            queue.remove(this);
+        }
 
-		@Override
-		public boolean shouldRun()
-		{
-			return toDo.size() > 0;
-		}
+        @Override
+        protected void interrupted()
+        {
 
-		@Override
-		public boolean isFinished()
-		{
-			return toDo.size() == 0;
-		}
-	}
-	@Override
-	public boolean isFinished()
-	{
-		return queue.size() == 0;
-	}
+        }
 
-	@Override
-	public boolean shouldRun()
-	{
-		return !isFinished();
-	}
+        @Override
+        protected boolean isFinished()
+        {
+            return toDo.size() == 0;
+        }
+    }
 
-	public void addSequential(Command c)
+    public CommandGroup()
+    {
+        setTimeout(-1);
+    }
+
+    public void addSequential(Command c)
 	{
 			Task t = new Task();
 			t.parallel = false;
@@ -92,24 +83,55 @@ public class CommandGroup extends Command
 			queue.get(queue.size() - 1).add(c);
 		}
 	}
+
 	@Override
-	public void run()
+    protected void execute()
 	{
 		if(queue.size() > 0)
 		{
-			if(!queue.get(0).isFinished())
+			if(!queue.get(0).isStarted())
 			{
-				queue.get(0).run();
+				queue.get(0).start();
 			}
 			else
-			{
-				queue.remove(0);
-			}
+            {
+                if(!queue.get(0).shouldRun())
+                {
+                    queue.remove(0);
+                    if(queue.size() > 0)
+                        queue.get(0).start();
+                    else
+                        cancel();
+                }
+            }
 		}
 		else
 		{
-			end();
+			cancel();
 		}
 	}
 
+    @Override
+    protected void initialize()
+    {
+
+    }
+
+    @Override
+    protected void end()
+    {
+
+    }
+
+    @Override
+    protected void interrupted()
+    {
+
+    }
+
+    @Override
+    protected boolean isFinished()
+    {
+        return queue.size()==0;
+    }
 }

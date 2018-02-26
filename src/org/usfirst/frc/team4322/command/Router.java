@@ -4,20 +4,47 @@ import java.util.function.*;
 /**
  * Created by nicolasmachado on 4/20/16.
  */
-public class Router
+public abstract class Router extends Command
 {
-	private Supplier<Command> cond;
-	public Router(Supplier<Command> cond)
+	public Router()
 	{
-		this.cond = cond;
+
 	}
-	private void route()
+	protected abstract Command route();
+
+	@Override
+	public void start()
 	{
-		cond.get().start();
-	}
-	public Command getRouteCommand()
-	{
-		return CommandBuilder.create().task( (c) -> this.route()).build();
+		route().start();
 	}
 
+	@Override
+	protected void initialize()
+	{
+
+	}
+
+	@Override
+	protected void end()
+	{
+
+	}
+
+	@Override
+	protected void interrupted()
+	{
+
+	}
+
+	@Override
+	protected boolean isFinished()
+	{
+		return false;
+	}
+
+	@Override
+	protected void execute()
+	{
+
+	}
 }

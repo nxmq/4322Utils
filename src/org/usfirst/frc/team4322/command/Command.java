@@ -5,52 +5,38 @@ import java.util.function.*;
 /**
  * Created by nicolasmachado on 4/20/16.
  */
-public class Command implements Runnable
+public abstract class Command implements Runnable
 {
 
-	private Predicate<Command> cond = ((c)->false);
-	private Consumer<Command> act = ((c)->{});
-	private boolean finished = false;
 	private boolean started = false;
 	private boolean hasRun = false;
 	private long startTime;
 	private long timeout = 0;
-	private Consumer<Command> onEnd = (c) -> {};
-	private Consumer<Command> onInt = (c) -> {};
-	ArrayList<Subsystem> subsystems = new ArrayList<>();
+	private ArrayList<Subsystem> subsystems = new ArrayList<>();
 
-	public Command(Predicate<Command> cond, Consumer<Command> act, ArrayList<Subsystem> subsystems, long timeout, Consumer<Command> onEnd, Consumer<Command> onInt)
+	public Command(ArrayList<Subsystem> subsystems, long timeout)
 	{
-		this.cond = cond;
-		this.act = act;
 		this.timeout = timeout;
-		this.onEnd = onEnd;
-		this.onInt = onInt;
 		this.subsystems = subsystems;
 	}
 
-	public Command(Predicate<Command> cond, Consumer<Command> act, ArrayList<Subsystem> subsystems, long timeout)
+	public Command()
 	{
-		this.act = act;
-		this.subsystems = subsystems;
-		this.cond = cond;
-		this.timeout = timeout;
+
 	}
 
-
-	public Command(Predicate<Command> cond,Consumer<Command> act, ArrayList<Subsystem> subsystems)
+	protected void setTimeout(long millis)
 	{
-		this.act = act;
-		this.subsystems = subsystems;
-		this.cond = cond;
+		this.timeout = millis;
 	}
 
-
-	public Command(Predicate<Command> cond, Consumer<Command> act)
+	public ArrayList<Subsystem> getSubsystems()
 	{
-		this.cond = cond;
-		this.act = act;
+		return subsystems;
 	}
+
+    protected abstract void initialize();
+
 	public void require(Subsystem s)
 	{
 		subsystems.add(s);
@@ -62,48 +48,47 @@ public class Command implements Runnable
 			subsystems.add(sys);
 		}
 	}
-	public Command()
-	{
 
-	}
-	public void end()
+	public void cancel()
 	{
-		onEnd.accept(this);
+		end();
 		Scheduler.getInstance().remove(this);
 	}
-	public void interrupted()
-	{
-		onInt.accept(this);
-		interrupt();
-	}
+
+    protected abstract void end();
+
+    protected abstract void interrupted();
 
 	public void start()
 	{
 		startTime = System.currentTimeMillis();
 		started = true;
+		initialize();
 		Scheduler.getInstance().add(this);
 	}
 	public long runTimeMillis()
 	{
 		return System.currentTimeMillis() - startTime;
 	}
+
+	protected abstract boolean isFinished();
+
 	public boolean shouldRun()
 	{
-		if(timeout != 0)
+		if(timeout > 0)
 		{
-			return !cond.test(this) && timeout < runTimeMillis();
+			return !isFinished() && timeout < runTimeMillis();
 		}
-		return cond.test(this);
+		return !isFinished();
 	}
-	public boolean isFinished()
-	{
-		return finished;
-	}
+
+    protected abstract void execute();
+
 	public void run()
 	{
 		if(shouldRun())
 		{
-			act.accept(this);
+			execute();
 			if(!hasRun)
 			{
 				hasRun = true;
@@ -114,17 +99,15 @@ public class Command implements Runnable
 			//All commands must run once.
 			if(!hasRun)
 			{
-				act.accept(this);
+				execute();
 				hasRun = true;
 			}
-			finished = true;
-			end();
+			cancel();
 		}
 
 	}
 	void interrupt()
 	{
-		this.finished = true;
 		interrupted();
 	}
 

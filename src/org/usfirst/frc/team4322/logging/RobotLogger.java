@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4322.dashboard.DashboardInputField;
-import org.usfirst.frc.team4322.vision.FrameGrabber;
 
 import java.io.*;
 import java.nio.file.FileSystem;
@@ -58,16 +57,16 @@ public class RobotLogger
 	// Instance for Singleton class
 	private static RobotLogger _instance = null;
 	// Instance for Driver Station
-	private final DriverStation m_ds = DriverStation.getInstance();
+	private final DriverStation driverStation = DriverStation.getInstance();
 	// Instances for the log files
 	private final String logFolder = "/home/lvuser/logs/";
-	private final String LOG_FILE = "FRC4322InitLog.txt",
-			Robot_Disabled_Log = "FRC4322DisabledLog.txt",
-			Robot_Auto_Log = "FRC4322AutoLog.txt",
-			Robot_Teleop_Log = "FRC4322TeleopLog.txt",
-			Robot_Test_Log = "FRC4322TestLog.txt";
+	private final String LOG_FILE = "RobotInitLog.txt",
+			Robot_Disabled_Log = "RobotDisabledLog.txt",
+			Robot_Auto_Log = "RobotAutoLog.txt",
+			Robot_Teleop_Log = "RobotTeleopLog.txt",
+			Robot_Test_Log = "RobotTestLog.txt";
 	// Instances for ZIP File
-	private final String LOGS_ZIP_FILE = "/home/lvuser/logs/FRC4322Logs.zip";
+	private final String LOGS_ZIP_FILE = "/home/lvuser/logs/RobotLogs.zip";
 	// Constants for file
 	private final long MAX_FILE_LENGTH = 10485760;
 	// Log writer
@@ -109,17 +108,17 @@ public class RobotLogger
 	private String getProperLogFile()
 	{
 		String file = logFolder + LOG_FILE;
-		if (m_ds.isFMSAttached())
+		if (driverStation.isFMSAttached())
 		{
-			return logFolder + "FRC4322CompetitionMatch.txt";
+			return logFolder + String.format("RobotCompetitionMatch-%s-%s-%d-%d.txt", driverStation.getEventName(), driverStation.getMatchType().name(), driverStation.getMatchNumber(), driverStation.getReplayNumber());
 		}
-		if (m_ds.isDisabled())
+		if (driverStation.isDisabled())
 			file = logFolder + Robot_Disabled_Log;
-		if (m_ds.isAutonomous())
+		if (driverStation.isAutonomous())
 			file = logFolder + Robot_Auto_Log;
-		if (m_ds.isOperatorControl())
+		if (driverStation.isOperatorControl())
 			file = logFolder + Robot_Teleop_Log;
-		if (m_ds.isTest())
+		if (driverStation.isTest())
 			file = logFolder + Robot_Test_Log;
 		// Default is initLog
 		return file;
@@ -265,7 +264,7 @@ public class RobotLogger
 		if(level.ordinal() < currentLogLevel.ordinal())
 			return;
 		// Output logging messages to the console with a standard format
-		String datetimeFormat = "\n [" + CurrentReadable_DateTime() + "] - Robot4322: - "+ level.name() +" - ";
+		String datetimeFormat = "\n [" + CurrentReadable_DateTime() + "] - Robot: - "+ level.name() +" - ";
 		if(!DriverStation.getInstance().isFMSAttached())
 		{
 			System.out.format(datetimeFormat + message + "\n");
