@@ -35,21 +35,11 @@ public class RobotLogger
 
 	public enum LogLevel
 	{
-		DEBUG(0),
-		INFO(1),
-		LOG(2),
-		WARN(3),
-		ERR(4);
-
-		private final int value;
-
-		 LogLevel(int value) {
-			this.value = value;
-		}
-
-		public int getValue() {
-			return value;
-		}
+		DEBUG,
+		INFO,
+		LOG,
+		WARN,
+		ERR;
 	}
 
 	// Get Date Format
@@ -59,14 +49,14 @@ public class RobotLogger
 	// Instance for Driver Station
 	private final DriverStation driverStation = DriverStation.getInstance();
 	// Instances for the log files
-	private final String logFolder = "/home/lvuser/logs/";
-	private final String LOG_FILE = "RobotInitLog.txt",
-			Robot_Disabled_Log = "RobotDisabledLog.txt",
-			Robot_Auto_Log = "RobotAutoLog.txt",
-			Robot_Teleop_Log = "RobotTeleopLog.txt",
-			Robot_Test_Log = "RobotTestLog.txt";
+	private final String logFolder = System.getProperty("user.home") + "/logs";
+	private final String LOG_FILE = "RobotInitLog",
+			Robot_Disabled_Log = "RobotDisabledLog",
+			Robot_Auto_Log = "RobotAutoLog",
+			Robot_Teleop_Log = "RobotTeleopLog",
+			Robot_Test_Log = "RobotTestLog";
 	// Instances for ZIP File
-	private final String LOGS_ZIP_FILE = "/home/lvuser/logs/RobotLogs.zip";
+	private final String LOGS_ZIP_FILE = System.getProperty("user.home") + "logs/RobotLogs.zip";
 	// Constants for file
 	private final long MAX_FILE_LENGTH = 10485760;
 	// Log writer
@@ -77,7 +67,24 @@ public class RobotLogger
 	@DashboardInputField(field = "Logging Level")
 	public static LogLevel currentLogLevel = LogLevel.DEBUG;
 
-	// This is the static getInstance() method that provides easy access to the RobotLogger singleton class.
+    private RobotLogger()
+    {
+        SendableChooser<LogLevel> enumChooser = new SendableChooser();
+        for(int i = 0; i < LogLevel.class.getEnumConstants().length; i++)
+        {
+            if(i == 3)
+            {
+                enumChooser.addDefault(LogLevel.values()[i].toString(),LogLevel.values()[i]);
+            }
+            else
+            {
+                enumChooser.addObject(LogLevel.values()[i].toString(),LogLevel.values()[i]);
+            }
+        }
+        SmartDashboard.putData("Logging Level", enumChooser);
+    }
+
+    // This is the static getInstance() method that provides easy access to the RobotLogger singleton class.
 	public static RobotLogger getInstance()
 	{
 		// Look to see if the instance has already been created...
@@ -120,11 +127,11 @@ public class RobotLogger
 			file = logFolder + Robot_Teleop_Log;
 		if (driverStation.isTest())
 			file = logFolder + Robot_Test_Log;
-		// Default is initLog
+		file += (" [" + CurrentReadable_DateTime() + "].txt");
 		return file;
 	}
 
-	public void update(boolean zip)
+	public void update()
 	{
 		if (closed)
 		{
@@ -143,12 +150,11 @@ public class RobotLogger
 				// If the file exists & the length is too long, send it to ZIP
 				if (log.exists())
 				{
-					if (log.length() > MAX_FILE_LENGTH && zip)
+					if (log.length() > MAX_FILE_LENGTH)
 					{
 						File archivedLog = new File(log.getAbsolutePath().replace(".txt", "") + " [" +
 								CurrentReadable_DateTime() + "]" + ".txt");
 						log.renameTo(archivedLog);
-						addFileToZip(log, LOGS_ZIP_FILE);
 						log = new File(getProperLogFile());
 					}
 				}
@@ -172,24 +178,10 @@ public class RobotLogger
 	public void setLogLevel(LogLevel l)
 	{
 		currentLogLevel = l;
-		SendableChooser enumChooser = new SendableChooser();
-		for(int i = 0; i < LogLevel.class.getEnumConstants().length; i++)
-		{
-			if(i == l.ordinal())
-			{
-				enumChooser.addDefault(LogLevel.class.getEnumConstants()[i].toString(),LogLevel.class.getEnumConstants()[i]);
-			}
-			else
-			{
-				enumChooser.addObject(LogLevel.class.getEnumConstants()[i].toString(),LogLevel.class.getEnumConstants()[i]);
-			}
-		}
-		SmartDashboard.putData("Logging Level", enumChooser);
 	}
 	/*
 	 * If there already is a file, write the data to it.
 	 * If there is not, create the file.
-	 * If the file is too big, add it to a ZIP file.
 	 */
 	private void writeToFile(final String msg, Object... args)
 	{
@@ -201,7 +193,7 @@ public class RobotLogger
 	{
 		if (closed)
 		{
-			update(true);
+			update();
 		}
 		String msg = "\nException in " + method + ": " + getString(t);
 		if (!DriverStation.getInstance().isFMSAttached())
@@ -273,28 +265,6 @@ public class RobotLogger
 		// Output logging messages to a .txt log file
 		writeToFile(datetimeFormat + message + "\n");
 		exc.printStackTrace(pw);
-	}
-
-	// Adds given file to given ZIP Folder
-	private void addFileToZip(File file, String zipfile)
-	{
-		Path zip = Paths.get(zipfile);
-		try (FileSystem zipfs = Files.exists(zip) ? FileSystems.getFileSystem(zip.toUri()) : FileSystems.newFileSystem
-				(zip, null))
-		{
-			// Get the log file
-			Path externalLogFile = file.toPath();
-			// Get the path the log file will be put into
-			Path pathInZipfile = zipfs.getPath(file.getName());
-			// Copy the log file into the ZIP, replace if necessary
-			Files.copy(externalLogFile, pathInZipfile, StandardCopyOption.REPLACE_EXISTING);
-			// Delete the log file
-			Files.delete(externalLogFile);
-		}
-		catch (IOException e)
-		{
-			writeErrorToFile("addFileToZip()", e);
-		}
 	}
 
 	public void close()
