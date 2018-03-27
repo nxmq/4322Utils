@@ -1,0 +1,41 @@
+plugins {
+    id "java"
+    id "org.jetbrains.kotlin.jvm" version "1.2.31"
+    id "idea"
+}
+sourceSets {
+    main.kotlin.srcDirs += 'src/'
+    main.java.srcDirs += 'src/'
+}
+
+repositories {
+    maven {
+        url "http://central.maven.org/maven2/"
+    }
+    maven {
+        url "https://raw.githubusercontent.com/Open-RIO/Maven-Mirror/master/m2"
+    }
+    maven {
+        url "http://first.wpi.edu/FRC/roborio/maven/release/"
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile "edu.wpi.first.wpilibj:wpilibj-java:2018.4.1"
+    compile "edu.wpi.first.wpilibj:wpilibj-jni:2018.4.1"
+    compile "edu.wpi.first.wpiutil:wpiutil-java:3.2.0"
+    compile "edu.wpi.first.ntcore:ntcore-java:4.1.0"
+    compile "openrio.mirror.third.ctre:CTRE-phoenix-java:5.3.1.0"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31"
+    compile "org.tenkiv.physikal:complete-units:1.1.3.3"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.4'
+}
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.usfirst.frc.team4322.command.CommandTest'
+    }
+}

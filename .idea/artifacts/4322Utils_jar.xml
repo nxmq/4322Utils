@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/4322Utils_jar</output-path>
     <root id="archive" name="4322Utils.jar">
       <element id="module-output" name="4322Utils" />
-      <element id="extracted-dir" path="$USER_HOME$/wpilib/navx_frc.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
