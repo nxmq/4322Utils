@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="4322Utils__main" target="1.8" />
+      <module name="4322Utils__test" target="1.8" />
       <module name="4322Utils_main" target="1.8" />
       <module name="4322Utils_test" target="1.8" />
     </bytecodeTargetLevel>
