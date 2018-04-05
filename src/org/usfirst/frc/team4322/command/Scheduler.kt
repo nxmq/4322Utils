@@ -12,6 +12,7 @@ object Scheduler {
     private val core: ScheduledThreadPoolExecutor = ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors())
     private val systemMap: MutableMap<Subsystem, Command> = mutableMapOf()
     private var systems: ArrayList<Subsystem> = ArrayList()
+    private var triggers: ArrayList<Trigger> = ArrayList()
 
     internal fun addSubsystem(system: Subsystem) {
         systems.add(system)
@@ -45,10 +46,13 @@ object Scheduler {
 
     fun addTrigger(tr: Trigger)
     {
-
+        triggers.add(tr)
     }
 
     fun run() {
+        for(tr in triggers) {
+            tr.poll()
+        }
         for (s in systems) {
             s.periodic()
             val c = s.defaultCommand

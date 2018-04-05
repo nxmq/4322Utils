@@ -65,7 +65,7 @@ class CommandBuilder {
     fun build(): Command {
         return object : Command(subsystems, timeout) {
 
-            protected override val isFinished: Boolean
+            override val isFinished: Boolean
                 get() = !cond(this)
 
             override fun initialize() {

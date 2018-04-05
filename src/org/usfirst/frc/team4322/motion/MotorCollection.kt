@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.IMotorController
 class MotorCollection(master: IMotorController) {
     private var motorSet : ArrayList<IMotorController> = ArrayList()
 
-    public var motors : ArrayList<IMotorController> = motorSet
+    var motors : ArrayList<IMotorController> = motorSet
 
     init {
         motorSet[0] = master
@@ -18,11 +18,11 @@ class MotorCollection(master: IMotorController) {
     }
 
     fun setOutput(value: Double, mode: ControlMode = ControlMode.PercentOutput) {
-        motorSet[0].set(mode,value);
+        motorSet[0].set(mode,value)
     }
 
     fun disable() {
-        motorSet[0].set(ControlMode.Disabled,0.0);
+        motorSet[0].set(ControlMode.Disabled,0.0)
     }
 
 }
