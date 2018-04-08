@@ -1,8 +1,7 @@
 package org.usfirst.frc.team4322.command
 
-import java.util.ArrayList
+import java.util.*
 import java.util.concurrent.ScheduledFuture
-import java.util.function.*
 
 /**
  * Created by nicolasmachado on 4/20/16.
@@ -11,7 +10,7 @@ abstract class Command : Runnable {
 
     var isStarted = false
         private set
-    lateinit var future : ScheduledFuture<*>
+    private lateinit var future : ScheduledFuture<*>
     var hasRun = false
     var isDone = false
     var startTime: Long = 0

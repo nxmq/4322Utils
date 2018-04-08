@@ -1,8 +1,5 @@
 package org.usfirst.frc.team4322.math
 
-import com.sun.xml.internal.ws.addressing.EndpointReferenceUtil.transform
-
-
 
 class Transform(val rotation : Rotation, val translation: Translation) : Interpolable<Transform> {
 
@@ -34,7 +31,6 @@ class Transform(val rotation : Rotation, val translation: Translation) : Interpo
             val t = ((a.translation.x - b.translation.x) * tanB + b.translation.y - a.translation.y) / (a.rotation.sin - a.rotation.cos * tanB)
             return a.translation+a.rotation.toTranslation().scale(t)
         }
-
     }
 
     fun toArc() : Arc {
@@ -42,10 +38,10 @@ class Transform(val rotation : Rotation, val translation: Translation) : Interpo
         val halfDTheta = 0.5 * dtheta
         val cosMinusOne = rotation.cos - 1.0
         val halfThetaByTanOfHalfDTheta: Double
-        if (Math.abs(cosMinusOne) < 1E-9) {
-            halfThetaByTanOfHalfDTheta = 1.0 - 1.0 / 12.0 * dtheta * dtheta
+        halfThetaByTanOfHalfDTheta = if (Math.abs(cosMinusOne) < 1E-9) {
+            1.0 - 1.0 / 12.0 * dtheta * dtheta
         } else {
-            halfThetaByTanOfHalfDTheta = -(halfDTheta * rotation.sin) / cosMinusOne
+            -(halfDTheta * rotation.sin) / cosMinusOne
         }
         val translationPart = translation.rotateBy(Rotation(halfThetaByTanOfHalfDTheta, -halfDTheta, false))
         return Arc(translationPart.x, translationPart.y, dtheta)
@@ -68,13 +64,13 @@ class Transform(val rotation : Rotation, val translation: Translation) : Interpo
         {
             return Translation(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY)
         }
-        if(Math.abs(rotation.cos) < Math.abs(rotation.cos))
+        return if(Math.abs(rotation.cos) < Math.abs(rotation.cos))
         {
-            return intersectionInternal(this, other)
+            intersectionInternal(this, other)
         }
         else
         {
-            return intersectionInternal(other,this)
+            intersectionInternal(other,this)
         }
     }
 

@@ -31,7 +31,7 @@ class Calculus {
             for (i in 1 until input.size) {
                 result[i] = (input[i] - input[i - 1]) / dt
             }
-            result[0] = result[1];
+            result[0] = result[1]
             return result
         }
     }

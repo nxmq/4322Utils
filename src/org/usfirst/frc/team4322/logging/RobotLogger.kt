@@ -32,15 +32,15 @@ object RobotLogger {
     private val driverStation = DriverStation.getInstance()
     // Instances for the log files
     private val logFolder = System.getProperty("user.home") + "/logs"
-    private val LOG_FILE = "RobotInitLog"
-    private val Robot_Disabled_Log = "RobotDisabledLog"
-    private val Robot_Auto_Log = "RobotAutoLog"
-    private val Robot_Teleop_Log = "RobotTeleopLog"
-    private val Robot_Test_Log = "RobotTestLog"
+    private const val LOG_FILE = "RobotInitLog"
+    private const val Robot_Disabled_Log = "RobotDisabledLog"
+    private const val Robot_Auto_Log = "RobotAutoLog"
+    private const val Robot_Teleop_Log = "RobotTeleopLog"
+    private const val Robot_Test_Log = "RobotTestLog"
     // Instances for ZIP File
     private val LOGS_ZIP_FILE = System.getProperty("user.home") + "logs/RobotLogs.zip"
     // Constants for file
-    private val MAX_FILE_LENGTH: Long = 10485760
+    private const val MAX_FILE_LENGTH: Long = 10485760
     // Log writer
     private var pw: PrintWriter? = null
     // Log File status
@@ -83,7 +83,7 @@ object RobotLogger {
 
     init {
         val enumChooser = SendableChooser<LogLevel>()
-        for (i in 0 until LogLevel::class.java.getEnumConstants().size) {
+        for (i in 0 until LogLevel::class.java.enumConstants.size) {
             if (i == 3) {
                 enumChooser.addDefault(LogLevel.values()[i].toString(), LogLevel.values()[i])
             } else {
@@ -184,7 +184,7 @@ object RobotLogger {
 
     @Synchronized
     fun exc(thisMessage: String, exc: Throwable) {
-        writeLogEntry(thisMessage + "\n%s", LogLevel.ERR, exc.message!!)
+        writeLogEntry("$thisMessage\n%s", LogLevel.ERR, exc.message!!)
     }
 
     private fun writeLogEntry(message: String, level: LogLevel, vararg args: Any) {
@@ -224,12 +224,12 @@ object RobotLogger {
         }
     }
         // Gets the date in yyyy-MM-dd format
-        fun CurrentReadable_DateTime(): String {
+        private fun CurrentReadable_DateTime(): String {
             return sdf_.format(Calendar.getInstance().time)
         }
 
         // Creates a string out of a throwable
-        fun getString(e: Throwable): String {
+        private fun getString(e: Throwable): String {
             val sw = StringWriter()
             val pw = PrintWriter(sw)
             e.printStackTrace(pw)

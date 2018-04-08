@@ -28,11 +28,7 @@ class MapSynchronizer {
     private inner class FieldInfo(internal var persistent: Boolean, internal var field: Field)
 
     private inner class KeyListener(private val store: Field, private val persistent: Boolean) : TableEntryListener {
-        private val type: Class<*>
-
-        init {
-            type = store.type
-        }
+        private val type: Class<*> = store.type
 
         override fun valueChanged(table: NetworkTable, key: String, entry: NetworkTableEntry, value: NetworkTableValue, flags: Int) {
             try {

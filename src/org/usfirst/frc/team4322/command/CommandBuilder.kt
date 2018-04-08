@@ -1,8 +1,6 @@
 package org.usfirst.frc.team4322.command
 
-import java.util.ArrayList
-import java.util.function.Consumer
-import java.util.function.Predicate
+import java.util.*
 
 /**
  * Created by nicolasmachado on 4/20/16.
