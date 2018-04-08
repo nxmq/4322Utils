@@ -128,7 +128,7 @@ class MotionProfileController(private val talon: WPI_TalonSRX, private val point
 
     companion object {
 
-        private val minBufferSize = 5
-        private val timeoutLoops = 10
+        private const val minBufferSize = 5
+        private const val timeoutLoops = 10
     }
 }

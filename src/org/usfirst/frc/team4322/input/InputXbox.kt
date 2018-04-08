@@ -2,14 +2,12 @@ package org.usfirst.frc.team4322.input
 
 import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.Joystick
-import edu.wpi.first.wpilibj.buttons.JoystickButton
 import org.usfirst.frc.team4322.command.ButtonTrigger
-import org.usfirst.frc.team4322.command.Trigger
 import org.usfirst.frc.team4322.logging.RobotLogger
 
 
 /**
- * [class] InputXbox
+ * InputXbox
  *
  * @author AJ Granowski & 4624 Owatonna Robotics
  * @version 2015
@@ -59,19 +57,19 @@ class InputXbox
  */
 @JvmOverloads constructor(/* Instance Values */
         private val port: Int = 0) : Joystick(port) {
-    public val leftStick: Thumbstick
-    public val rightStick: Thumbstick
-    public val lt: Trigger
-    public val rt: Trigger
-    public val dPad: DirectionalPad
-    public val a: ButtonTrigger
-    public val b: ButtonTrigger
-    public val x: ButtonTrigger
-    public val y: ButtonTrigger
-    public val lb: ButtonTrigger
-    public val rb: ButtonTrigger
-    public val back: ButtonTrigger
-    public val start: ButtonTrigger
+    val leftStick: Thumbstick
+    val rightStick: Thumbstick
+    val lt: Trigger
+    val rt: Trigger
+    val dPad: DirectionalPad
+    val a: ButtonTrigger
+    val b: ButtonTrigger
+    val x: ButtonTrigger
+    val y: ButtonTrigger
+    val lb: ButtonTrigger
+    val rb: ButtonTrigger
+    val back: ButtonTrigger
+    val start: ButtonTrigger
 
     private val joystick: Joystick = Joystick(this.port)
 
@@ -157,7 +155,7 @@ class InputXbox
      *
      * @param value
      */
-    private constructor(/* Instance Value */
+    (/* Instance Value */
             val value: Int) {
         UP(0),
         UP_RIGHT(45),
@@ -211,7 +209,7 @@ class InputXbox
      * @param parent
      * @param hand
      */
-    internal constructor(private val parent: Joystick, val hand: HAND) : org.usfirst.frc.team4322.command.Trigger() {
+    internal constructor(private val parent: Joystick, private val hand: HAND) : org.usfirst.frc.team4322.command.Trigger() {
         private val xAxisID: Int
         private val yAxisID: Int
         private val buttonID: Int
@@ -422,12 +420,12 @@ class InputXbox
     /**
      * Constructor
      *
-     * @param joystick
+     * @param parent
      * @param hand
      */
     internal constructor(/* Instance Values */
             private val parent: Joystick,
-            val hand: HAND) : org.usfirst.frc.team4322.command.Trigger() {
+            private val hand: HAND) : org.usfirst.frc.team4322.command.Trigger() {
 
         private var deadZone: Double = 0.toDouble()
         private var sensitivity: Double = 0.toDouble()
@@ -440,12 +438,10 @@ class InputXbox
          */
         val x: Double
             get() {
-                val rawInput: Double
-
-                if (hand == HAND.LEFT) {
-                    rawInput = parent.getRawAxis(LEFT_TRIGGER_AXIS_ID)
+                val rawInput: Double = if (hand == HAND.LEFT) {
+                    parent.getRawAxis(LEFT_TRIGGER_AXIS_ID)
                 } else {
-                    rawInput = parent.getRawAxis(RIGHT_TRIGGER_AXIS_ID)
+                    parent.getRawAxis(RIGHT_TRIGGER_AXIS_ID)
                 }
 
                 return createDeadZone(rawInput, deadZone)
@@ -532,7 +528,7 @@ class InputXbox
             this.upLeft = DPadButton(this, DPAD.UP_LEFT)
         }/* Initialize */
 
-        public fun angle(): Int {
+        fun angle(): Int {
             return parent.pov
         }
 
@@ -545,7 +541,7 @@ class InputXbox
          * Constructor
          *
          * @param parent
-         * @param dPadDirection
+         * @param direction
          */
         internal constructor(private val parent: DirectionalPad, /* Instance Values */
                              private val direction: DPAD)/* Initialize */ : org.usfirst.frc.team4322.command.Trigger()
@@ -561,29 +557,29 @@ class InputXbox
     companion object {
 
         /* Default Values */
-        private val DEFAULT_THUMBSTICK_DEADZONE = 0.1  // Jiggle room for the thumbsticks
-        private val DEFAULT_TRIGGER_DEADZONE = 0.01 // Jiggle room for the triggers
-        private val DEFAULT_TRIGGER_SENSITIVITY = 0.6  // If the trigger is beyond this limit, say it has been pressed
+        private const val DEFAULT_THUMBSTICK_DEADZONE = 0.1  // Jiggle room for the thumbsticks
+        private const val DEFAULT_TRIGGER_DEADZONE = 0.01 // Jiggle room for the triggers
+        private const val DEFAULT_TRIGGER_SENSITIVITY = 0.6  // If the trigger is beyond this limit, say it has been pressed
 
         /* Button Mappings */
-        private val A_BUTTON_ID = 1
-        private val B_BUTTON_ID = 2
-        private val X_BUTTON_ID = 3
-        private val Y_BUTTON_ID = 4
-        private val LB_BUTTON_ID = 5
-        private val RB_BUTTON_ID = 6
-        private val BACK_BUTTON_ID = 7
-        private val START_BUTTON_ID = 8
-        private val LEFT_THUMBSTICK_BUTTON_ID = 9
-        private val RIGHT_THUMBSTICK_BUTTON_ID = 10
+        private const val A_BUTTON_ID = 1
+        private const val B_BUTTON_ID = 2
+        private const val X_BUTTON_ID = 3
+        private const val Y_BUTTON_ID = 4
+        private const val LB_BUTTON_ID = 5
+        private const val RB_BUTTON_ID = 6
+        private const val BACK_BUTTON_ID = 7
+        private const val START_BUTTON_ID = 8
+        private const val LEFT_THUMBSTICK_BUTTON_ID = 9
+        private const val RIGHT_THUMBSTICK_BUTTON_ID = 10
 
         /* Axis Mappings */
-        private val LEFT_THUMBSTICK_X_AXIS_ID = 0
-        private val LEFT_THUMBSTICK_Y_AXIS_ID = 1
-        private val LEFT_TRIGGER_AXIS_ID = 2
-        private val RIGHT_TRIGGER_AXIS_ID = 3
-        private val RIGHT_THUMBSTICK_X_AXIS_ID = 4
-        private val RIGHT_THUMBSTICK_Y_AXIS_ID = 5
+        private const val LEFT_THUMBSTICK_X_AXIS_ID = 0
+        private const val LEFT_THUMBSTICK_Y_AXIS_ID = 1
+        private const val LEFT_TRIGGER_AXIS_ID = 2
+        private const val RIGHT_TRIGGER_AXIS_ID = 3
+        private const val RIGHT_THUMBSTICK_X_AXIS_ID = 4
+        private const val RIGHT_THUMBSTICK_Y_AXIS_ID = 5
 
         /**
          * Creates a deadzone, but without clipping the lower values.
@@ -597,15 +593,13 @@ class InputXbox
          * @return adjusted_input
          */
         private fun createDeadZone(input: Double, deadZoneSize: Double): Double {
-            val negative: Double
+            val negative: Double = (if (input < 0) -1 else 1).toDouble()
             var deadZoneSizeClamp = deadZoneSize
             var adjusted: Double
 
             if (deadZoneSizeClamp < 0 || deadZoneSizeClamp >= 1) {
                 deadZoneSizeClamp = 0.0  // Prevent any weird errors
             }
-
-            negative = (if (input < 0) -1 else 1).toDouble()
 
             adjusted = Math.abs(input) - deadZoneSizeClamp  // Subtract the deadzone from the magnitude
             adjusted = if (adjusted < 0) 0.0 else adjusted          // if the new input is negative, make it zero

@@ -52,15 +52,15 @@ class Translation(val x : Double, val y : Double) : Interpolable<Translation> {
     }
 
     override fun lerp(other : Translation, x : Double) : Translation {
-        if (x < 0.0) {
-             return Translation(this)
+        return if (x < 0.0) {
+            Translation(this)
         }
         else if (x > 1) {
-            return Translation(other)
+            Translation(other)
         }
         else
         {
-            return Translation(x * (other.x - x) + x, x * (other.y - y) + y)
+            Translation(x * (other.x - x) + x, x * (other.y - y) + y)
         }
     }
 

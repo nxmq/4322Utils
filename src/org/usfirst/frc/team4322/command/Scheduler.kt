@@ -1,9 +1,10 @@
 package org.usfirst.frc.team4322.command
 
 
-import java.util.ArrayList
-import java.util.HashMap
-import java.util.concurrent.*
+import java.util.*
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.ScheduledThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by nicolasmachado on 4/20/16.
@@ -39,7 +40,7 @@ object Scheduler {
                 core.purge()
                 systemMap.values.removeIf { x -> x === r }
             }
-            systemMap.put(s, c)
+            systemMap[s] = c
         }
         return core.scheduleAtFixedRate(c, 0, period, TimeUnit.MILLISECONDS)
     }

@@ -1,34 +1,33 @@
 package org.usfirst.frc.team4322.configuration
 
 import org.usfirst.frc.team4322.logging.RobotLogger
-
-import java.io.*
-import java.util.Enumeration
-import java.util.HashMap
-import java.util.Properties
-import java.util.regex.Matcher
+import java.io.FileInputStream
+import java.io.IOException
+import java.lang.reflect.Field
+import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.Method
+import java.util.*
 import java.util.regex.Pattern
-import java.lang.reflect.*
 
 /**
  * Created by nicolasmachado on 2/19/15.
  */
 
 object RobotConfigFileReader {
-    private val CONFIG_FILE = "/home/lvuser/robotConfig.ini"
+    private const val CONFIG_FILE = "/home/lvuser/robotConfig.ini"
     private var _instance: RobotConfigFileReader? = null
     private val arrayFinder = Pattern.compile("\\{\\s*([^}]+)\\s*\\}")
     var primitiveMap: MutableMap<Class<*>, Method> = HashMap()
 
     init {
         try {
-            primitiveMap.put(Boolean::class.javaPrimitiveType!!, Boolean::class.java.getMethod("parseBoolean", String::class.java))
-            primitiveMap.put(Byte::class.javaPrimitiveType!!, Byte::class.java.getMethod("parseByte", String::class.java))
-            primitiveMap.put(Short::class.javaPrimitiveType!!, Short::class.java.getMethod("parseShort", String::class.java))
-            primitiveMap.put(Int::class.javaPrimitiveType!!, Int::class.java.getMethod("parseInt", String::class.java))
-            primitiveMap.put(Long::class.javaPrimitiveType!!, Long::class.java.getMethod("parseLong", String::class.java))
-            primitiveMap.put(Float::class.javaPrimitiveType!!, Float::class.java.getMethod("parseFloat", String::class.java))
-            primitiveMap.put(Double::class.javaPrimitiveType!!, Double::class.java.getMethod("parseDouble", String::class.java))
+            primitiveMap[Boolean::class.javaPrimitiveType!!] = Boolean::class.java.getMethod("parseBoolean", String::class.java)
+            primitiveMap[Byte::class.javaPrimitiveType!!] = Byte::class.java.getMethod("parseByte", String::class.java)
+            primitiveMap[Short::class.javaPrimitiveType!!] = Short::class.java.getMethod("parseShort", String::class.java)
+            primitiveMap[Int::class.javaPrimitiveType!!] = Int::class.java.getMethod("parseInt", String::class.java)
+            primitiveMap[Long::class.javaPrimitiveType!!] = Long::class.java.getMethod("parseLong", String::class.java)
+            primitiveMap[Float::class.javaPrimitiveType!!] = Float::class.java.getMethod("parseFloat", String::class.java)
+            primitiveMap[Double::class.javaPrimitiveType!!] = Double::class.java.getMethod("parseDouble", String::class.java)
         } catch (ex: NoSuchMethodException) {
             RobotLogger.exc("Exception caught in RobotConfigFileReader", ex)
         } catch (ex: SecurityException) {
@@ -87,7 +86,7 @@ object RobotConfigFileReader {
                     arrayValues[0] = arrayValues[0].replace("{", "")
                     arrayValues[arrayValues.size - 1] = arrayValues[arrayValues.size - 1].replace("}", "")
                     //instantiate an array.
-                    val elemClass: Class<*> = current.type.componentType;
+                    val elemClass: Class<*> = current.type.componentType
                     val elementArray = java.lang.reflect.Array.newInstance(elemClass,arrayValues.size)
                     try {
                         //If we are dealing with a string array, directly set the values.

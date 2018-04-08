@@ -3,14 +3,14 @@ package org.usfirst.frc.team4322.input
 import edu.wpi.first.wpilibj.Joystick
 import org.usfirst.frc.team4322.command.ButtonTrigger
 
-class InputThrustmaster(port : Int, val hand : Hand ) : Joystick(port) {
+class InputThrustmaster(port : Int, hand : Hand ) : Joystick(port) {
 
      enum class Hand {
         Left,
         Right
      }
 
-    class LeftButtonCluster(val parent : Joystick,val hand : Hand) {
+    class LeftButtonCluster(parent : Joystick,hand : Hand) {
         val topLeft = ButtonTrigger(parent,if(hand == Hand.Left) 5 else 11)
         val topCenter = ButtonTrigger(parent,if(hand == Hand.Left) 6 else 12)
         val topRight = ButtonTrigger(parent,if(hand == Hand.Left) 7 else 13)
@@ -19,7 +19,7 @@ class InputThrustmaster(port : Int, val hand : Hand ) : Joystick(port) {
         val bottomRight = ButtonTrigger(parent,if(hand == Hand.Left) 8 else 14)
     }
 
-    class RightButtonCluster(val parent : Joystick,val hand : Hand) {
+    class RightButtonCluster(parent : Joystick,hand : Hand) {
         val topLeft = ButtonTrigger(parent,if(hand == Hand.Left) 13 else 7)
         val topCenter = ButtonTrigger(parent,if(hand == Hand.Left) 12 else 6)
         val topRight = ButtonTrigger(parent,if(hand == Hand.Left) 11 else 5)

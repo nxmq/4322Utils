@@ -1,9 +1,5 @@
 package org.usfirst.frc.team4322.math
 
-import sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other
-
-
-
 class Rotation(var cos : Double, var sin : Double, normalize : Boolean = false) : Interpolable<Rotation> {
     init {
             if(normalize) {
@@ -42,13 +38,13 @@ class Rotation(var cos : Double, var sin : Double, normalize : Boolean = false) 
 
     fun tan() : Double {
         if (Math.abs(cos) < 1E-9) {
-            if (sin >= 0.0) {
-                return Double.POSITIVE_INFINITY;
+            return if (sin >= 0.0) {
+                Double.POSITIVE_INFINITY
             } else {
-                return Double.NEGATIVE_INFINITY;
+                Double.NEGATIVE_INFINITY
             }
         }
-        return sin / cos;
+        return sin / cos
     }
 
     fun radians() : Double {
@@ -56,7 +52,7 @@ class Rotation(var cos : Double, var sin : Double, normalize : Boolean = false) 
     }
 
     fun degrees() : Double {
-        return Math.toDegrees(radians());
+        return Math.toDegrees(radians())
     }
 
     fun rotateBy(other : Rotation) : Rotation {
@@ -85,8 +81,8 @@ class Rotation(var cos : Double, var sin : Double, normalize : Boolean = false) 
         } else if (x >= 1) {
             return Rotation(other)
         }
-        val angle_diff = inverse().rotateBy(other).radians()
-        return rotateBy(fromRadians(angle_diff * x))
+        val angleDiff = inverse().rotateBy(other).radians()
+        return rotateBy(fromRadians(angleDiff * x))
     }
 
 

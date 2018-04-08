@@ -6,7 +6,7 @@ import java.util.*
  * Created by nicolasmachado on 4/20/16.
  */
 class CommandGroup : Command() {
-    val queue = ArrayDeque<Task>()
+    private val queue = ArrayDeque<Task>()
 
     public override val isFinished: Boolean
         get() = queue.isEmpty()
@@ -115,7 +115,7 @@ class CommandGroup : Command() {
     }
 
     override fun end() {
-        println("Group ending!")
+        println("CommandDSL ending!")
     }
 
     override fun interrupted() {

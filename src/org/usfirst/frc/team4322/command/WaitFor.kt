@@ -1,8 +1,8 @@
 package org.usfirst.frc.team4322.command
 
-abstract class InstantCommand : Command() {
+class WaitFor(private var until: () -> Boolean) : Command() {
     override val isFinished: Boolean
-        get() = true
+        get() = until()
 
     override fun initialize() {
     }
@@ -13,5 +13,6 @@ abstract class InstantCommand : Command() {
     override fun interrupted() {
     }
 
-    abstract override fun execute()
+    override fun execute() {
+    }
 }
