@@ -14,9 +14,5 @@ abstract class InstantCommand : Command() {
     override fun interrupted() {
     }
 
-
-    override fun execute() {
-    }
-
-     override abstract fun run()
+    abstract override fun execute()
 }

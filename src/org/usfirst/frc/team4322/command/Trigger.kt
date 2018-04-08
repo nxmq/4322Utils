@@ -8,7 +8,12 @@ abstract class Trigger {
     private lateinit var releaseCmd: Command
     private var duringHold: Any? = null
     private lateinit var holdCmd: Command
+    private var toCancel: Any? = null
+    private lateinit var cancelCmd: Command
+    private var toToggle: Any? = null
+    private lateinit var toggleCmd: Command
     private var holdStarted : Boolean = false
+    private var toggleState : Boolean = false
 
     abstract fun get() : Boolean
 
@@ -34,6 +39,22 @@ abstract class Trigger {
 
     fun whenReleased(r: Router) {
         onRelease = r
+    }
+
+    fun cancelWhenPressed(c: Command) {
+        toCancel = c
+    }
+
+    fun cancelWhenPressed(r: Router) {
+        toCancel = r
+    }
+
+    fun toggleWhenPressed(c: Command) {
+        toToggle = c
+    }
+
+    fun toggleWhenPressed(r: Router) {
+        toToggle = r
     }
 
     fun poll() {
@@ -67,6 +88,32 @@ abstract class Trigger {
                     is Router -> pressCmd = pr.route()
                 }
                 pressCmd.start()
+            }
+            if(toToggle != null)
+            {
+                val tt = toToggle
+                when(tt) {
+                    is Command -> toggleCmd = tt
+                    is Router -> toggleCmd = tt.route()
+                }
+                if(toggleState)
+                {
+                    toggleCmd.cancel()
+                }
+                else
+                {
+                    toggleCmd.start()
+                }
+                toggleState = !toggleState
+            }
+            if(toCancel != null)
+            {
+                val tc = toCancel
+                when(tc) {
+                    is Command -> cancelCmd = tc
+                    is Router -> cancelCmd = tc.route()
+                }
+                cancelCmd.cancel()
             }
         }
         else if(!get() && prevState)

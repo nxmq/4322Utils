@@ -3,11 +3,13 @@ package org.usfirst.frc.team4322.input
 import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.buttons.JoystickButton
+import org.usfirst.frc.team4322.command.ButtonTrigger
+import org.usfirst.frc.team4322.command.Trigger
 import org.usfirst.frc.team4322.logging.RobotLogger
 
 
 /**
- * [class] XboxController
+ * [class] InputXbox
  *
  * @author AJ Granowski & 4624 Owatonna Robotics
  * @version 2015
@@ -24,7 +26,7 @@ import org.usfirst.frc.team4322.logging.RobotLogger
  *
  * USAGE:
  * // Initialization
- * myXboxController = new XboxController( <port the controller is on (starts at 0)> );
+ * myXboxController = new InputXbox( <port the controller is on (starts at 0)> );
  * myXboxController.leftStick.setThumbstickDeadZone( .2 );  // Optional. See code below for defaults.
 </port> *
  *
@@ -47,10 +49,10 @@ import org.usfirst.frc.team4322.logging.RobotLogger
  * This should work for the 2015 WPILib. The mappings of axis's and buttons may change in later years.
  * I am not a good Java programmer.
  */
-class XboxController
+class InputXbox
 /**
  * (Constructor #1)
- * There are two ways to make an XboxController. With this constructor,
+ * There are two ways to make an InputXbox. With this constructor,
  * you can specify which port you expect the controller to be on.
  *
  * @param port
@@ -62,14 +64,14 @@ class XboxController
     public val lt: Trigger
     public val rt: Trigger
     public val dPad: DirectionalPad
-    public val a: JoystickButton
-    public val b: JoystickButton
-    public val x: JoystickButton
-    public val y: JoystickButton
-    public val lb: JoystickButton
-    public val rb: JoystickButton
-    public val back: JoystickButton
-    public val start: JoystickButton
+    public val a: ButtonTrigger
+    public val b: ButtonTrigger
+    public val x: ButtonTrigger
+    public val y: ButtonTrigger
+    public val lb: ButtonTrigger
+    public val rb: ButtonTrigger
+    public val back: ButtonTrigger
+    public val start: ButtonTrigger
 
     private val joystick: Joystick = Joystick(this.port)
 
@@ -81,19 +83,19 @@ class XboxController
         this.dPad = DirectionalPad(this.joystick)
         this.lt = Trigger(this.joystick, HAND.LEFT)
         this.rt = Trigger(this.joystick, HAND.RIGHT)
-        this.a = JoystickButton(this.joystick, A_BUTTON_ID)
-        this.b = JoystickButton(this.joystick, B_BUTTON_ID)
-        this.x = JoystickButton(this.joystick, X_BUTTON_ID)
-        this.y = JoystickButton(this.joystick, Y_BUTTON_ID)
-        this.lb = JoystickButton(this.joystick, LB_BUTTON_ID)
-        this.rb = JoystickButton(this.joystick, RB_BUTTON_ID)
-        this.back = JoystickButton(this.joystick, BACK_BUTTON_ID)
-        this.start = JoystickButton(this.joystick, START_BUTTON_ID)
+        this.a =ButtonTrigger(this.joystick, A_BUTTON_ID)
+        this.b = ButtonTrigger(this.joystick, B_BUTTON_ID)
+        this.x = ButtonTrigger(this.joystick, X_BUTTON_ID)
+        this.y = ButtonTrigger(this.joystick, Y_BUTTON_ID)
+        this.lb = ButtonTrigger(this.joystick, LB_BUTTON_ID)
+        this.rb = ButtonTrigger(this.joystick, RB_BUTTON_ID)
+        this.back = ButtonTrigger(this.joystick, BACK_BUTTON_ID)
+        this.start = ButtonTrigger(this.joystick, START_BUTTON_ID)
     }// Extends Joystick...
     /* Initialize */
 
     /**
-     * @return The port of this XboxController
+     * @return The port of this InputXbox
      */
     override fun getPort(): Int {
         return port
@@ -189,7 +191,7 @@ class XboxController
                     }
                 }
                 // I don't know what to do here
-                RobotLogger.warn("[XboxController.DPAD.getEnum()] Angle supplied ($angle) has no related DPad direction")
+                RobotLogger.warn("[InputXbox.DPAD.getEnum()] Angle supplied ($angle) has no related DPad direction")
                 return DPAD.UP
             }
         }
@@ -209,15 +211,16 @@ class XboxController
      * @param parent
      * @param hand
      */
-    internal constructor(/* Instance Values */
-            private val parent: Joystick,
-
-            val hand: HAND) : edu.wpi.first.wpilibj.buttons.Button() {
+    internal constructor(private val parent: Joystick, val hand: HAND) : org.usfirst.frc.team4322.command.Trigger() {
         private val xAxisID: Int
         private val yAxisID: Int
-        private val pressedID: Int
+        private val buttonID: Int
         private var xDeadZone: Double = 0.toDouble()
         private var yDeadZone: Double = 0.toDouble()
+
+        override fun get(): Boolean {
+            return parent.getRawButton(buttonID)
+        }
 
         /**
          * getRawX
@@ -302,11 +305,11 @@ class XboxController
             if (hand == HAND.LEFT) {
                 this.xAxisID = LEFT_THUMBSTICK_X_AXIS_ID
                 this.yAxisID = LEFT_THUMBSTICK_Y_AXIS_ID
-                this.pressedID = LEFT_THUMBSTICK_BUTTON_ID
+                this.buttonID = LEFT_THUMBSTICK_BUTTON_ID
             } else {                                            // If right hand
                 this.xAxisID = RIGHT_THUMBSTICK_X_AXIS_ID
                 this.yAxisID = RIGHT_THUMBSTICK_Y_AXIS_ID
-                this.pressedID = RIGHT_THUMBSTICK_BUTTON_ID
+                this.buttonID = RIGHT_THUMBSTICK_BUTTON_ID
             }
         }/* Initialize */
 
@@ -380,13 +383,6 @@ class XboxController
             return magnitude * scaleFactor
         }
 
-
-        /* Extended Methods */
-        override fun get(): Boolean {
-            return parent.getRawButton(pressedID)
-        }
-
-
         /* Set Methods */
 
         /**
@@ -431,17 +427,7 @@ class XboxController
      */
     internal constructor(/* Instance Values */
             private val parent: Joystick,
-            /* Get Methods */
-
-            /**
-             * getHand
-             *
-             * @return Trigger hand
-             *
-             *
-             * See which side of the controller this trigger is
-             */
-            val hand: HAND) : edu.wpi.first.wpilibj.buttons.Button() {
+            val hand: HAND) : org.usfirst.frc.team4322.command.Trigger() {
 
         private var deadZone: Double = 0.toDouble()
         private var sensitivity: Double = 0.toDouble()
@@ -513,7 +499,7 @@ class XboxController
      * @param parent
      */
     internal constructor(/* Instance Values */
-            private val parent: Joystick) : edu.wpi.first.wpilibj.buttons.Button() {
+            private val parent: Joystick) {
 
         val up: DPadButton
         val upRight: DPadButton
@@ -523,22 +509,6 @@ class XboxController
         val downLeft: DPadButton
         val left: DPadButton
         val upLeft: DPadButton
-
-        /**
-         * UP          0;
-         * UP_RIGHT    45;
-         * RIGHT       90;
-         * DOWN_RIGHT  135;
-         * DOWN        180;
-         * DOWN_LEFT   225;
-         * LEFT        270;
-         * UP_LEFT     315;
-         *
-         * @return A number between 0 and 315 indicating direction
-         */
-        val angle: Int
-            get() = angle()
-
 
         /* Get Methods */
 
@@ -562,13 +532,8 @@ class XboxController
             this.upLeft = DPadButton(this, DPAD.UP_LEFT)
         }/* Initialize */
 
-        private fun angle(): Int {
+        public fun angle(): Int {
             return parent.pov
-        }
-
-        /* Extended Methods */
-        override fun get(): Boolean {
-            return angle() != -1
         }
 
         /**
@@ -583,12 +548,12 @@ class XboxController
          * @param dPadDirection
          */
         internal constructor(private val parent: DirectionalPad, /* Instance Values */
-                             private val direction: DPAD)/* Initialize */ : edu.wpi.first.wpilibj.buttons.Button() {
-
+                             private val direction: DPAD)/* Initialize */ : org.usfirst.frc.team4322.command.Trigger()
+        {
 
             /* Extended Methods */
             override fun get(): Boolean {
-                return parent.angle == direction.value
+                return parent.angle() == direction.value
             }
         }
     }
