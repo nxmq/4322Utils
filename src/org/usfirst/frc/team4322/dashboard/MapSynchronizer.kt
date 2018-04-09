@@ -3,19 +3,14 @@ package org.usfirst.frc.team4322.dashboard
 import edu.wpi.first.networktables.*
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-
+import org.usfirst.frc.team4322.configuration.RobotConfigFileReader.primitiveMap
+import org.usfirst.frc.team4322.configuration.RobotPersistenceFileWriter
+import org.usfirst.frc.team4322.logging.RobotLogger
 import java.io.FileInputStream
 import java.io.IOException
 import java.lang.reflect.Field
 import java.lang.reflect.InvocationTargetException
-import java.util.Arrays
-import java.util.HashMap
-import java.util.Properties
-
-import org.usfirst.frc.team4322.configuration.RobotPersistenceFileWriter
-import org.usfirst.frc.team4322.logging.RobotLogger
-
-import org.usfirst.frc.team4322.configuration.RobotConfigFileReader.primitiveMap
+import java.util.*
 
 /**
  * Created by nicolasmachado on 3/30/16.
@@ -50,7 +45,7 @@ class MapSynchronizer {
                 RobotLogger.info("Setting field \"%s\" to \"%s\".", key, value.toString())
                 if (persistent) {
                     if (type.isArray) {
-                        RobotPersistenceFileWriter[key] = Arrays.toString(store.get(null) as Array<Any>).replace('[', '{').replace(']', '}')
+                        RobotPersistenceFileWriter[key] = Arrays.toString(store.get(null)!! as Array<Any>).replace('[', '{').replace(']', '}')
                     } else {
                         RobotPersistenceFileWriter[key] = store.get(null).toString()
                     }

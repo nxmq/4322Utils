@@ -5,6 +5,8 @@ class Transform(val rotation : Rotation, val translation: Translation) : Interpo
 
     constructor() : this(Rotation(), Translation())
 
+    constructor(translation: Translation, rotation: Rotation) : this(rotation, translation)
+
     constructor(other : Transform) : this(other.rotation,other.translation)
 
     constructor(translation: Translation) : this(Rotation(),translation)
@@ -12,7 +14,7 @@ class Transform(val rotation : Rotation, val translation: Translation) : Interpo
     constructor(rotation: Rotation) : this(rotation,Translation())
 
     companion object {
-        fun fromArc(delta : Arc) : Transform {
+        fun fromArc(delta: Twist): Transform {
             val sin = Math.sin(delta.dθ)
             val cos = Math.cos(delta.dθ)
             val s: Double
@@ -33,7 +35,7 @@ class Transform(val rotation : Rotation, val translation: Translation) : Interpo
         }
     }
 
-    fun toArc() : Arc {
+    fun toArc(): Twist {
         val dtheta = rotation.radians()
         val halfDTheta = 0.5 * dtheta
         val cosMinusOne = rotation.cos - 1.0
@@ -44,7 +46,7 @@ class Transform(val rotation : Rotation, val translation: Translation) : Interpo
             -(halfDTheta * rotation.sin) / cosMinusOne
         }
         val translationPart = translation.rotateBy(Rotation(halfThetaByTanOfHalfDTheta, -halfDTheta, false))
-        return Arc(translationPart.x, translationPart.y, dtheta)
+        return Twist(translationPart.x, translationPart.y, dtheta)
     }
 
     fun transformBy(other: Transform) : Transform {

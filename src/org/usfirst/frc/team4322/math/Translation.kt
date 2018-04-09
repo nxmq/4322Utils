@@ -39,6 +39,10 @@ class Translation(val x : Double, val y : Double) : Interpolable<Translation> {
         return Translation(other.x + x, other.y + y)
     }
 
+    fun transformBy(other: Translation): Translation {
+        return this + other
+    }
+
     fun rotateBy(rotation : Rotation) : Translation {
         return Translation(x * rotation.cos - y * rotation.sin, x * rotation.sin + y * rotation.cos)
     }
