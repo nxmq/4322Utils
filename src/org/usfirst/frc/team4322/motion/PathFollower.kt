@@ -73,7 +73,7 @@ class PathFollower(path: Path, reversed: Boolean, parameters: Parameters) {
         stopSteeringDistance = parameters.stop_steering_distance
     }
 
-    private fun execute(t: Double): Pair<Double, Double> {
+    fun execute(t: Double): Pair<Double, Double> {
         val command = update(t, RobotPositionIntegrator.getCurrentPose(), RobotPositionIntegrator.distanceDriven, RobotPositionIntegrator.lastVelocity.dx)
         if (!isFinished) {
             if (Math.abs(command.dθ) < 1e-6) {
