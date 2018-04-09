@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31"
     compile "edu.wpi.first.wpilibj:wpilibj-java:2018.4.1"
     compile "edu.wpi.first.wpilibj:wpilibj-jni:2018.4.1"
     compile "edu.wpi.first.wpiutil:wpiutil-java:3.2.0"
