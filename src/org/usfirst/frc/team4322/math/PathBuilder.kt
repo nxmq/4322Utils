@@ -39,7 +39,7 @@ object PathBuilder {
         internal var speed: Double = 0.0
         internal var marker: String? = null
 
-        constructor(other: Waypoint) : this(other.position.x, other.position.y, other.radius, other.speed, other.marker!!)
+        constructor(other: Waypoint) : this(other.position.x, other.position.y, other.radius, other.speed, other.marker)
 
         constructor(x: Double, y: Double, r: Double, s: Double) {
             position = Translation(x, y)
@@ -53,7 +53,7 @@ object PathBuilder {
             speed = s
         }
 
-        constructor(x: Double, y: Double, r: Double, s: Double, m: String) {
+        constructor(x: Double, y: Double, r: Double, s: Double, m: String?) {
             position = Translation(x, y)
             radius = r
             speed = s
@@ -81,7 +81,7 @@ object PathBuilder {
             if (pathLength > 1e-9) {
                 if (b.marker != null) {
                     p.addSegment(PathSegment(start.x, start.y, end.x, end.y, b.speed,
-                            p.lastMotionState, endSpeed, b.marker!!))
+                            p.lastMotionState, endSpeed, b.marker))
                 } else {
                     p.addSegment(PathSegment(start.x, start.y, end.x, end.y, b.speed,
                             p.lastMotionState, endSpeed))

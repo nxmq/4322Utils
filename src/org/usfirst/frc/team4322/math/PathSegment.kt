@@ -65,7 +65,7 @@ class PathSegment {
     }
 
     constructor(x1: Double, y1: Double, x2: Double, y2: Double, maxSpeed: Double, startState: MotionState,
-                endSpeed: Double, marker: String) {
+                endSpeed: Double, marker: String?) {
         this.start = Translation(x1, y1)
         this.end = Translation(x2, y2)
         this.deltaStart = Translation(start, end)

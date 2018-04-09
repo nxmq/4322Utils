@@ -26,6 +26,10 @@ class CommandGroup : Command() {
             inputQueue.add(r)
         }
 
+        fun add(c: CommandSet) {
+            inputQueue.add(c.synthesize())
+        }
+
         override fun initialize() {
             toDo.clear()
             inputQueue.forEach {
