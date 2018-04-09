@@ -7,9 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="471caf38-0212-46f9-92d2-048f3a2d8244" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/PathFollower.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/PathFollower.kt" afterDir="false" />
     </list>
     <ignored path="4322Utils.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -68,11 +66,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="PathFollower.kt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PathFollower.kt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/PathFollower.kt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="366">
-              <caret line="75" column="4" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="4" />
+              <caret line="75" column="12" selection-start-line="75" selection-start-column="12" selection-end-line="75" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -86,11 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="31" column="57" selection-start-line="31" selection-start-column="57" selection-end-line="31" selection-end-column="57" />
+            <state relative-caret-position="155">
+              <caret line="26" column="60" selection-start-line="26" selection-start-column="60" selection-end-line="26" selection-end-column="60" />
             </state>
           </provider>
         </entry>
@@ -159,6 +157,7 @@
       <find>arc</find>
       <find>Rigid</find>
       <find>!!</find>
+      <find>org.jetbrains.kotlin:kotlin-stdlib-jdk8</find>
     </findStrings>
     <replaceStrings>
       <replace>type</replace>
@@ -557,9 +556,9 @@
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/command/CommandDSL.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/command/Trigger.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/command/CommandGroup.kt" />
-        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/command/Command.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/PathFollower.kt" />
+        <option value="$PROJECT_DIR$/build.gradle" />
       </list>
     </option>
   </component>
@@ -1277,7 +1276,7 @@
       <workItem from="1522797380065" duration="10801000" />
       <workItem from="1522880225959" duration="26768000" />
       <workItem from="1523228995132" duration="6380000" />
-      <workItem from="1523253977460" duration="3793000" />
+      <workItem from="1523253977460" duration="4059000" />
     </task>
     <task id="LOCAL-00001" summary="Got the Dashboard working beautifully. Its quite awesome. Added CVCamera class for accessing a USB Camera. Logging and Dashboard modules are fully functional. Command will require on-robot testing. Vision Module testing is up next.">
       <created>1473020379818</created>
@@ -1342,11 +1341,18 @@
       <option name="project" value="LOCAL" />
       <updated>1523302760297</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Fix big oof of a bug ouch">
+      <created>1523305995646</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1523305995646</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="226008000" />
+    <option name="totallyTimeSpent" value="226274000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="873" extended-state="0" />
@@ -1452,7 +1458,8 @@
     <MESSAGE value="Did some code cleanup, and added CommandDSL and WaitFor." />
     <MESSAGE value="Finished adding pure pursuit code, fixed bug with default commands." />
     <MESSAGE value="Initial release for v2.0, for 3309 use at champs." />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial release for v2.0, for 3309 use at champs." />
+    <MESSAGE value="Fix big oof of a bug ouch" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix big oof of a bug ouch" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -1816,13 +1823,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="31" column="57" selection-start-line="31" selection-start-column="57" selection-end-line="31" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/RobotPositionIntegrator.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="416">
@@ -1847,7 +1847,14 @@
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/PathFollower.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="366">
-          <caret line="75" column="4" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="4" />
+          <caret line="75" column="12" selection-start-line="75" selection-start-column="12" selection-end-line="75" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="26" column="60" selection-start-line="26" selection-start-column="60" selection-end-line="26" selection-end-column="60" />
         </state>
       </provider>
     </entry>
