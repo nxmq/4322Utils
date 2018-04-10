@@ -24,6 +24,7 @@ object RobotPositionIntegrator
         distanceDriven += delta.dx
         lastVelocity = delta
         lastUpdate = lastUpdate.transformBy(Transform.fromArc(delta))
+        lastUpdate = Transform(lastUpdate.translation, currentGyroAngle)
         posTracker[timestamp] = lastUpdate
     }
 
