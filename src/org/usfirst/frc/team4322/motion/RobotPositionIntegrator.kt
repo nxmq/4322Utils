@@ -20,7 +20,7 @@ object RobotPositionIntegrator
     var lastUpdate : Transform = Transform()
 
     fun update(timestamp : Double, leftEncoderDeltaDistance : Quantity<Length>, rightEncoderDeltaDistance : Quantity<Length>, currentGyroAngle : Rotation) {
-        val delta = Twist(((leftEncoderDeltaDistance + rightEncoderDeltaDistance) / 2.0).convertTo(INCH).value.toDouble(), 0.0, lastUpdate.rotation.inverse().rotateBy(currentGyroAngle).radians())
+        val delta = Twist(((leftEncoderDeltaDistance + rightEncoderDeltaDistance) / 2.0).convertTo(INCH).value.toDouble(), 0.0, currentGyroAngle.radians())
         distanceDriven += delta.dx
         lastVelocity = delta
         lastUpdate = lastUpdate.transformBy(Transform.fromArc(delta))
