@@ -99,7 +99,7 @@ class MotionProfile {
                 return s.start.extrapolate(t)
             }
         }
-        // Should never get here.
+        // Should never g get here.
         return MotionState.invalidState
     }
 

@@ -28,6 +28,10 @@ object RobotPositionIntegrator
         posTracker[timestamp] = lastUpdate
     }
 
+    fun getPoseAtTime(time: Double): Transform {
+        return posTracker[time]
+    }
+
     fun getCurrentPose() : Transform {
         return lastUpdate
     }
