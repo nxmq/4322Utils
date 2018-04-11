@@ -29,7 +29,7 @@ object RobotPositionIntegrator
     }
 
     fun getCurrentPose() : Transform {
-        return lastUpdate.transformBy(Transform.fromArc(lastVelocity))
+        return lastUpdate
     }
 
     fun reset() {
