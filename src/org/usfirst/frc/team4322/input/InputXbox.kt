@@ -176,25 +176,20 @@ class InputXbox
              * @return DPAD with matching angle
              */
             fun getEnum(angle: Int): DPAD {
-                var angle = angle
-                angle = Math.abs(angle)
-                angle %= 360
-                angle = Math.round((angle / 45).toFloat()) * 45    // May have rounding errors. Due to rounding errors.
-
+                var modifiedAngle = Math.round(((Math.abs(angle) % 360) / 45).toFloat()) * 45    // May have rounding errors. Due to rounding errors.
                 val all = DPAD.values()
 
                 for (i in all.indices) {
-                    if (all[i].value == angle) {
+                    if (all[i].value == modifiedAngle) {
                         return all[i]
                     }
                 }
-                // I don't know what to do here
+
                 RobotLogger.warn("[InputXbox.DPAD.getEnum()] Angle supplied ($angle) has no related DPad direction")
                 return DPAD.UP
             }
         }
     }
-
 
     /* Set Methods */
 

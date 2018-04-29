@@ -5,7 +5,7 @@ package org.usfirst.frc.team4322.command
  */
 abstract class Subsystem {
     var defaultCommand: Command? = null
-        private set
+        protected set
 
     init {
         Scheduler.addSubsystem(this)

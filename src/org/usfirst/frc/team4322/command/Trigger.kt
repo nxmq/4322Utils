@@ -21,6 +21,10 @@ abstract class Trigger {
         onPress = c
     }
 
+    fun whenPressed(c: CommandSet) {
+        onPress = c.synthesize()
+    }
+
     fun whenPressed(r: Router) {
         onPress = r
     }
@@ -29,12 +33,20 @@ abstract class Trigger {
         duringHold = c
     }
 
+    fun whileHeld(c: CommandSet) {
+        duringHold = c.synthesize()
+    }
+
     fun whileHeld(r: Router) {
         duringHold = r
     }
 
     fun whenReleased(c: Command) {
         onRelease = c
+    }
+
+    fun whenReleased(c: CommandSet) {
+        onRelease = c.synthesize()
     }
 
     fun whenReleased(r: Router) {
@@ -51,6 +63,10 @@ abstract class Trigger {
 
     fun toggleWhenPressed(c: Command) {
         toToggle = c
+    }
+
+    fun toggleWhenPressed(c: CommandSet) {
+        toToggle = c.synthesize()
     }
 
     fun toggleWhenPressed(r: Router) {

@@ -4,8 +4,8 @@ import com.ctre.phoenix.motion.MotionProfileStatus
 import com.ctre.phoenix.motion.SetValueMotionProfile
 import com.ctre.phoenix.motion.TrajectoryPoint
 import com.ctre.phoenix.motorcontrol.ControlMode
+import com.ctre.phoenix.motorcontrol.IMotorControllerEnhanced
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX
 import edu.wpi.first.wpilibj.Notifier
 
 /*
@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Notifier
 
 
 
-class MotionProfileController(private val talon: WPI_TalonSRX, private val points: Array<DoubleArray>) {
+class MotionProfileController(private val talon: IMotorControllerEnhanced, private val points: Array<DoubleArray>) {
     private val motionProfileStatus: MotionProfileStatus = MotionProfileStatus()
     private var position = 0.0
     private var velocity = 0.0
