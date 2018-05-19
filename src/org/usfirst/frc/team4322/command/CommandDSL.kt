@@ -32,8 +32,12 @@ abstract class CommandSet : Element {
 }
 
 abstract class SubSet : CommandSet() {
-    val commands = arrayListOf<Command>()
+    val commands = arrayListOf<Any>()
     operator fun Command.unaryPlus() {
+        commands.add(this)
+    }
+
+    operator fun Router.unaryPlus() {
         commands.add(this)
     }
 }
@@ -41,7 +45,10 @@ class Parallel : SubSet() {
     override fun synthesize(parent: CommandGroup): Command {
         val group = CommandGroup()
         for(command in commands)
-            group.addParallel(command)
+            when (command) {
+                is Router -> group.addParallel(command)
+                is Command -> group.addParallel(command)
+            }
         parent.addSequential(group)
         return parent
     }
@@ -50,7 +57,10 @@ class Sequential : SubSet() {
     override fun synthesize(parent: CommandGroup): Command {
         val group = CommandGroup()
         for(command in commands)
-            group.addSequential(command)
+            when (command) {
+                is Router -> group.addSequential(command)
+                is Command -> group.addSequential(command)
+            }
         parent.addSequential(group)
         return parent
     }

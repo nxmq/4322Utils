@@ -11,8 +11,10 @@ abstract class Command : Runnable {
     var isStarted = false
         private set
     private lateinit var future : ScheduledFuture<*>
-    var hasRun = false
+    private var hasRun = false
+    @Volatile
     var isDone = false
+        private set
     var startTime: Long = 0
         private set
     private var timeout: Long = 0
@@ -39,7 +41,7 @@ abstract class Command : Runnable {
         subsystems.add(s)
     }
 
-    fun require(vararg s: Subsystem) {
+    fun requires(vararg s: Subsystem) {
         subsystems += s
     }
 
@@ -56,7 +58,7 @@ abstract class Command : Runnable {
 
     protected abstract fun interrupted()
 
-    open fun start() {
+    fun start() {
         if(!isStarted) {
             initialize()
             future = Scheduler.add(this)
@@ -98,5 +100,6 @@ abstract class Command : Runnable {
 
     internal fun interrupt() {
         interrupted()
+        cancel()
     }
 }

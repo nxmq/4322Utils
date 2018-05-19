@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4322.command
 
-import java.util.Calendar
+import java.util.*
 
 object CommandTest {
     @JvmStatic
@@ -12,24 +12,27 @@ object CommandTest {
         val e = CommandBuilder.create().execute { _ -> println("E!") }.runForTime( 750).onEnd { _ -> println("E ending!") }.build()
         val f = CommandBuilder.create().execute { _ -> println("F!") }.runForTime( 250).onEnd { _ -> println("F ending!") }.build()
         val g = CommandBuilder.create().execute { _ -> println("G!") }.runForTime( 250).onEnd { _ -> println("G ending!") }.build()
-        val cg = CommandGroup()
-        cg.addParallel(a)
-        cg.addParallel(b)
-        cg.addParallel(c)
-        cg.addSequential(d)
-        cg.addSequential(e)
-        cg.addSequential(Router {
-            if (Calendar.getInstance().get(Calendar.MINUTE) % 2 == 0) {
-                f
-            } else {
-                g
+        val cg = group {
+            parallel {
+                +a
+                +b
+                +c
             }
-        })
+            sequential {
+                +d
+                +e
+                +Router {
+                    if (Calendar.getInstance().get(Calendar.MINUTE) % 2 == 0) {
+                        f
+                    } else {
+                        g
+                    }
+                }
+            }
+        }.synthesize()
         cg.start()
-        while (!cg.isDone){
-            Thread.sleep(200)
-        }
-        println("Done!!")
+
+        System.out.println("Finished!")
         Scheduler.shutdown()
     }
 }

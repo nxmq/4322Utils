@@ -9,7 +9,7 @@ class CommandGroup : Command() {
     private val queue = ArrayDeque<Task>()
 
     public override val isFinished: Boolean
-        get() = queue.isEmpty()
+        get() = synchronized(queue) { queue.isEmpty() }
 
     inner class Task : Command() {
         internal var parallel: Boolean = false
@@ -17,7 +17,7 @@ class CommandGroup : Command() {
         private val toDo = ArrayDeque<Command>()
 
         override val isFinished: Boolean
-            get() = toDo.isEmpty()
+            get() = synchronized(toDo) { toDo.isEmpty() }
 
         fun add(c: Command) {
             inputQueue.add(c)

@@ -73,10 +73,6 @@ object Scheduler {
         core.shutdown()
     }
 
-    fun hasCommands(): Boolean {
-        return core.queue.size > 0
-    }
-
     fun reset() {
         core.shutdownNow()
         core.prestartAllCoreThreads()
