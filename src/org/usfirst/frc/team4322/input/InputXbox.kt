@@ -2,61 +2,13 @@ package org.usfirst.frc.team4322.input
 
 import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.Joystick
-import org.usfirst.frc.team4322.command.ButtonTrigger
+import org.usfirst.frc.team4322.commandv2.ButtonTrigger
 import org.usfirst.frc.team4322.logging.RobotLogger
 
 
-/**
- * InputXbox
- *
- * @author AJ Granowski & 4624 Owatonna Robotics
- * @version 2015
- *
- *
- * This class wraps around the Joystick class in order to make
- * working with Xbox360 controllers less of a pain.
- *
- *
- * The values from this class can be used in two ways. One could
- * either check each Button every cycle with .get(), or they
- * could call commands directly from the Buttons with .whenPressed()
- *
- *
- * USAGE:
- * // Initialization
- * myXboxController = new InputXbox( <port the controller is on (starts at 0)> );
- * myXboxController.leftStick.setThumbstickDeadZone( .2 );  // Optional. See code below for defaults.
-</port> *
- *
- * // Using buttons
- * myXboxController.a.whenPressed( new MyCommand() );
- * myXboxController.lb.toggleWhenPressed( new MyCommand() );
- * myXboxController.rightStick.whenPressed( new MyCommand() );
- *
- *
- * // Getting values directly
- * if( myXboxController.leftStick.getY() > .4 ) ...
- *
- *
- * // Support of legacy methods (NOTE: These values are straight from the Joystick class. No deadzone stuff or anything)
- * if( xboxController.getX() > .4 ) ...
- *
- *
- * NOTES:
- * Although I have confidence that this will work, not everything has been tested.
- * This should work for the 2015 WPILib. The mappings of axis's and buttons may change in later years.
- * I am not a good Java programmer.
- */
+
 class InputXbox
-/**
- * (Constructor #1)
- * There are two ways to make an InputXbox. With this constructor,
- * you can specify which port you expect the controller to be on.
- *
- * @param port
- */
-@JvmOverloads constructor(/* Instance Values */
-        private val port: Int = 0) : Joystick(port) {
+@JvmOverloads constructor(private val port: Int = 0) : Joystick(port) {
     val leftStick: Thumbstick
     val rightStick: Thumbstick
     val lt: Trigger
@@ -71,24 +23,23 @@ class InputXbox
     val back: ButtonTrigger
     val start: ButtonTrigger
 
-    private val joystick: Joystick = Joystick(this.port)
+    private val joystick: Joystick = Joystick(port)
 
 
     init {
-        // Joystick referenced by everything
-        this.leftStick = Thumbstick(this.joystick, HAND.LEFT)
-        this.rightStick = Thumbstick(this.joystick, HAND.RIGHT)
-        this.dPad = DirectionalPad(this.joystick)
-        this.lt = Trigger(this.joystick, HAND.LEFT)
-        this.rt = Trigger(this.joystick, HAND.RIGHT)
-        this.a =ButtonTrigger(this.joystick, A_BUTTON_ID)
-        this.b = ButtonTrigger(this.joystick, B_BUTTON_ID)
-        this.x = ButtonTrigger(this.joystick, X_BUTTON_ID)
-        this.y = ButtonTrigger(this.joystick, Y_BUTTON_ID)
-        this.lb = ButtonTrigger(this.joystick, LB_BUTTON_ID)
-        this.rb = ButtonTrigger(this.joystick, RB_BUTTON_ID)
-        this.back = ButtonTrigger(this.joystick, BACK_BUTTON_ID)
-        this.start = ButtonTrigger(this.joystick, START_BUTTON_ID)
+        leftStick = Thumbstick(joystick, HAND.LEFT)
+        rightStick = Thumbstick(joystick, HAND.RIGHT)
+        dPad = DirectionalPad(joystick)
+        lt = Trigger(joystick, HAND.LEFT)
+        rt = Trigger(joystick, HAND.RIGHT)
+        a = ButtonTrigger(joystick, A_BUTTON_ID)
+        b = ButtonTrigger(joystick, B_BUTTON_ID)
+        x = ButtonTrigger(joystick, X_BUTTON_ID)
+        y = ButtonTrigger(joystick, Y_BUTTON_ID)
+        lb = ButtonTrigger(joystick, LB_BUTTON_ID)
+        rb = ButtonTrigger(joystick, RB_BUTTON_ID)
+        back = ButtonTrigger(joystick, BACK_BUTTON_ID)
+        start = ButtonTrigger(joystick, START_BUTTON_ID)
     }// Extends Joystick...
     /* Initialize */
 
@@ -204,7 +155,7 @@ class InputXbox
      * @param parent
      * @param hand
      */
-    internal constructor(private val parent: Joystick, private val hand: HAND) : org.usfirst.frc.team4322.command.Trigger() {
+    internal constructor(private val parent: Joystick, private val hand: HAND) : org.usfirst.frc.team4322.commandv2.Trigger() {
         private val xAxisID: Int
         private val yAxisID: Int
         private val buttonID: Int
@@ -292,17 +243,17 @@ class InputXbox
 
 
         init {
-            this.xDeadZone = DEFAULT_THUMBSTICK_DEADZONE
-            this.yDeadZone = DEFAULT_THUMBSTICK_DEADZONE
+            xDeadZone = DEFAULT_THUMBSTICK_DEADZONE
+            yDeadZone = DEFAULT_THUMBSTICK_DEADZONE
 
             if (hand == HAND.LEFT) {
-                this.xAxisID = LEFT_THUMBSTICK_X_AXIS_ID
-                this.yAxisID = LEFT_THUMBSTICK_Y_AXIS_ID
-                this.buttonID = LEFT_THUMBSTICK_BUTTON_ID
+                xAxisID = LEFT_THUMBSTICK_X_AXIS_ID
+                yAxisID = LEFT_THUMBSTICK_Y_AXIS_ID
+                buttonID = LEFT_THUMBSTICK_BUTTON_ID
             } else {                                            // If right hand
-                this.xAxisID = RIGHT_THUMBSTICK_X_AXIS_ID
-                this.yAxisID = RIGHT_THUMBSTICK_Y_AXIS_ID
-                this.buttonID = RIGHT_THUMBSTICK_BUTTON_ID
+                xAxisID = RIGHT_THUMBSTICK_X_AXIS_ID
+                yAxisID = RIGHT_THUMBSTICK_Y_AXIS_ID
+                buttonID = RIGHT_THUMBSTICK_BUTTON_ID
             }
         }/* Initialize */
 
@@ -420,7 +371,7 @@ class InputXbox
      */
     internal constructor(/* Instance Values */
             private val parent: Joystick,
-            private val hand: HAND) : org.usfirst.frc.team4322.command.Trigger() {
+            private val hand: HAND) : org.usfirst.frc.team4322.commandv2.Trigger() {
 
         private var deadZone: Double = 0.toDouble()
         private var sensitivity: Double = 0.toDouble()
@@ -448,8 +399,8 @@ class InputXbox
 
 
         init {
-            this.deadZone = DEFAULT_TRIGGER_DEADZONE
-            this.sensitivity = DEFAULT_TRIGGER_SENSITIVITY
+            deadZone = DEFAULT_TRIGGER_DEADZONE
+            sensitivity = DEFAULT_TRIGGER_SENSITIVITY
         }/* Initialize */
 
 
@@ -467,7 +418,7 @@ class InputXbox
          * @param number
          */
         fun setTriggerDeadZone(number: Double) {
-            this.deadZone = number
+            deadZone = number
         }
 
         /**
@@ -476,7 +427,7 @@ class InputXbox
          * @param number
          */
         fun setTriggerSensitivity(number: Double) {
-            this.sensitivity = number
+            sensitivity = number
         }
     }
 
@@ -513,14 +464,14 @@ class InputXbox
 
 
         init {
-            this.up = DPadButton(this, DPAD.UP)
-            this.upRight = DPadButton(this, DPAD.UP_RIGHT)
-            this.right = DPadButton(this, DPAD.RIGHT)
-            this.downRight = DPadButton(this, DPAD.DOWN_RIGHT)
-            this.down = DPadButton(this, DPAD.DOWN)
-            this.downLeft = DPadButton(this, DPAD.DOWN_LEFT)
-            this.left = DPadButton(this, DPAD.LEFT)
-            this.upLeft = DPadButton(this, DPAD.UP_LEFT)
+            up = DPadButton(this, DPAD.UP)
+            upRight = DPadButton(this, DPAD.UP_RIGHT)
+            right = DPadButton(this, DPAD.RIGHT)
+            downRight = DPadButton(this, DPAD.DOWN_RIGHT)
+            down = DPadButton(this, DPAD.DOWN)
+            downLeft = DPadButton(this, DPAD.DOWN_LEFT)
+            left = DPadButton(this, DPAD.LEFT)
+            upLeft = DPadButton(this, DPAD.UP_LEFT)
         }/* Initialize */
 
         fun angle(): Int {
@@ -539,7 +490,7 @@ class InputXbox
          * @param direction
          */
         internal constructor(private val parent: DirectionalPad, /* Instance Values */
-                             private val direction: DPAD)/* Initialize */ : org.usfirst.frc.team4322.command.Trigger()
+                             private val direction: DPAD)/* Initialize */ : org.usfirst.frc.team4322.commandv2.Trigger()
         {
 
             /* Extended Methods */

@@ -7,10 +7,13 @@ import kotlinx.coroutines.experimental.delay
 import java.util.concurrent.TimeUnit
 
 abstract class Command() {
-    var isStarted = false
-        private set
-    private var hasRun = false
-    private var isDone = false
+    enum class InterruptBehavior {
+        Suspend,
+        Terminate
+    }
+
+    private var cancelled = false
+    protected var interruptBehavior = InterruptBehavior.Terminate
     private var timeout: Long = 0
     private var startTime: Long = 0
     private lateinit var subsystem: Subsystem
@@ -20,25 +23,68 @@ abstract class Command() {
         this.timeout = timeout
     }
 
-    suspend operator fun invoke(periodMS: Long = 2): Deferred<Unit> {
+    fun isRunning(): Boolean {
+        return job?.isActive ?: false
+    }
+
+    fun cancel() {
+        job?.cancel()
+    }
+
+
+    operator fun invoke(periodMS: Long = 2): Deferred<Unit> {
         job = async(start = CoroutineStart.LAZY) {
-            while (!isDone) {
-                exec()
+            /*******************/
+            /**** INIT CODE ****/
+            /*******************/
+            subsystem.commandStack.push(job)
+            startTime = System.currentTimeMillis()
+            initialize()
+            /*******************/
+            /**** LOOP CODE ****/
+            /*******************/
+            do {
+                val currentTop = subsystem.commandStack.peek()
+                if (currentTop != null && currentTop != job) {
+                    if (interruptBehavior == InterruptBehavior.Terminate) {
+                        cancelled = true
+                    } else if (interruptBehavior == InterruptBehavior.Suspend) {
+                        interrupted()
+                        currentTop.join()
+                        resumed()
+                        execute()
+                    }
+                } else {
+                    execute()
+                }
                 delay(periodMS, TimeUnit.MILLISECONDS)
-            }
+            } while (!isFinished() && !cancelled)
+            /*******************/
+            /**** END CODE ****/
+            /*******************/
+            end()
+            subsystem.commandStack.remove(job)
+            job = null
         }
-        job!!.start()
         return job!!
     }
 
 
-    protected abstract fun initialize()
+    protected open fun initialize() {
 
-    protected abstract fun end()
+    }
 
-    protected abstract fun interrupted()
+    protected open fun end() {
 
-    protected abstract fun resumed()
+    }
+
+    protected open fun interrupted() {
+
+    }
+
+    protected open fun resumed() {
+
+    }
 
     protected abstract fun execute()
 
@@ -48,39 +94,4 @@ abstract class Command() {
         subsystem = s
     }
 
-
-    private suspend fun exec() {
-        if (!isStarted) {
-            subsystem.commandStack.push(job)
-            if (subsystem.commandStack.size > 1)
-                return
-            startTime = System.currentTimeMillis()
-            initialize()
-            isStarted = true
-        }
-        val currentTop = subsystem.commandStack.peek()
-        if (currentTop != job) {
-            if (isStarted) {
-                interrupted()
-                currentTop.join()
-                resumed()
-            }
-
-        }
-        if (isFinished()) {
-            if (!hasRun) {
-                execute()
-                hasRun = true
-            }
-            if (!isDone) {
-                end()
-                subsystem.commandStack.pop()
-                job = null
-            }
-            isDone = true
-        } else {
-            execute()
-            hasRun = true
-        }
-    }
 }
