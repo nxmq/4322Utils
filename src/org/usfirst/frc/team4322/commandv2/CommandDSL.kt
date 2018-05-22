@@ -22,7 +22,14 @@ enum class Location {
 abstract class CommandSet : Element {
     protected val children = arrayListOf<Element>()
     protected val order = arrayListOf<Pair<Location, Int>>()
+    /**
+     * Creates a block of commands that run in parallel. This block will run until all it's members terminate.
+     */
     fun parallel(init: Parallel.() -> Unit) = initTag(Parallel(), init)
+
+    /**
+     * Creates a block of commands that run in sequential order. This block will run until all it's members terminate.
+     */
     fun sequential(init: Sequential.() -> Unit) = initTag(Sequential(), init)
 
     private fun <T : Element> initTag(tag: T, init: T.() -> Unit): T {
@@ -99,6 +106,10 @@ class Sequential : SubSet() {
     }
 }
 
+/**
+ * Starts a CommandSet DSL. Inside the DSL, commands may be placed in [CommandSet.sequential] and [CommandSet.parallel] blocks.
+ * Commands are added to blocks via putting a plus symbol ahead of their declaration.
+ */
 fun group(init: Group.() -> Unit): Group {
     val set = Group()
     set.init()

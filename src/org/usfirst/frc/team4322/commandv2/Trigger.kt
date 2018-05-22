@@ -1,6 +1,17 @@
 package org.usfirst.frc.team4322.commandv2
 
 abstract class Trigger {
+
+    companion object {
+        val triggers = mutableListOf<Trigger>()
+        fun updateTriggers() {
+            triggers.forEach { it.poll() }
+        }
+    }
+
+    init {
+        triggers.add(this)
+    }
     private val prevState: Boolean = false
     private var onPress: Any? = null
     private lateinit var pressCmd: Command

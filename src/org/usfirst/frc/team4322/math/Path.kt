@@ -18,11 +18,11 @@ class Path {
      */
     val lastMotionState: MotionState
         get() {
-            if (segments.size > 0) {
+            return if (segments.size > 0) {
                 val endState = segments[segments.size - 1].endState
-                return MotionState(0.0, 0.0, endState.vel, endState.acc)
+                MotionState(0.0, 0.0, endState.vel, endState.acc)
             } else {
-                return MotionState(0.0, 0.0, 0.0, 0.0)
+                MotionState(0.0, 0.0, 0.0, 0.0)
             }
         }
 
