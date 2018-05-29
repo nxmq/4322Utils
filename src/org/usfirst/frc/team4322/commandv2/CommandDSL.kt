@@ -51,13 +51,20 @@ abstract class CommandSet : Element {
 abstract class SubSet : CommandSet() {
     val commands = arrayListOf<Any>()
     operator fun Command.unaryPlus() {
+        add(this)
+    }
+
+    fun add(op: Any) {
         commands.add(this)
         order.add(Pair(Location.Commands, commands.size - 1))
     }
 
     operator fun Router.unaryPlus() {
-        commands.add(this)
-        order.add(Pair(Location.Commands, commands.size - 1))
+        add(this)
+    }
+
+    operator fun CommandSet.unaryPlus() {
+        this@SubSet.add(this)
     }
 }
 
