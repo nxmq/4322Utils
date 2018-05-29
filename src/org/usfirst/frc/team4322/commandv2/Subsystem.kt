@@ -4,8 +4,7 @@ import kotlinx.coroutines.experimental.Deferred
 import java.util.concurrent.ConcurrentLinkedDeque
 
 
-
-class Subsystem {
+open class Subsystem {
     val commandStack: ConcurrentLinkedDeque<Deferred<Unit>> = ConcurrentLinkedDeque()
 
     fun resetCommandQueue() {
