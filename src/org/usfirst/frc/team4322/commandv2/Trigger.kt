@@ -1,6 +1,17 @@
-package org.usfirst.frc.team4322.command
+package org.usfirst.frc.team4322.commandv2
 
 abstract class Trigger {
+
+    companion object {
+        val triggers = mutableListOf<Trigger>()
+        fun updateTriggers() {
+            triggers.forEach { it.poll() }
+        }
+    }
+
+    init {
+        triggers.add(this)
+    }
     private val prevState: Boolean = false
     private var onPress: Any? = null
     private lateinit var pressCmd: Command
@@ -12,17 +23,13 @@ abstract class Trigger {
     private lateinit var cancelCmd: Command
     private var toToggle: Any? = null
     private lateinit var toggleCmd: Command
-    private var holdStarted : Boolean = false
-    private var toggleState : Boolean = false
+    private var holdStarted: Boolean = false
+    private var toggleState: Boolean = false
 
-    abstract fun get() : Boolean
+    abstract fun get(): Boolean
 
     fun whenPressed(c: Command) {
         onPress = c
-    }
-
-    fun whenPressed(c: CommandSet) {
-        onPress = c.synthesize()
     }
 
     fun whenPressed(r: Router) {
@@ -33,20 +40,12 @@ abstract class Trigger {
         duringHold = c
     }
 
-    fun whileHeld(c: CommandSet) {
-        duringHold = c.synthesize()
-    }
-
     fun whileHeld(r: Router) {
         duringHold = r
     }
 
     fun whenReleased(c: Command) {
         onRelease = c
-    }
-
-    fun whenReleased(c: CommandSet) {
-        onRelease = c.synthesize()
     }
 
     fun whenReleased(r: Router) {
@@ -65,86 +64,68 @@ abstract class Trigger {
         toToggle = c
     }
 
-    fun toggleWhenPressed(c: CommandSet) {
-        toToggle = c.synthesize()
-    }
-
     fun toggleWhenPressed(r: Router) {
         toToggle = r
     }
 
     fun poll() {
-        if(get() && prevState)
-        {
-            if(!holdStarted && duringHold != null)
-            {
+        if (get() && prevState) {
+            if (!holdStarted && duringHold != null) {
                 holdStarted = true
                 val dh = duringHold
-                when(dh) {
+                when (dh) {
                     is Command -> holdCmd = dh
                     is Router -> holdCmd = dh.route()
                 }
-                holdCmd.start()
-            }
-            else
-            {
-                if(!holdCmd.isStarted)
-                {
-                    holdCmd.start()
+                holdCmd()
+            } else {
+                if (!holdCmd.isRunning()) {
+                    holdCmd()
                 }
             }
 
-        }
-        else if(get() && !prevState)
-        {
-            if(onPress != null) {
+        } else if (get() && !prevState) {
+            if (onPress != null) {
                 val pr = onPress
                 when (pr) {
                     is Command -> pressCmd = pr
                     is Router -> pressCmd = pr.route()
                 }
-                pressCmd.start()
+                pressCmd()
             }
-            if(toToggle != null)
-            {
+            if (toToggle != null) {
                 val tt = toToggle
-                when(tt) {
+                when (tt) {
                     is Command -> toggleCmd = tt
                     is Router -> toggleCmd = tt.route()
                 }
-                if(toggleState)
-                {
+                if (toggleState) {
                     toggleCmd.cancel()
-                }
-                else
-                {
-                    toggleCmd.start()
+                } else {
+                    toggleCmd()
                 }
                 toggleState = !toggleState
             }
-            if(toCancel != null)
-            {
+            if (toCancel != null) {
                 val tc = toCancel
-                when(tc) {
+                when (tc) {
                     is Command -> cancelCmd = tc
                     is Router -> cancelCmd = tc.route()
                 }
                 cancelCmd.cancel()
             }
-        }
-        else if(!get() && prevState)
-        {
-            if(duringHold != null) {
+        } else if (!get() && prevState) {
+            if (duringHold != null) {
                 holdStarted = false
                 holdCmd.cancel()
             }
-            if(onRelease != null) {
+            if (onRelease != null) {
                 val rl = onRelease
                 when (rl) {
                     is Command -> releaseCmd = rl
                     is Router -> releaseCmd = rl.route()
                 }
-                releaseCmd.start()
+                releaseCmd()
             }
         }
     }

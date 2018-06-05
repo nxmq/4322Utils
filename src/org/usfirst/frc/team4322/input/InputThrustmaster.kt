@@ -1,7 +1,7 @@
 package org.usfirst.frc.team4322.input
 
 import edu.wpi.first.wpilibj.Joystick
-import org.usfirst.frc.team4322.command.ButtonTrigger
+import org.usfirst.frc.team4322.commandv2.ButtonTrigger
 
 class InputThrustmaster(port : Int, hand : Hand ) : Joystick(port) {
 
