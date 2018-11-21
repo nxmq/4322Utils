@@ -6,11 +6,17 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="471caf38-0212-46f9-92d2-048f3a2d8244" name="Default" comment="removed broken more motion stuff, updated command and removed dep on ctre libs.">
+    <list default="true" id="471caf38-0212-46f9-92d2-048f3a2d8244" name="Default" comment="Fix wpilib requirement">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlinx_kotlinx_coroutines_core_1_0_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlinx_kotlinx_coroutines_core_common_1_0_1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/4322Utils_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/4322Utils_main.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/4322Utils_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/4322Utils_test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt" afterDir="false" />
     </list>
     <ignored path="4322Utils.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,6 +51,16 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="4322Utils" type="f1a62948:ProjectNode" />
               </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="4322Utils" type="f1a62948:ProjectNode" />
+                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="4322Utils" type="f1a62948:ProjectNode" />
+                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
+              </path>
             </expand>
             <select />
           </tree_state>
@@ -56,32 +72,34 @@
     <session id="-391311516">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
-          <entry key="project.open.time.2" value="1" />
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.21" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="gradle" value="19" />
-          <entry key="txt" value="69" />
+          <entry key="gradle" value="126" />
+          <entry key="kt" value="79" />
+          <entry key="txt" value="95" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Groovy" value="19" />
-          <entry key="PLAIN_TEXT" value="69" />
+          <entry key="Groovy" value="126" />
+          <entry key="Kotlin" value="79" />
+          <entry key="PLAIN_TEXT" value="95" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="kt" value="3" />
+          <entry key="kt" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Kotlin" value="3" />
+          <entry key="Kotlin" value="5" />
         </counts>
       </usages-collector>
     </session>
@@ -91,11 +109,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="20" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
+            <state relative-caret-position="315">
+              <caret line="21" column="58" selection-start-line="21" selection-start-column="58" selection-end-line="21" selection-end-column="58" />
             </state>
           </provider>
         </entry>
@@ -103,7 +121,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="163">
+            <state relative-caret-position="165">
               <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
               <folding>
                 <element signature="e#40#225#0" expanded="true" />
@@ -115,8 +133,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="51" column="27" selection-start-line="51" selection-start-column="27" selection-end-line="51" selection-end-column="27" />
+            <state relative-caret-position="510">
+              <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
+              <folding>
+                <element signature="e#44#108#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/dashboard/MapSynchronizer.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="2" column="36" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -124,8 +154,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-72">
-              <caret line="1" selection-start-line="1" selection-end-line="1" />
+            <state relative-caret-position="142">
+              <caret line="38" selection-start-line="38" selection-end-line="59" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="172">
+              <caret line="125" selection-start-line="125" selection-end-line="144" selection-end-column="2" />
+              <folding>
+                <element signature="e#44#113#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -160,8 +202,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+            <state relative-caret-position="105">
+              <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
               <folding>
                 <element signature="e#44#128#0" expanded="true" />
               </folding>
@@ -272,6 +314,16 @@
           <value>
             <list>
               <ExternalTaskPojo>
+                <option name="description" value="Displays the components produced by root project '4322Utils'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="components" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Assembles and tests this project and all projects that depend on it." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="buildDependents" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="inspectClassesForKotlinIC" />
               </ExternalTaskPojo>
@@ -281,26 +333,37 @@
                 <option name="name" value="projects" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Assembles main classes." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="writeDebugInfo" />
+                <option name="name" value="classes" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays the dependent components of components in root project '4322Utils'. [incubating]" />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependentComponents" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Displays all buildscript dependencies declared in root project '4322Utils'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="buildEnvironment" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="wrapper" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Simulate External Task for Java/Kotlin/JVM. Exports a JSON file for use by editors / tools" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="simulateExternalJava" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="mainClasses" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Deploy all artifacts on all targets" />
+                <option name="description" value="Assembles test classes." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="deploy" />
+                <option name="name" value="testClasses" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Generates Javadoc API documentation for the main source code." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="javadoc" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles a jar archive containing the main classes." />
@@ -323,16 +386,6 @@
                 <option name="name" value="tasks" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Install the tool SmartDashboard" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="SmartDashboardInstall" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Install the tool RobotBuilder" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="RobotBuilderInstall" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Initializes a new Gradle build." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="init" />
@@ -348,144 +401,19 @@
                 <option name="name" value="compileJava" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Runs all checks." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="check" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Run the tool RobotBuilder" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="RobotBuilder" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays all dependencies declared in root project '4322Utils'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="dependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Processes test resources." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="processTestResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Run the tool PathWeaver" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="PathWeaver" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Print all versions of the wpi block" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="wpi" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Installs the 'archives' artifacts into the local Maven repository." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="install" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles and tests this project and all projects it depends on." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="buildNeeded" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Download all dependencies that may be used by this project" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="downloadAll" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Install the tool OutlineViewer" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="OutlineViewerInstall" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the components produced by root project '4322Utils'. [incubating]" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="components" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles and tests this project and all projects that depend on it." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="buildDependents" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Clean Clion IDE Files" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="cleanClion" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles main classes." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="classes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the dependent components of components in root project '4322Utils'. [incubating]" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="dependentComponents" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Run the tool OutlineViewer" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="OutlineViewer" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays all buildscript dependencies declared in root project '4322Utils'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="buildEnvironment" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles test classes." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="testClasses" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Generates Javadoc API documentation for the main source code." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="javadoc" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Run the tool ShuffleBoard" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="ShuffleBoard" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Generate Editor Configuration for Build and Debugging" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="editorConfig" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Generate Clion CMakeLists.txt files." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="clion" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Explain all Maven Repos present on this project" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="explainRepositories" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Install the tool ShuffleBoard" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="ShuffleBoardInstall" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Launch simulation for Java/Kotlin/JVM" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="simulateJava" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Compiles the compilation 'test' (target  (jvm))." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="compileTestKotlin" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Install the tool PathWeaver" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="PathWeaverInstall" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Displays the insight into a specific dependency in root project '4322Utils'." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="dependencyInsight" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Runs all checks." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="check" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles the outputs of this project." />
@@ -503,14 +431,19 @@
                 <option name="name" value="compileTestJava" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
+                <option name="description" value="Displays all dependencies declared in root project '4322Utils'." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="dependencies" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
+                <option name="description" value="Processes test resources." />
+                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
+                <option name="name" value="processTestResources" />
+              </ExternalTaskPojo>
+              <ExternalTaskPojo>
                 <option name="description" value="Displays a help message." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="help" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Install All Tools" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="InstallAllTools" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Compiles the compilation 'main' (target  (jvm))." />
@@ -523,14 +456,14 @@
                 <option name="name" value="build" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Run the tool SmartDashboard" />
+                <option name="description" value="Installs the 'archives' artifacts into the local Maven repository." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="SmartDashboard" />
+                <option name="name" value="install" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Extract Test JNI Native Libraries (nativeDesktopLib, nativeDesktopZip)" />
+                <option name="description" value="Assembles and tests this project and all projects it depends on." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="extractTestJNI" />
+                <option name="name" value="buildNeeded" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Displays the properties of root project '4322Utils'." />
@@ -544,9 +477,9 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="3083707440000" />
+        <entry key="$PROJECT_DIR$" value="3083708738000" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
-        <entry key="$PROJECT_DIR$/build.gradle" value="1038037663" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="2388487050" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -562,7 +495,6 @@
                         <option name="entries">
                           <list>
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin/1.3.0/b378dac6a689f1c74bca6dc0acd266af57c79748/kotlin-gradle-plugin-1.3.0-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/gradle.plugin.edu.wpi.first/GradleRIO/2019.1.1-beta-2a/ea68efdfef5c6e8e364ea73f18d72ed01cf1980a/GradleRIO-2019.1.1-beta-2a-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin-api/1.3.0/6da72eda558a132e46f4f4a8527dde32b8f32943/kotlin-gradle-plugin-api-1.3.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin-model/1.3.0/b1c6ce3d2a8e715cec9847e98333ecbb2648d323/kotlin-gradle-plugin-model-1.3.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-embeddable/1.3.0/c56ca8dafc29e93b3a216b62168e658e7bff657d/kotlin-compiler-embeddable-1.3.0-sources.jar" />
@@ -570,25 +502,15 @@
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-android-extensions/1.3.0/de508fd043c780bb0b62d3271bffd85c08facf5a/kotlin-android-extensions-1.3.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-runner/1.3.0/a39743e43de106b0e5b942c1030a452f64353fc9/kotlin-compiler-runner-1.3.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-compiler-embeddable/1.3.0/d3ff8096e57851fffcf6851d4b7b0cc65c843734/kotlin-scripting-compiler-embeddable-1.3.0-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/gradle.plugin.jaci.gradle/EmbeddedTools/2018.11.05/ee151eef8ffa6a50ff582a16def8cd9112cc509d/EmbeddedTools-2018.11.05-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.undercouch/gradle-download-task/3.1.2/a770cf45a3df7a09f2ae9f9d4d781338ca316189/gradle-download-task-3.1.2-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a6dc5db8a12928e583bd3f23e72d3ab611ecd58f/gson-2.2.4-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/gradle.plugin.edu.wpi.first/gradle-cpp-vscode/0.5.0/ef65001f9707bd9b71776b40420f1ccd95286cf/gradle-cpp-vscode-0.5.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.0/98515ba3feb571f93b923e61f643bdaed59d14ac/kotlin-stdlib-1.3.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-native-utils/1.3.0/5584413479b93a0d5edeb37c0179e4abd805acd4/kotlin-native-utils-1.3.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.3.0/9f968a154aa662ae26a78396f56e46086eb0bef9/kotlin-script-runtime-1.3.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.3.0/2c0e9afd8097b36a2288df59af219bfe2b78ab6d/kotlin-reflect-1.3.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-build-common/1.3.0/312cc4787b4d17a71069dad2b1df71882c173ad3/kotlin-build-common-1.3.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-daemon-client/1.3.0/815fb5d9a0d09660cf13d065d40ed879fe600d03/kotlin-daemon-client-1.3.0-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jcraft/jsch/0.1.53/791359d94d6edcace686a56d0727ee093a2f7c33/jsch-0.1.53-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/b9f9e3e5255b6ddc3bf21be05428c7a60d00e042/httpclient-4.5.2-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.0/8bee30ce9d075088b3d590488a270e2c3ea39b3a/kotlin-stdlib-common-1.3.0-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/5991ca87ef1fb5544943d9abc5a9a37583fabe03/annotations-13.0-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.4/c5c19e3e6af6b452def290cde12a3ee4c35c893c/httpcore-4.4.4-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/ecf26c7507d67782a3bbd148d170b31dfad001aa/commons-logging-1.2-sources.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.9/3f15fff45d57656685abfee9e8302bf14580044c/commons-codec-1.9-sources.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin/1.3.0/7e11e020c6d35f9f5aee917f0654e121ec93b3c6/kotlin-gradle-plugin-1.3.0.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/gradle.plugin.edu.wpi.first/GradleRIO/2019.1.1-beta-2a/b864c99b2c04c6f74ca866a2829c4d3b5e4cdd53/GradleRIO-2019.1.1-beta-2a.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin-api/1.3.0/b166fab9f3ae23caa2f6c731803114cc39a6a70c/kotlin-gradle-plugin-api-1.3.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin-model/1.3.0/7fdf2669ecfe739646e7307036bb3588e2047453/kotlin-gradle-plugin-model-1.3.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-embeddable/1.3.0/6e8167f9aab0f6cfec309c2722f72dc26572a782/kotlin-compiler-embeddable-1.3.0.jar" />
@@ -596,24 +518,14 @@
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-android-extensions/1.3.0/87970b36b9e1855d0d0e4942865f63a1015026c9/kotlin-android-extensions-1.3.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-runner/1.3.0/aed39acd6a672619377e5a90d0d9aed7a37e1426/kotlin-compiler-runner-1.3.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-compiler-embeddable/1.3.0/ac82572a3016d6fd4a3ab00edafb6604fb70aa0a/kotlin-scripting-compiler-embeddable-1.3.0.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/gradle.plugin.jaci.gradle/EmbeddedTools/2018.11.05/66191ae36156c1c83a1ee804019c4ff8580d7ab9/EmbeddedTools-2018.11.05.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.undercouch/gradle-download-task/3.1.2/dbb5911739f1a18228847ad955c700a368db1ba4/gradle-download-task-3.1.2.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.2.4/a60a5e993c98c864010053cb901b7eab25306568/gson-2.2.4.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/gradle.plugin.edu.wpi.first/gradle-cpp-vscode/0.5.0/4f4eab224e61f328d503e92e9b3ff10869a03ebd/gradle-cpp-vscode-0.5.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.0/a134b0cfe9bb44f98b0b3e889cda07923eea9428/kotlin-stdlib-1.3.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-native-utils/1.3.0/a96fcab88b5546fca05ef7e4f3a87f5a84aa9541/kotlin-native-utils-1.3.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/1.3.0/c7173ea6208fa189fb56d679624fbc5e2026187f/kotlin-script-runtime-1.3.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.3.0/6fd129fd9ba8581f2cb9c58bfd431dda4ee0457e/kotlin-reflect-1.3.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-build-common/1.3.0/b4ac03101fd9e1b9aab001e62a3adc8e85ab7c43/kotlin-build-common-1.3.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-daemon-client/1.3.0/f1abc91057f86f98a661dd9d83ab90562f921e2a/kotlin-daemon-client-1.3.0.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jcraft/jsch/0.1.53/658b682d5c817b27ae795637dfec047c63d29935/jsch-0.1.53.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.gradle/build-scan-plugin/1.15/f46ede26431a77430aa3f4f42b18fb86ee5c9e77/build-scan-plugin-1.15.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.2/733db77aa8d9b2d68015189df76ab06304406e50/httpclient-4.5.2.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.0/84a2e0288dc17cd64d692eb1e5e0de8cd5ff0846/kotlin-stdlib-common-1.3.0.jar" />
                             <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.4/b31526a230871fbe285fbcbe2813f9c0839ae9b0/httpcore-4.4.4.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar" />
-                            <option value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.9/9ce04e34240f674bc72680f8b843b1457383161a/commons-codec-1.9.jar" />
                           </list>
                         </option>
                         <option name="path" value="$PROJECT_DIR$" />
@@ -717,7 +629,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/Lookahead.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/math/Transform.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/math/Translation.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/math/Waypoint.kt" />
@@ -755,10 +666,7 @@
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/math/Path.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/unitsuppliers/VelocitySupplier.java" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandUtils.kt" />
-        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandCoordinator.kt" />
-        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt" />
-        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/setecontroller.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/DifferentialMotorCollection.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/setecontroller.kt" />
@@ -766,8 +674,12 @@
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/setecontroller.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/setecontroller.kt" />
         <option value="$USER_HOME$/Ramsete-Simulation/Ramsete Simulation/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt" />
+        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt" />
+        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt" />
         <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/dashboard/MapSynchronizer.kt" />
       </list>
     </option>
   </component>
@@ -800,22 +712,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="4322Utils" type="58d84e3e:PackageViewProjectNode" />
-              <item name="4322Utils_main" type="616d4139:PackageViewModuleNode" />
-            </path>
-            <path>
-              <item name="4322Utils" type="58d84e3e:PackageViewProjectNode" />
-              <item name="4322Utils_main" type="616d4139:PackageViewModuleNode" />
-              <item name="org.usfirst.frc.team4322" type="1f31426a:PackageElementNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -888,6 +784,22 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="4322Utils" type="58d84e3e:PackageViewProjectNode" />
+              <item name="4322Utils_main" type="616d4139:PackageViewModuleNode" />
+            </path>
+            <path>
+              <item name="4322Utils" type="58d84e3e:PackageViewProjectNode" />
+              <item name="4322Utils_main" type="616d4139:PackageViewModuleNode" />
+              <item name="org.usfirst.frc.team4322" type="1f31426a:PackageElementNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -897,7 +809,7 @@
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/wolfram/IdeaProjects/4322Utils/src/org/usfirst/frc/team4322/commandv2/Command.kt" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542759047175" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542760387919" />
     <property name="js-jscs-nodeInterpreter" value="/opt/local/bin/node" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="last.edited.regexp" value="Sample Text" />
@@ -949,7 +861,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Gradle.4322Utils [dependencies]">
+  <component name="RunManager" selected="Kotlin.org.usfirst.frc.team4322.commandv2.CommandTestKt">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="" />
       <option name="DEPLOY" value="true" />
@@ -1157,10 +1069,10 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.4322Utils [dependencies]" />
         <item itemvalue="Kotlin.org.usfirst.frc.team4322.commandv2.CommandTestKt" />
-        <item itemvalue="Kotlin.org.usfirst.frc.team4322.command.CommandTest" />
         <item itemvalue="Gradle.4322Utils [jar]" />
+        <item itemvalue="Gradle.4322Utils [dependencies]" />
+        <item itemvalue="Kotlin.org.usfirst.frc.team4322.command.CommandTest" />
       </list>
     </recent_temporary>
   </component>
@@ -1287,7 +1199,8 @@
       <workItem from="1542320548992" duration="306000" />
       <workItem from="1542381580623" duration="396000" />
       <workItem from="1542598104070" duration="17000" />
-      <workItem from="1542758852706" duration="194000" />
+      <workItem from="1542758852706" duration="345000" />
+      <workItem from="1542759288038" duration="1093000" />
     </task>
     <task id="LOCAL-00001" summary="Got the Dashboard working beautifully. Its quite awesome. Added CVCamera class for accessing a USB Camera. Logging and Dashboard modules are fully functional. Command will require on-robot testing. Vision Module testing is up next.">
       <created>1473020379818</created>
@@ -1436,11 +1349,18 @@
       <option name="project" value="LOCAL" />
       <updated>1542758935353</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Fix wpilib requirement">
+      <created>1542759068706</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1542759068706</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="314746000" />
+    <option name="totallyTimeSpent" value="315990000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1455,7 +1375,7 @@
     <frame x="0" y="23" width="1680" height="1027" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4989899" visible="true" weight="0.17887668" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4989899" visible="true" weight="0.18070818" />
       <window_info id="Structure" order="1" sideWeight="0.5010101" side_tool="true" weight="0.1988555" />
       <window_info id="Image Layers" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -1474,7 +1394,7 @@
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32941177" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.501221" side_tool="true" weight="0.32834226" />
       <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49928468" weight="0.32860824" />
-      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.46642247" weight="0.32513368" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.46642247" visible="true" weight="0.32513368" />
       <window_info anchor="bottom" id="Statistic" order="12" />
       <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
       <window_info anchor="bottom" id="Build" order="14" sideWeight="0.485348" weight="0.30588236" />
@@ -1490,7 +1410,7 @@
       <window_info anchor="right" id="Maven Projects" order="6" weight="0.3297568" />
       <window_info anchor="right" id="Designer" order="7" />
       <window_info anchor="right" id="Database" order="8" />
-      <window_info anchor="right" id="Gradle" order="9" visible="true" weight="0.05860806" />
+      <window_info active="true" anchor="right" id="Gradle" order="9" visible="true" weight="0.15689866" />
       <window_info anchor="right" id="Theme Preview" order="10" />
       <window_info anchor="right" id="Properties" order="11" />
       <window_info anchor="right" x="0" y="0" width="310" height="673" id="Documentation" order="12" sideWeight="0.5010101" side_tool="true" weight="0.24964234" />
@@ -1597,21 +1517,10 @@
     <MESSAGE value="Started Documenting Commands v2." />
     <MESSAGE value="removed broken motion stuff, fixed some small stuff." />
     <MESSAGE value="removed broken more motion stuff, updated command and removed dep on ctre libs." />
-    <option name="LAST_COMMIT_MESSAGE" value="removed broken more motion stuff, updated command and removed dep on ctre libs." />
+    <MESSAGE value="Fix wpilib requirement" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix wpilib requirement" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt</url>
-          <line>38</line>
-          <properties />
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -1635,7 +1544,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/command/Command.kt" />
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/0.22.5/e7a4969f656963ae5be82a48090c97681dcf996a/kotlinx-coroutines-core-0.22.5-sources.jar!/kotlinx/coroutines/experimental/AbstractCoroutine.kt" />
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/0.22.5/e7a4969f656963ae5be82a48090c97681dcf996a/kotlinx-coroutines-core-0.22.5-sources.jar!/kotlinx/coroutines/experimental/CompletedExceptionally.kt" />
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/runtime/PeriodicTerminatingTask.kt" />
@@ -1738,13 +1646,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="40" selection-start-line="40" selection-end-line="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.0.0/25f38c379fd216bf66c638fc5f5b595650c1bd64/kotlinx-coroutines-core-1.0.0-sources.jar!/CoroutineContext.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="780">
@@ -1773,51 +1674,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt">
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/🐏setecontroller.kt" />
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/DifferentialMotorCollection.kt" />
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/MotorCollection.kt" />
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="51" column="27" selection-start-line="51" selection-start-column="27" selection-end-line="51" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/unitsuppliers/DifferentialVelocitySupplier.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="38" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Router.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="106" selection-start-line="9" selection-start-column="106" selection-end-line="9" selection-end-column="106" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+        <state relative-caret-position="165">
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
           <folding>
-            <element signature="e#44#128#0" expanded="true" />
+            <element signature="e#40#225#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/🐏setecontroller.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="83" column="175" selection-start-line="83" selection-start-column="159" selection-end-line="83" selection-end-column="175" />
-          <folding>
-            <element signature="e#41#324#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/DifferentialMotorCollection.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
     </entry>
@@ -1828,37 +1694,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/MotorCollection.kt">
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Router.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+        <state relative-caret-position="135">
+          <caret line="9" column="106" selection-start-line="9" selection-start-column="106" selection-end-line="9" selection-end-column="106" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/unitsuppliers/DifferentialVelocitySupplier.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="38" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="172">
+          <caret line="125" selection-start-line="125" selection-end-line="144" selection-end-column="2" />
           <folding>
-            <element signature="e#41#143#0" expanded="true" />
+            <element signature="e#44#113#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-72">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        <state relative-caret-position="142">
+          <caret line="38" selection-start-line="38" selection-end-line="59" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt">
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+        <state relative-caret-position="105">
+          <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
           <folding>
-            <element signature="e#40#225#0" expanded="true" />
+            <element signature="e#44#128#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
+          <folding>
+            <element signature="e#44#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="20" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
+        <state relative-caret-position="315">
+          <caret line="21" column="58" selection-start-line="21" selection-start-column="58" selection-end-line="21" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/dashboard/MapSynchronizer.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="36" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="36" />
         </state>
       </provider>
     </entry>

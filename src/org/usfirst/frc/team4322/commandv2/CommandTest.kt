@@ -37,24 +37,24 @@ class TestCommand(val name: String, val maxCounts: Long, subsystem: Subsystem) :
 }
 
 
-//suspend fun main(args: Array<String>) {
-//
-//    val s1 = Subsystem()
-//    val s2 = Subsystem()
-//
-//    val bar = group {
-//        parallel {
-//            +TestCommand("inst1", 10, s1)
-//            +TestCommand("inst2", 25, s2)
-//            sequential {
-//                +TestCommand("inst3", 10, s1)
-//                +TestCommand("inst4", 10, s2)
-//            }
-//        }
-//        sequential {
-//            +TestCommand("inst5", 10, s1)
-//            +TestCommand("inst6", 10, s2)
-//        }
-//    }
-//    bar().await()
-//}
+suspend fun main(args: Array<String>) {
+
+    val s1 = Subsystem()
+    val s2 = Subsystem()
+
+    val bar = group {
+        parallel {
+            +TestCommand("inst1", 10, s1)
+            +TestCommand("inst2", 25, s2)
+            sequential {
+                +TestCommand("inst3", 10, s1)
+                +TestCommand("inst4", 10, s2)
+            }
+        }
+        sequential {
+            +TestCommand("inst5", 10, s1)
+            +TestCommand("inst6", 10, s2)
+        }
+    }
+    bar().await()
+}

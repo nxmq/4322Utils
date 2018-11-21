@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4322.commandv2
 
+import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 
 /**
@@ -31,7 +32,7 @@ abstract class Command() {
      * Returns true if the command is currently scheduled for execution.
      */
     fun isRunning(): Boolean {
-        return job.isActive ?: false
+        return job?.isActive ?: false
     }
 
     /**
@@ -40,7 +41,7 @@ abstract class Command() {
      */
     fun cancel(): Boolean {
         if (isRunning()) {
-            job.cancel()
+            job?.cancel()
         }
         return true
     }
