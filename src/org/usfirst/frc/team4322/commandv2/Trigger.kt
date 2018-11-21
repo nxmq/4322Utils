@@ -22,6 +22,10 @@ abstract class Trigger {
     private var toggleState: Boolean = false
 
 
+    operator fun invoke(): Boolean {
+        return get()
+    }
+
     abstract fun get(): Boolean
 
     fun whenPressed(c: Command) {

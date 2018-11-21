@@ -1,12 +1,12 @@
 package org.usfirst.frc.team4322.commandv2
 
 
-
-class TestCommand(val name: String, val maxCounts: Long, subsystem: Subsystem) : Command(0) {
+class TestCommand(val name: String, val maxCounts: Long, subsystem: Subsystem) : Command() {
     var counter = 0
 
     init {
-        this.require(subsystem)
+        require(subsystem)
+        interruptBehavior = InterruptBehavior.Suspend
     }
 
     override fun initialize() {

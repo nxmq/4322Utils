@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4322.commandv2
 
+import edu.wpi.first.wpilibj.Timer
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 
@@ -13,20 +14,21 @@ abstract class Command() {
     }
 
     private var cancelled = false
-    private var periodMS: Long = 2
+    private var periodMS: Double = .02
     protected var interruptBehavior = InterruptBehavior.Terminate
-    private var timeout: Long = 0
-    private var startTime: Long = 0
+    private var timeout: Double = 0.0
+    private var startTime: Double = 0.0
     private var subsystem: Subsystem? = null
-    private var job: Deferred<Unit>? = null
+    protected var job: Deferred<Unit>? = null
 
 
     /**
      * Create command with timeout. Timeouts are incompatible with commands that do not terminate on suspension, and will be ignored in this case.
      */
-    constructor(timeout: Long) : this() {
+    constructor(timeout: Double) : this() {
         this.timeout = timeout
     }
+
 
     /**
      * Returns true if the command is currently scheduled for execution.
@@ -46,16 +48,18 @@ abstract class Command() {
         return true
     }
 
+    fun start(): Deferred<Unit> = invoke(GlobalScope)
+
     /**
      * This method is called when the command finishes running.
      */
-    operator fun invoke(coroutineScope: CoroutineScope = GlobalScope): Deferred<Unit> {
+    open operator fun invoke(coroutineScope: CoroutineScope = GlobalScope): Deferred<Unit> {
         job = coroutineScope.async(start = CoroutineStart.LAZY) {
             /*******************/
             /**** INIT CODE ****/
             /*******************/
             subsystem?.commandStack?.push(job)
-            startTime = System.currentTimeMillis()
+            startTime = Timer.getFPGATimestamp()
             initialize()
             /*******************/
             /**** LOOP CODE ****/
@@ -74,8 +78,8 @@ abstract class Command() {
                 } else {
                     execute()
                 }
-                delay(TimeUnit.MILLISECONDS.toMillis(periodMS))
-            } while (!isFinished() && !cancelled && !(interruptBehavior == InterruptBehavior.Suspend || startTime + timeout > System.currentTimeMillis()))
+                delay(TimeUnit.MILLISECONDS.toMillis((periodMS * 1000).toLong()))
+            } while (!isFinished() && !cancelled && (timeout == 0.0 || startTime + timeout > Timer.getFPGATimestamp()))
             /*******************/
             /**** END CODE ****/
             /*******************/

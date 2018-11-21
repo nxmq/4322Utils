@@ -4,10 +4,9 @@ import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.usfirst.frc.team4322.dashboard.DashboardInputField
-
 import java.io.*
 import java.text.SimpleDateFormat
-import java.util.Calendar
+import java.util.*
 
 /**
  * @NOTE: The following methods are used in this class:
@@ -37,8 +36,6 @@ object RobotLogger {
     private const val Robot_Auto_Log = "RobotAutoLog"
     private const val Robot_Teleop_Log = "RobotTeleopLog"
     private const val Robot_Test_Log = "RobotTestLog"
-    // Instances for ZIP File
-    private val LOGS_ZIP_FILE = System.getProperty("user.home") + "logs/RobotLogs.zip"
     // Constants for file
     private const val MAX_FILE_LENGTH: Long = 10485760
     // Log writer
@@ -47,8 +44,6 @@ object RobotLogger {
     private var closed = true
     // Get Date Format
     private val sdf_ = SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS")
-    // Instance for Singleton class
-    private var _instance: RobotLogger? = null
     // Logging Level
     @DashboardInputField(field = "Logging Level")
     var currentLogLevel = LogLevel.DEBUG
@@ -68,7 +63,7 @@ object RobotLogger {
                 file = logFolder + Robot_Teleop_Log
             if (driverStation.isTest)
                 file = logFolder + Robot_Test_Log
-            file += " [" + CurrentReadable_DateTime() + "].txt"
+            file += " [" + currentReadableDateTime() + "].txt"
             return file
         }
 
@@ -85,9 +80,9 @@ object RobotLogger {
         val enumChooser = SendableChooser<LogLevel>()
         for (i in 0 until LogLevel::class.java.enumConstants.size) {
             if (i == 3) {
-                enumChooser.addDefault(LogLevel.values()[i].toString(), LogLevel.values()[i])
+                enumChooser.setDefaultOption(LogLevel.values()[i].toString(), LogLevel.values()[i])
             } else {
-                enumChooser.addObject(LogLevel.values()[i].toString(), LogLevel.values()[i])
+                enumChooser.addOption(LogLevel.values()[i].toString(), LogLevel.values()[i])
             }
         }
         SmartDashboard.putData("Logging Level", enumChooser)
@@ -109,7 +104,7 @@ object RobotLogger {
                 if (log.exists()) {
                     if (log.length() > MAX_FILE_LENGTH) {
                         val archivedLog = File(log.absolutePath.replace(".txt", "") + " [" +
-                                CurrentReadable_DateTime() + "]" + ".txt")
+                                currentReadableDateTime() + "]" + ".txt")
                         log.renameTo(archivedLog)
                         log = File(properLogFile)
                     }
@@ -192,7 +187,7 @@ object RobotLogger {
         if (level.ordinal < currentLogLevel.ordinal)
             return
         // Output logging messages to the console with a standard format
-        val datetimeFormat = "\n [" + CurrentReadable_DateTime() + "] - Robot4322: - " + level.name + " - "
+        val datetimeFormat = "\n [" + currentReadableDateTime() + "] - Robot4322: - " + level.name + " - "
         if (!DriverStation.getInstance().isFMSAttached) {
             System.out.format(datetimeFormat + message + "\n", *args)
         }
@@ -205,7 +200,7 @@ object RobotLogger {
         if (level.ordinal < currentLogLevel.ordinal)
             return
         // Output logging messages to the console with a standard format
-        val datetimeFormat = "\n [" + CurrentReadable_DateTime() + "] - Robot: - " + level.name + " - "
+        val datetimeFormat = "\n [" + currentReadableDateTime() + "] - Robot: - " + level.name + " - "
         if (!DriverStation.getInstance().isFMSAttached) {
             System.out.format(datetimeFormat + message + "\n")
             exc.printStackTrace()
@@ -224,7 +219,7 @@ object RobotLogger {
         }
     }
         // Gets the date in yyyy-MM-dd format
-        private fun CurrentReadable_DateTime(): String {
+        private fun currentReadableDateTime(): String {
             return sdf_.format(Calendar.getInstance().time)
         }
 

@@ -121,13 +121,13 @@ fun group(init: Group.() -> Unit): Command {
     set.init()
 
     return object : Command() {
-        lateinit var groupCMD: Deferred<Unit>
-        override fun initialize() {
-            super.initialize()
-            groupCMD = set.invoke()
+
+        override operator fun invoke(coroutineScope: CoroutineScope): Deferred<Unit> {
+            job = set()
+            return job!!
         }
 
-        override fun isFinished(): Boolean = groupCMD.isCompleted
+        override fun isFinished(): Boolean = job!!.isCompleted
 
     }
 }

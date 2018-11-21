@@ -6,7 +6,6 @@ import org.usfirst.frc.team4322.commandv2.ButtonTrigger
 import org.usfirst.frc.team4322.logging.RobotLogger
 
 
-
 class InputXbox
 @JvmOverloads constructor(private val port: Int = 0) : Joystick(port) {
     val leftStick: Thumbstick
@@ -22,6 +21,19 @@ class InputXbox
     val rb: ButtonTrigger
     val back: ButtonTrigger
     val start: ButtonTrigger
+
+    fun leftStick() = leftStick.get()
+    fun rightStick() = leftStick.get()
+    fun lt() = lt.axis()
+    fun rt() = rt.axis()
+    fun a() = a.get()
+    fun b() = b.get()
+    fun x() = x.get()
+    fun y() = y.get()
+    fun lb() = lb.get()
+    fun rb() = rb.get()
+    fun back() = back.get()
+    fun start() = start.get()
 
     private val joystick: Joystick = Joystick(port)
 
@@ -101,11 +113,6 @@ class InputXbox
      * in the DirectionalPad class.
      */
     enum class DPAD
-    /**
-     * Constructor
-     *
-     * @param value
-     */
     (/* Instance Value */
             val value: Int) {
         UP(0),
@@ -156,31 +163,27 @@ class InputXbox
      * @param hand
      */
     internal constructor(private val parent: Joystick, private val hand: HAND) : org.usfirst.frc.team4322.commandv2.Trigger() {
-        private val xAxisID: Int
-        private val yAxisID: Int
+        private val x: JoystickAxis
+        private val y: JoystickAxis
         private val buttonID: Int
-        private var xDeadZone: Double = 0.toDouble()
-        private var yDeadZone: Double = 0.toDouble()
 
         override fun get(): Boolean {
             return parent.getRawButton(buttonID)
         }
 
         /**
-         * getRawX
+         * x
          *
-         * @return X with a deadzone
+         * @return x axis value with a deadzone and ramp applied
          */
-        val x: Double
-            get() = rawX()
+        fun x(): Double = x.get()
 
         /**
          * getRawY
          *
-         * @return Y with a deadzone
+         * @return y axis value with a deadzone and ramp applied
          */
-        val y: Double
-            get() = rawY()
+        fun y(): Double = y.get()
 
         /**
          * 0    = Up;
@@ -191,7 +194,7 @@ class InputXbox
          */
         val angle: Double
             get() {
-                val angle = Math.atan2(rawX(), rawY())
+                val angle = Math.atan2(x.unramped(), x.unramped())
 
                 return Math.toDegrees(angle)
             }
@@ -204,7 +207,7 @@ class InputXbox
         // Prevent any errors that might arise
         val magnitude: Double
             get() {
-                var magnitude = scaleMagnitude(rawX(), rawY())
+                var magnitude = scaleMagnitude(x.unramped(), y.unramped())
 
                 if (magnitude > 1) {
                     magnitude = 1.0
@@ -213,74 +216,20 @@ class InputXbox
                 return magnitude
             }
 
-        /**
-         * Get the adjusted thumbstick position (Magnitude <= 1)
-         *
-         * @return True thumbstick position
-         */
-        val trueX: Double
-            get() {
-                val x = rawX()
-                val y = rawY()
-                val angle = Math.atan2(x, y)
-
-                return scaleMagnitude(x, y) * Math.sin(angle)
-            }
-
-        /**
-         * Get the adjusted thumbstick position (Magnitude <= 1)
-         *
-         * @return True thumbstick position
-         */
-        val trueY: Double
-            get() {
-                val x = rawX()
-                val y = rawY()
-                val angle = Math.atan2(x, y)
-
-                return scaleMagnitude(x, y) * Math.cos(angle)
-            }
-
-
         init {
-            xDeadZone = DEFAULT_THUMBSTICK_DEADZONE
-            yDeadZone = DEFAULT_THUMBSTICK_DEADZONE
 
             if (hand == HAND.LEFT) {
-                xAxisID = LEFT_THUMBSTICK_X_AXIS_ID
-                yAxisID = LEFT_THUMBSTICK_Y_AXIS_ID
+                x = JoystickAxis(parent, LEFT_THUMBSTICK_X_AXIS_ID)
+                y = JoystickAxis(parent, LEFT_THUMBSTICK_Y_AXIS_ID)
                 buttonID = LEFT_THUMBSTICK_BUTTON_ID
             } else {                                            // If right hand
-                xAxisID = RIGHT_THUMBSTICK_X_AXIS_ID
-                yAxisID = RIGHT_THUMBSTICK_Y_AXIS_ID
+                x = JoystickAxis(parent, RIGHT_THUMBSTICK_X_AXIS_ID)
+                y = JoystickAxis(parent, RIGHT_THUMBSTICK_Y_AXIS_ID)
                 buttonID = RIGHT_THUMBSTICK_BUTTON_ID
             }
+            x.deadband = DEFAULT_THUMBSTICK_DEADZONE
+            y.deadband = DEFAULT_THUMBSTICK_DEADZONE
         }/* Initialize */
-
-
-        /**
-         * + = right
-         * - = left
-         *
-         * @return X but with a deadzone
-         */
-        private fun rawX(): Double {
-            val rawInput = parent.getRawAxis(xAxisID)
-
-            return createDeadZone(rawInput, xDeadZone)
-        }
-
-        /**
-         * + = up
-         * - = down
-         *
-         * @return Y but with a deadzone
-         */
-        private fun rawY(): Double {
-            val rawInput = -parent.getRawAxis(yAxisID)    // -Y was up on our thumbsticks. Consider this a fix?
-
-            return createDeadZone(rawInput, yDeadZone)
-        }
 
         /**
          * magnitude
@@ -327,25 +276,6 @@ class InputXbox
             return magnitude * scaleFactor
         }
 
-        /* Set Methods */
-
-        /**
-         * Set the X axis deadzone of this thumbstick
-         *
-         * @param number
-         */
-        fun setXDeadZone(number: Double) {
-            xDeadZone = number
-        }
-
-        /**
-         * Set the Y axis deadzone of this thumbstick
-         *
-         * @param number
-         */
-        fun setYDeadZone(number: Double) {
-            yDeadZone = number
-        }
 
         /**
          * Set both axis deadzones of this thumbstick
@@ -353,8 +283,8 @@ class InputXbox
          * @param number
          */
         fun setDeadZone(number: Double) {
-            xDeadZone = number
-            yDeadZone = number
+            x.deadband = number
+            y.deadband = number
         }
     }
 
@@ -373,8 +303,8 @@ class InputXbox
             private val parent: Joystick,
             private val hand: HAND) : org.usfirst.frc.team4322.commandv2.Trigger() {
 
-        private var deadZone: Double = 0.toDouble()
-        private var sensitivity: Double = 0.toDouble()
+        private var deadZone: Double = 0.0
+        private var sensitivity: Double = 0.0
 
         /**
          * 0 = Not pressed
@@ -382,8 +312,7 @@ class InputXbox
          *
          * @return How far its pressed
          */
-        val x: Double
-            get() {
+        fun axis(): Double {
                 val rawInput: Double = if (hand == HAND.LEFT) {
                     parent.getRawAxis(LEFT_TRIGGER_AXIS_ID)
                 } else {
@@ -393,11 +322,6 @@ class InputXbox
                 return createDeadZone(rawInput, deadZone)
             }
 
-        // Triggers have one dimensional movement. Use getX() instead
-        val y: Double
-            get() = x
-
-
         init {
             deadZone = DEFAULT_TRIGGER_DEADZONE
             sensitivity = DEFAULT_TRIGGER_SENSITIVITY
@@ -406,7 +330,7 @@ class InputXbox
 
         /* Extended Methods */
         override fun get(): Boolean {
-            return x > sensitivity
+            return axis() > sensitivity
         }
 
 
@@ -451,6 +375,15 @@ class InputXbox
         val downLeft: DPadButton
         val left: DPadButton
         val upLeft: DPadButton
+
+        fun up() = up.get()
+        fun upRight() = upRight.get()
+        fun right() = right.get()
+        fun downRight() = downRight.get()
+        fun down() = down.get()
+        fun downLeft() = downLeft.get()
+        fun left() = left.get()
+        fun upLeft() = upLeft.get()
 
         /* Get Methods */
 
@@ -503,7 +436,7 @@ class InputXbox
     companion object {
 
         /* Default Values */
-        private const val DEFAULT_THUMBSTICK_DEADZONE = 0.1  // Jiggle room for the thumbsticks
+        private const val DEFAULT_THUMBSTICK_DEADZONE = 0.02  // Jiggle room for the thumbsticks
         private const val DEFAULT_TRIGGER_DEADZONE = 0.01 // Jiggle room for the triggers
         private const val DEFAULT_TRIGGER_SENSITIVITY = 0.6  // If the trigger is beyond this limit, say it has been pressed
 
