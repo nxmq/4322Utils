@@ -1,9 +1,5 @@
 package org.usfirst.frc.team4322.commandv2
 
-import kotlinx.coroutines.experimental.CoroutineStart
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.delay
 import java.util.concurrent.TimeUnit
 
 /**
@@ -35,7 +31,7 @@ abstract class Command() {
      * Returns true if the command is currently scheduled for execution.
      */
     fun isRunning(): Boolean {
-        return job?.isActive ?: false
+        return job.isActive ?: false
     }
 
     /**
@@ -43,14 +39,17 @@ abstract class Command() {
      * @return true if the command was successfully cancelled or was not running, false if the command couldnt be cancelled.
      */
     fun cancel(): Boolean {
-        return job?.cancel() ?: true
+        if (isRunning()) {
+            job.cancel()
+        }
+        return true
     }
 
     /**
      * This method is called when the command finishes running.
      */
     operator fun invoke(): Deferred<Unit> {
-        job = async(start = CoroutineStart.LAZY) {
+        job = GlobalScope.async(start = CoroutineStart.LAZY) {
             /*******************/
             /**** INIT CODE ****/
             /*******************/
@@ -74,7 +73,7 @@ abstract class Command() {
                 } else {
                     execute()
                 }
-                delay(periodMS, TimeUnit.MILLISECONDS)
+                delay(TimeUnit.MILLISECONDS.toMillis(periodMS))
             } while (!isFinished() && !cancelled && !(interruptBehavior == InterruptBehavior.Suspend || startTime + timeout > System.currentTimeMillis()))
             /*******************/
             /**** END CODE ****/

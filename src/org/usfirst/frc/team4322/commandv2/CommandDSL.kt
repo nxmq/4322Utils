@@ -1,11 +1,7 @@
 package org.usfirst.frc.team4322.commandv2
 
-import kotlinx.coroutines.experimental.CoroutineStart
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
-
 interface Element {
-    operator fun invoke(): Deferred<Unit>
+    operator fun invoke(sc: CoroutineScope = GlobalScope): Deferred<Unit>
 }
 
 class Group : CommandSet()
@@ -39,10 +35,10 @@ abstract class CommandSet : Element {
         return tag
     }
 
-    override operator fun invoke(): Deferred<Unit> {
-        return async(start = CoroutineStart.LAZY) {
+    override operator fun invoke(sc: CoroutineScope): Deferred<Unit> {
+        return sc.async(start = CoroutineStart.LAZY) {
             for (child in children) {
-                child().await()
+                child(sc).await()
             }
         }
     }
@@ -55,7 +51,7 @@ abstract class SubSet : CommandSet() {
     }
 
     fun add(op: Any) {
-        commands.add(this)
+        commands.add(op)
         order.add(Pair(Location.Commands, commands.size - 1))
     }
 
@@ -69,13 +65,13 @@ abstract class SubSet : CommandSet() {
 }
 
 class Parallel : SubSet() {
-    override operator fun invoke(): Deferred<Unit> {
-        return async {
+    override operator fun invoke(sc: CoroutineScope): Deferred<Unit> {
+        return sc.async {
             val tasks = mutableListOf<Deferred<Unit>>()
             for (entry in order) {
                 when (entry.first) {
                     Location.Children -> {
-                        tasks.add(async { children[entry.second]().await() })
+                        tasks.add(async { children[entry.second](sc).await() })
                     }
                     Location.Commands -> {
                         val command = commands[entry.second]
@@ -93,12 +89,12 @@ class Parallel : SubSet() {
 
 
 class Sequential : SubSet() {
-    override operator fun invoke(): Deferred<Unit> {
-        return async {
+    override operator fun invoke(sc: CoroutineScope): Deferred<Unit> {
+        return sc.async {
             for (entry in order) {
                 when (entry.first) {
                     Location.Children -> {
-                        children[entry.second]().await()
+                        children[entry.second](sc).await()
                     }
                     Location.Commands -> {
                         val command = commands[entry.second]
