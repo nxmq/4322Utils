@@ -13,6 +13,7 @@ object RobotPositionIntegrator
     var lastVelocity: Twist = Twist.identity
     var lastUpdate : Transform = Transform()
 
+    @JvmStatic
     fun update(timestamp: Double, leftEncoderDeltaDistance: Double, rightEncoderDeltaDistance: Double, currentGyroAngle: Rotation) {
         val delta = Twist(((leftEncoderDeltaDistance + rightEncoderDeltaDistance) / 2.0), 0.0, currentGyroAngle.radians())
         distanceDriven += delta.dx
@@ -22,19 +23,23 @@ object RobotPositionIntegrator
         posTracker[timestamp] = lastUpdate
     }
 
+    @JvmStatic
     fun getPoseAtTime(time: Double): Transform {
         return posTracker[time]
     }
 
+    @JvmStatic
     fun getCurrentPose() : Transform {
         return lastUpdate
     }
 
+    @JvmStatic
     fun reset() {
         lastUpdate = Transform()
         lastVelocity = Twist.identity
     }
 
+    @JvmStatic
     fun getFuturePose(lookahead : Double) : Transform {
         return lastUpdate.transformBy(Transform.fromArc(lastVelocity.scale(lookahead)))
     }

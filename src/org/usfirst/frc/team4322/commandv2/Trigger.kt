@@ -4,6 +4,7 @@ abstract class Trigger {
 
     companion object {
         val triggers = mutableListOf<Trigger>()
+        @JvmStatic
         fun updateTriggers() {
             triggers.forEach { it.poll() }
         }
