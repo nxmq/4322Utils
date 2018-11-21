@@ -116,10 +116,20 @@ class Sequential : SubSet() {
  * Starts a CommandSet DSL. Inside the DSL, commands may be placed in [CommandSet.sequential] and [CommandSet.parallel] blocks.
  * Commands are added to blocks via putting a plus symbol ahead of their declaration.
  */
-fun group(init: Group.() -> Unit): Group {
+fun group(init: Group.() -> Unit): Command {
     val set = Group()
     set.init()
-    return set
+
+    return object : Command() {
+        lateinit var groupCMD: Deferred<Unit>
+        override fun initialize() {
+            super.initialize()
+            groupCMD = set.invoke()
+        }
+
+        override fun isFinished(): Boolean = groupCMD.isCompleted
+
+    }
 }
 
 /* Example:

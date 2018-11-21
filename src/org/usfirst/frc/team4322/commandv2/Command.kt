@@ -17,7 +17,7 @@ abstract class Command() {
     protected var interruptBehavior = InterruptBehavior.Terminate
     private var timeout: Long = 0
     private var startTime: Long = 0
-    private lateinit var subsystem: Subsystem
+    private var subsystem: Subsystem? = null
     private var job: Deferred<Unit>? = null
 
 
@@ -49,19 +49,19 @@ abstract class Command() {
     /**
      * This method is called when the command finishes running.
      */
-    operator fun invoke(): Deferred<Unit> {
-        job = GlobalScope.async(start = CoroutineStart.LAZY) {
+    operator fun invoke(coroutineScope: CoroutineScope = GlobalScope): Deferred<Unit> {
+        job = coroutineScope.async(start = CoroutineStart.LAZY) {
             /*******************/
             /**** INIT CODE ****/
             /*******************/
-            subsystem.commandStack.push(job)
+            subsystem?.commandStack?.push(job)
             startTime = System.currentTimeMillis()
             initialize()
             /*******************/
             /**** LOOP CODE ****/
             /*******************/
             do {
-                val currentTop = subsystem.commandStack.peek()
+                val currentTop = subsystem?.commandStack?.peek()
                 if (currentTop != null && currentTop != job) {
                     if (interruptBehavior == InterruptBehavior.Terminate) {
                         cancelled = true
@@ -80,7 +80,7 @@ abstract class Command() {
             /**** END CODE ****/
             /*******************/
             end()
-            subsystem.commandStack.remove(job)
+            subsystem?.commandStack?.remove(job)
             job = null
         }
         return job!!
@@ -119,7 +119,9 @@ abstract class Command() {
     /**
      * Main loop method for command. Runs every [periodMS] milliseconds while [isFinished] is false.
      */
-    protected abstract fun execute()
+    protected open fun execute() {
+
+    }
 
     /**
      * Returns true when the Command is ready to terminate.

@@ -6,17 +6,11 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="471caf38-0212-46f9-92d2-048f3a2d8244" name="Default" comment="Fix wpilib requirement">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlinx_kotlinx_coroutines_core_1_0_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlinx_kotlinx_coroutines_core_common_1_0_1.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/4322Utils_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/4322Utils_main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/4322Utils_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/4322Utils_test.iml" afterDir="false" />
+    <list default="true" id="471caf38-0212-46f9-92d2-048f3a2d8244" name="Default" comment="fix build">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt" afterDir="false" />
     </list>
     <ignored path="4322Utils.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -72,34 +66,35 @@
     <session id="-391311516">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
+          <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.21" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gradle" value="126" />
-          <entry key="kt" value="79" />
-          <entry key="txt" value="95" />
+          <entry key="kt" value="336" />
+          <entry key="txt" value="104" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="126" />
-          <entry key="Kotlin" value="79" />
-          <entry key="PLAIN_TEXT" value="95" />
+          <entry key="Kotlin" value="336" />
+          <entry key="PLAIN_TEXT" value="104" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="kt" value="5" />
+          <entry key="kt" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Kotlin" value="5" />
+          <entry key="Kotlin" value="10" />
         </counts>
       </usages-collector>
     </session>
@@ -109,15 +104,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.gradle">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="58" selection-start-line="21" selection-start-column="58" selection-end-line="21" selection-end-column="58" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt">
           <provider selected="true" editor-type-id="text-editor">
@@ -133,8 +119,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
+            <state relative-caret-position="737">
+              <caret line="70" column="33" lean-forward="true" selection-start-line="70" selection-start-column="33" selection-end-line="70" selection-end-column="33" />
               <folding>
                 <element signature="e#44#108#0" expanded="true" />
               </folding>
@@ -142,20 +128,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/dashboard/MapSynchronizer.kt">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="36" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="36" />
+            <state relative-caret-position="210">
+              <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+              <folding>
+                <element signature="e#44#128#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="38" selection-start-line="38" selection-end-line="59" selection-end-column="1" />
+            <state relative-caret-position="768">
+              <caret line="70" column="9" lean-forward="true" selection-start-line="70" selection-start-column="9" selection-end-line="70" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -163,50 +152,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
-              <caret line="125" selection-start-line="125" selection-end-line="144" selection-end-column="2" />
-              <folding>
-                <element signature="e#44#113#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/Path.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/unitsuppliers/DifferentialVelocitySupplier.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="38" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Router.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="106" selection-start-line="9" selection-start-column="106" selection-end-line="9" selection-end-column="106" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
-              <folding>
-                <element signature="e#44#128#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="573">
+              <caret line="128" lean-forward="true" selection-start-line="128" selection-end-line="128" />
             </state>
           </provider>
         </entry>
@@ -660,7 +607,6 @@
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/command/CommandDSL.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputThrustmaster.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt" />
-        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/ButtonTrigger.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Router.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/math/Path.kt" />
@@ -674,12 +620,13 @@
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/setecontroller.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/setecontroller.kt" />
         <option value="$USER_HOME$/Ramsete-Simulation/Ramsete Simulation/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt" />
-        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/dashboard/MapSynchronizer.kt" />
+        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt" />
+        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt" />
+        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt" />
       </list>
     </option>
   </component>
@@ -713,6 +660,22 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="4322Utils" type="58d84e3e:PackageViewProjectNode" />
+              <item name="4322Utils_main" type="616d4139:PackageViewModuleNode" />
+            </path>
+            <path>
+              <item name="4322Utils" type="58d84e3e:PackageViewProjectNode" />
+              <item name="4322Utils_main" type="616d4139:PackageViewModuleNode" />
+              <item name="org.usfirst.frc.team4322" type="1f31426a:PackageElementNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -784,22 +747,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="4322Utils" type="58d84e3e:PackageViewProjectNode" />
-              <item name="4322Utils_main" type="616d4139:PackageViewModuleNode" />
-            </path>
-            <path>
-              <item name="4322Utils" type="58d84e3e:PackageViewProjectNode" />
-              <item name="4322Utils_main" type="616d4139:PackageViewModuleNode" />
-              <item name="org.usfirst.frc.team4322" type="1f31426a:PackageElementNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -809,7 +756,7 @@
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/wolfram/IdeaProjects/4322Utils/src/org/usfirst/frc/team4322/commandv2/Command.kt" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542760387919" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542768348417" />
     <property name="js-jscs-nodeInterpreter" value="/opt/local/bin/node" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="last.edited.regexp" value="Sample Text" />
@@ -1200,7 +1147,8 @@
       <workItem from="1542381580623" duration="396000" />
       <workItem from="1542598104070" duration="17000" />
       <workItem from="1542758852706" duration="345000" />
-      <workItem from="1542759288038" duration="1093000" />
+      <workItem from="1542759288038" duration="1309000" />
+      <workItem from="1542761701492" duration="3865000" />
     </task>
     <task id="LOCAL-00001" summary="Got the Dashboard working beautifully. Its quite awesome. Added CVCamera class for accessing a USB Camera. Logging and Dashboard modules are fully functional. Command will require on-robot testing. Vision Module testing is up next.">
       <created>1473020379818</created>
@@ -1356,11 +1304,18 @@
       <option name="project" value="LOCAL" />
       <updated>1542759068706</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="fix build">
+      <created>1542760408119</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1542760408119</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="315990000" />
+    <option name="totallyTimeSpent" value="320071000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1375,7 +1330,7 @@
     <frame x="0" y="23" width="1680" height="1027" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4989899" visible="true" weight="0.18070818" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4989899" visible="true" weight="0.18253969" />
       <window_info id="Structure" order="1" sideWeight="0.5010101" side_tool="true" weight="0.1988555" />
       <window_info id="Image Layers" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -1410,7 +1365,7 @@
       <window_info anchor="right" id="Maven Projects" order="6" weight="0.3297568" />
       <window_info anchor="right" id="Designer" order="7" />
       <window_info anchor="right" id="Database" order="8" />
-      <window_info active="true" anchor="right" id="Gradle" order="9" visible="true" weight="0.15689866" />
+      <window_info anchor="right" id="Gradle" order="9" weight="0.15689866" />
       <window_info anchor="right" id="Theme Preview" order="10" />
       <window_info anchor="right" id="Properties" order="11" />
       <window_info anchor="right" x="0" y="0" width="310" height="673" id="Documentation" order="12" sideWeight="0.5010101" side_tool="true" weight="0.24964234" />
@@ -1518,7 +1473,8 @@
     <MESSAGE value="removed broken motion stuff, fixed some small stuff." />
     <MESSAGE value="removed broken more motion stuff, updated command and removed dep on ctre libs." />
     <MESSAGE value="Fix wpilib requirement" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix wpilib requirement" />
+    <MESSAGE value="fix build" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix build" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -1562,13 +1518,6 @@
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/command/Scheduler.kt" />
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/command/Subsystem.kt" />
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/command/CommandDSL.kt" />
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputThrustmaster.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="47">
-          <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/ButtonTrigger.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="176">
@@ -1632,13 +1581,6 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandCoordinator.kt" />
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-405">
-          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-common/1.0.0/fbe00e9f1a3138c7d138fe4e02724366e9e42f24/kotlinx-coroutines-core-common-1.0.0-sources.jar!/Builders.common.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -1677,20 +1619,20 @@
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/🐏setecontroller.kt" />
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/DifferentialMotorCollection.kt" />
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/MotorCollection.kt" />
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt">
+    <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
-          <folding>
-            <element signature="e#40#225#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="315">
+          <caret line="21" column="58" selection-start-line="21" selection-start-column="58" selection-end-line="21" selection-end-column="58" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/Path.kt">
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputThrustmaster.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+        <state relative-caret-position="495">
+          <caret line="33" column="17" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="17" />
+          <folding>
+            <element signature="e#40#133#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1708,27 +1650,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt">
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/Path.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="125" selection-start-line="125" selection-end-line="144" selection-end-column="2" />
-          <folding>
-            <element signature="e#44#113#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="45">
+          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
+        <state relative-caret-position="483">
           <caret line="38" selection-start-line="38" selection-end-line="59" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/dashboard/MapSynchronizer.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="20" column="30" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
+          <folding>
+            <element signature="e#44#564#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="5" selection-start-line="11" selection-start-column="5" selection-end-line="11" selection-end-column="5" />
+          <folding>
+            <element signature="e#40#225#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
+        <state relative-caret-position="210">
+          <caret line="14" column="1" lean-forward="true" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
           <folding>
             <element signature="e#44#128#0" expanded="true" />
           </folding>
@@ -1737,25 +1696,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="17" selection-start-line="34" selection-start-column="17" selection-end-line="34" selection-end-column="17" />
+        <state relative-caret-position="737">
+          <caret line="70" column="33" lean-forward="true" selection-start-line="70" selection-start-column="33" selection-end-line="70" selection-end-column="33" />
           <folding>
             <element signature="e#44#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="58" selection-start-line="21" selection-start-column="58" selection-end-line="21" selection-end-column="58" />
+        <state relative-caret-position="573">
+          <caret line="128" lean-forward="true" selection-start-line="128" selection-end-line="128" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/dashboard/MapSynchronizer.kt">
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="36" selection-start-line="2" selection-start-column="36" selection-end-line="2" selection-end-column="36" />
+        <state relative-caret-position="768">
+          <caret line="70" column="9" lean-forward="true" selection-start-line="70" selection-start-column="9" selection-end-line="70" selection-end-column="9" />
         </state>
       </provider>
     </entry>
