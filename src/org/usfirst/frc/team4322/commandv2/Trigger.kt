@@ -14,11 +14,11 @@ abstract class Trigger {
         triggers.add(this)
     }
     private val prevState: Boolean = false
-    private lateinit var pressCmd: Command
-    private lateinit var releaseCmd: Command
-    private lateinit var holdCmd: Command
-    private lateinit var cancelCmd: Command
-    private lateinit var toggleCmd: Command
+    private var pressCmd: Command? = null
+    private var releaseCmd: Command? = null
+    private var holdCmd: Command? = null
+    private var cancelCmd: Command? = null
+    private var toggleCmd: Command? = null
     private var holdStarted: Boolean = false
     private var toggleState: Boolean = false
 
@@ -54,25 +54,25 @@ abstract class Trigger {
         if (get() && prevState) {
             if (!holdStarted) {
                 holdStarted = true
-                holdCmd()
+                holdCmd?.invoke()
             } else {
-                if (!holdCmd.isRunning()) {
-                    holdCmd()
+                if (holdCmd?.isRunning() != true) {
+                    holdCmd?.invoke()
                 }
             }
         } else if (get() && !prevState) {
-            pressCmd()
+            pressCmd?.invoke()
             if (toggleState) {
-                toggleCmd.cancel()
+                toggleCmd?.cancel()
             } else {
-                toggleCmd()
+                toggleCmd?.invoke()
             }
             toggleState = !toggleState
-            cancelCmd.cancel()
+            cancelCmd?.cancel()
         } else if (!get() && prevState) {
                 holdStarted = false
-                holdCmd.cancel()
-                releaseCmd()
+            holdCmd?.cancel()
+            releaseCmd?.invoke()
         }
     }
 }
