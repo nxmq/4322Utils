@@ -163,8 +163,8 @@ class InputXbox
      * @param hand
      */
     internal constructor(private val parent: Joystick, private val hand: HAND) : org.usfirst.frc.team4322.commandv2.Trigger() {
-        private val x: JoystickAxis
-        private val y: JoystickAxis
+        val x: JoystickAxis
+        val y: JoystickAxis
         private val buttonID: Int
 
         override fun get(): Boolean {

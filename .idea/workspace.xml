@@ -6,9 +6,10 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="471caf38-0212-46f9-92d2-048f3a2d8244" name="Default" comment="Mark some stuff static to make java interop more painless.">
+    <list default="true" id="471caf38-0212-46f9-92d2-048f3a2d8244" name="Default" comment="Fix another bug with command triggering.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputThrustmaster.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputThrustmaster.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt" afterDir="false" />
     </list>
     <ignored path="4322Utils.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,28 +77,30 @@
         <counts>
           <entry key="gradle" value="126" />
           <entry key="java" value="97" />
-          <entry key="kt" value="3108" />
-          <entry key="txt" value="479" />
+          <entry key="kt" value="3174" />
+          <entry key="txt" value="550" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="126" />
           <entry key="JAVA" value="97" />
-          <entry key="Kotlin" value="3108" />
-          <entry key="PLAIN_TEXT" value="479" />
+          <entry key="Kotlin" value="3174" />
+          <entry key="PLAIN_TEXT" value="550" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="gradle" value="1" />
           <entry key="java" value="4" />
-          <entry key="kt" value="38" />
+          <entry key="kt" value="42" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
+          <entry key="Groovy" value="1" />
           <entry key="JAVA" value="4" />
-          <entry key="Kotlin" value="38" />
+          <entry key="Kotlin" value="42" />
         </counts>
       </usages-collector>
     </session>
@@ -110,10 +113,40 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
+            <state relative-caret-position="195">
               <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
               <folding>
                 <element signature="e#44#128#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputThrustmaster.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="600">
+              <caret line="41" column="43" selection-start-line="41" selection-start-column="43" selection-end-line="41" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="265">
+              <caret line="166" column="8" selection-start-line="166" selection-start-column="8" selection-end-line="166" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/JoystickAxis.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="6" column="22" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
+              <folding>
+                <element signature="e#40#110#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -124,15 +157,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
               <caret line="4" column="99" selection-start-line="4" selection-start-column="99" selection-end-line="4" selection-end-column="99" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="30" column="17" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -155,11 +179,32 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="59" column="37" lean-forward="true" selection-start-line="59" selection-start-column="37" selection-end-line="59" selection-end-column="37" />
+            <state relative-caret-position="753">
+              <caret line="74" column="29" selection-start-line="74" selection-start-column="29" selection-end-line="74" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="21" column="58" selection-start-line="21" selection-start-column="58" selection-end-line="21" selection-end-column="58" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="53">
+              <caret line="50" column="13" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="13" />
+              <folding>
+                <element signature="e#44#143#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -182,8 +227,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>initT</find>
-      <find>speedcontroller</find>
       <find>0.toDouble()</find>
       <find>arc</find>
       <find>Rigid</find>
@@ -212,6 +255,8 @@
       <find>pathfinder</find>
       <find>invok</find>
       <find>req</find>
+      <find>leftStick</find>
+      <find>Thumbstick</find>
     </findStrings>
     <replaceStrings>
       <replace>type</replace>
@@ -621,18 +666,18 @@
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/ButtonTrigger.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandTest.kt" />
-        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Router.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/math/Twist.kt" />
-        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputThrustmaster.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/JoystickAxis.kt" />
-        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/logging/RobotPerformanceData.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/unitsuppliers/AngularVelocitySupplier.java" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/logging/RobotLogger.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/RobotPositionIntegrator.kt" />
+        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt" />
         <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt" />
+        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputThrustmaster.kt" />
+        <option value="$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt" />
       </list>
     </option>
   </component>
@@ -1156,7 +1201,7 @@
       <workItem from="1542759288038" duration="1309000" />
       <workItem from="1542761701492" duration="4097000" />
       <workItem from="1542816194951" duration="6587000" />
-      <workItem from="1543009387239" duration="863000" />
+      <workItem from="1543009387239" duration="3784000" />
     </task>
     <task id="LOCAL-00001" summary="Got the Dashboard working beautifully. Its quite awesome. Added CVCamera class for accessing a USB Camera. Logging and Dashboard modules are fully functional. Command will require on-robot testing. Vision Module testing is up next.">
       <created>1473020379818</created>
@@ -1340,11 +1385,25 @@
       <option name="project" value="LOCAL" />
       <updated>1542826577736</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Fix bug in trigger.">
+      <created>1543011315477</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1543011315477</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Fix another bug with command triggering.">
+      <created>1543012847409</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1543012847409</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="327753000" />
+    <option name="totallyTimeSpent" value="330674000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1487,7 +1546,6 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_CODE_CLEANUP_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Got the Dashboard working beautifully. Its quite awesome. Added CVCamera class for accessing a USB Camera. Logging and Dashboard modules are fully functional. Command will require on-robot testing. Vision Module testing is up next." />
     <MESSAGE value="Made minor tweaks to various classes, and added other classes we have used in the past." />
     <MESSAGE value="Refactored out explicit team references, fixed Command Implementation. Made Routers into commands that hack up the start method." />
     <MESSAGE value="Removed zip file support from logger, update now creates a new file when called. Dont call update in periodic or you will have regrets." />
@@ -1511,7 +1569,9 @@
     <MESSAGE value="Fix Command framework to be less stupid" />
     <MESSAGE value="Various quality of life improvements to input code, fixed bugs in command implementation, added Shuffleboard based perf data logger." />
     <MESSAGE value="Mark some stuff static to make java interop more painless." />
-    <option name="LAST_COMMIT_MESSAGE" value="Mark some stuff static to make java interop more painless." />
+    <MESSAGE value="Fix bug in trigger." />
+    <MESSAGE value="Fix another bug with command triggering." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix another bug with command triggering." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
@@ -1602,13 +1662,6 @@
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/🐏setecontroller.kt" />
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/DifferentialMotorCollection.kt" />
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/MotorCollection.kt" />
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="58" selection-start-line="21" selection-start-column="58" selection-end-line="21" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/unitsuppliers/DifferentialVelocitySupplier.kt" />
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/motion/Path.kt" />
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/dashboard/MapSynchronizer.kt">
@@ -1671,36 +1724,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2070">
-          <caret line="138" column="21" selection-start-line="138" selection-start-column="21" selection-end-line="138" selection-end-column="21" />
-          <folding>
-            <element signature="e#44#143#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/JoystickAxis.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="22" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
-          <folding>
-            <element signature="e#40#110#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputThrustmaster.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="43" selection-start-line="43" selection-end-line="43" />
-          <folding>
-            <element signature="e#40#166#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/math/Calculus.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -1708,37 +1731,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="28" column="22" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
-          <folding>
-            <element signature="e#40#258#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/CommandDSL.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="118" column="32" lean-forward="true" selection-start-line="118" selection-start-column="22" selection-end-line="118" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
-          <folding>
-            <element signature="e#44#128#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Router.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="99" selection-start-line="4" selection-start-column="99" selection-end-line="4" selection-end-column="99" />
         </state>
       </provider>
     </entry>
@@ -1763,10 +1759,68 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Router.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="99" selection-start-line="4" selection-start-column="99" selection-end-line="4" selection-end-column="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Subsystem.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="5" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
+          <folding>
+            <element signature="e#44#128#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/JoystickAxis.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="22" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
+          <folding>
+            <element signature="e#40#110#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Command.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="53">
+          <caret line="50" column="13" selection-start-line="50" selection-start-column="8" selection-end-line="50" selection-end-column="13" />
+          <folding>
+            <element signature="e#44#143#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/commandv2/Trigger.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="59" column="37" lean-forward="true" selection-start-line="59" selection-start-column="37" selection-end-line="59" selection-end-column="37" />
+        <state relative-caret-position="753">
+          <caret line="74" column="29" selection-start-line="74" selection-start-column="29" selection-end-line="74" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="58" selection-start-line="21" selection-start-column="58" selection-end-line="21" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputThrustmaster.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="41" column="43" selection-start-line="41" selection-start-column="43" selection-end-line="41" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/usfirst/frc/team4322/input/InputXbox.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="166" column="8" selection-start-line="166" selection-start-column="8" selection-end-line="166" selection-end-column="8" />
         </state>
       </provider>
     </entry>
