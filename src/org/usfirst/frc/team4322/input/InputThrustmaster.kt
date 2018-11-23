@@ -39,7 +39,7 @@ class InputThrustmaster(port: Int, hand: Hand) {
     val leftCluster = LeftButtonCluster(joystick, hand)
     val rightCluster = RightButtonCluster(joystick, hand)
     val knobCluster = KnobCluster(joystick)
-    val trigger = ButtonTrigger(joystick, 0)
+    val trigger = ButtonTrigger(joystick, 1)
 
 
     val yAxis = JoystickAxis(joystick, 1)
