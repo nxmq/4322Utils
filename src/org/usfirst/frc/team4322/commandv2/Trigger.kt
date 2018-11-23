@@ -54,25 +54,25 @@ abstract class Trigger {
         if (get() && prevState) {
             if (!holdStarted) {
                 holdStarted = true
-                holdCmd?.invoke()
+                holdCmd?.start()
             } else {
                 if (holdCmd?.isRunning() != true) {
-                    holdCmd?.invoke()
+                    holdCmd?.start()
                 }
             }
         } else if (get() && !prevState) {
-            pressCmd?.invoke()
+            pressCmd?.start()
             if (toggleState) {
                 toggleCmd?.cancel()
             } else {
-                toggleCmd?.invoke()
+                toggleCmd?.start()
             }
             toggleState = !toggleState
             cancelCmd?.cancel()
         } else if (!get() && prevState) {
                 holdStarted = false
             holdCmd?.cancel()
-            releaseCmd?.invoke()
+            releaseCmd?.start()
         }
     }
 }

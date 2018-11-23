@@ -48,7 +48,11 @@ abstract class Command() {
         return true
     }
 
-    fun start(): Deferred<Unit> = invoke(GlobalScope)
+    fun start(): Deferred<Unit> {
+        val ret = invoke(GlobalScope)
+        ret.start()
+        return ret
+    }
 
     /**
      * This method is called when the command finishes running.
