@@ -13,7 +13,8 @@ abstract class Trigger {
     init {
         triggers.add(this)
     }
-    private val prevState: Boolean = false
+
+    private var prevState: Boolean = false
     private var pressCmd: Command? = null
     private var releaseCmd: Command? = null
     private var holdCmd: Command? = null
@@ -51,7 +52,8 @@ abstract class Trigger {
     }
 
     fun poll() {
-        if (get() && prevState) {
+        var cur = get()
+        if (cur && prevState) {
             if (!holdStarted) {
                 holdStarted = true
                 holdCmd?.start()
@@ -60,7 +62,7 @@ abstract class Trigger {
                     holdCmd?.start()
                 }
             }
-        } else if (get() && !prevState) {
+        } else if (cur && !prevState) {
             pressCmd?.start()
             if (toggleState) {
                 toggleCmd?.cancel()
@@ -69,10 +71,11 @@ abstract class Trigger {
             }
             toggleState = !toggleState
             cancelCmd?.cancel()
-        } else if (!get() && prevState) {
-                holdStarted = false
+        } else if (!cur && prevState) {
+            holdStarted = false
             holdCmd?.cancel()
             releaseCmd?.start()
         }
+        prevState = cur
     }
 }
