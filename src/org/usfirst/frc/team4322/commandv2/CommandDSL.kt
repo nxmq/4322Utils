@@ -53,10 +53,15 @@ abstract class SubSet : CommandSet() {
         add(this)
     }
 
+    fun router(route: () -> Command) {
+        add(Router(route))
+    }
+
     fun add(op: Any) {
         commands.add(op)
         order.add(Pair(Location.Commands, commands.size - 1))
     }
+
 
     operator fun Router.unaryPlus() {
         add(this)
