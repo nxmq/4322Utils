@@ -51,6 +51,7 @@ abstract class SubSet : CommandSet() {
     val commands = arrayListOf<Any>()
     operator fun Command.unaryPlus() {
         add(this)
+        this.parented = true
     }
 
     fun router(route: () -> Command) {

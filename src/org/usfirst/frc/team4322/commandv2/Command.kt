@@ -1,18 +1,21 @@
 package org.usfirst.frc.team4322.commandv2
 
+import edu.wpi.first.wpilibj.SendableBase
 import edu.wpi.first.wpilibj.Timer
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 import kotlinx.coroutines.*
 import java.util.concurrent.TimeUnit
 
 /**
  * The base unit of work in this library. Commands are periodic tasks which run until their [isFinished] method returns true.
  */
-abstract class Command() {
+abstract class Command() : SendableBase() {
     enum class InterruptBehavior {
         Suspend,
         Terminate
     }
 
+    internal var parented = false
     private var cancelled = false
     private var periodMS: Double = .02
     protected var interruptBehavior = InterruptBehavior.Terminate
@@ -142,6 +145,23 @@ abstract class Command() {
      */
     protected fun require(s: Subsystem) {
         subsystem = s
+    }
+
+    override fun initSendable(builder: SendableBuilder) {
+        builder.setSmartDashboardType("Command")
+        builder.addStringProperty(".name", { name }, null)
+        builder.addBooleanProperty("running", { isRunning() }, { value ->
+            if (value) {
+                if (!isRunning()) {
+                    start()
+                }
+            } else {
+                if (isRunning()) {
+                    cancel()
+                }
+            }
+        })
+        builder.addBooleanProperty(".isParented", { parented }, null)
     }
 
 }
