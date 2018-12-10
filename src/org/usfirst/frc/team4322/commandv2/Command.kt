@@ -149,7 +149,7 @@ abstract class Command() : SendableBase() {
 
     override fun initSendable(builder: SendableBuilder) {
         builder.setSmartDashboardType("Command")
-        builder.addStringProperty(".name", { name }, null)
+        builder.addStringProperty(".title", { name }, null)
         builder.addBooleanProperty("running", { isRunning() }, { value ->
             if (value) {
                 if (!isRunning()) {

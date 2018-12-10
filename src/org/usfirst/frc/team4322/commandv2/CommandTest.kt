@@ -1,7 +1,7 @@
 package org.usfirst.frc.team4322.commandv2
 
 
-class TestCommand(val name: String, val maxCounts: Long, subsystem: Subsystem) : Command() {
+class TestCommand(val title: String, val maxCounts: Long, subsystem: Subsystem) : Command() {
     var counter = 0
 
     init {
@@ -10,24 +10,24 @@ class TestCommand(val name: String, val maxCounts: Long, subsystem: Subsystem) :
     }
 
     override fun initialize() {
-        println("$name Starting!")
+        println("$title Starting!")
     }
 
     override fun end() {
-        println("$name Ending!")
+        println("$title Ending!")
     }
 
     override fun interrupted() {
-        println("$name Suspended!")
+        println("$title Suspended!")
     }
 
     override fun resumed() {
-        println("$name Resumed!")
+        println("$title Resumed!")
 
     }
 
     override fun execute() {
-        println("$name Running!\n counter:$counter")
+        println("$title Running!\n counter:$counter")
         counter++
     }
 

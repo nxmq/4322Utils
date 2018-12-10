@@ -36,9 +36,9 @@ open class Subsystem : SendableBase() {
     }
 
     /**
-     * Returns the default command name, or empty string is there is none.
+     * Returns the default command title, or empty string is there is none.
      *
-     * @return the default command name
+     * @return the default command title
      */
     fun getDefaultCommandName(): String {
         val defaultCommand = this.defaultCommand
@@ -51,9 +51,9 @@ open class Subsystem : SendableBase() {
 
 
     /**
-     * Returns the current command name, or empty string if no current command.
+     * Returns the current command title, or empty string if no current command.
      *
-     * @return the current command name
+     * @return the current command title
      */
     fun getCurrentCommandName(): String {
         val currentCommand = commandStack.peek()
@@ -66,9 +66,9 @@ open class Subsystem : SendableBase() {
 
     /**
      * Associate a [Sendable] with this Subsystem.
-     * Also update the child's name.
+     * Also update the child's title.
      *
-     * @param name name to give child
+     * @param name title to give child
      * @param child sendable
      */
     fun addChild(name: String, child: Sendable) {

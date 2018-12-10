@@ -13,7 +13,7 @@ class SendableChooserListener(private val backingChooser: SendableChooser<*>, pr
 
     init {
         NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable(name).addEntryListener("selected", this, TableEntryListener.kUpdate)
-        RobotLogger.debug("Field with name %s has been bound to a SendableChooserListener", backingField.name)
+        RobotLogger.debug("Field with title %s has been bound to a SendableChooserListener", backingField.name)
     }
 
 

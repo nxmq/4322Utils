@@ -59,14 +59,14 @@ object RobotConfigFileReader {
             val enumeration = p.propertyNames()
             //While there are unparsed keys;
             while (enumeration.hasMoreElements()) {
-                //Get the name of the next key.
+                //Get the title of the next key.
                 val key = enumeration.nextElement() as String
                 //Grab the value for the key.
                 val value = p.getProperty(key)
                 //create a field to store the RobotMap var.
                 var current: Field
                 try {
-                    //Attempt to get the field for the key name.
+                    //Attempt to get the field for the key title.
                     current = toFill.getField(key)
                 } catch (ex: NoSuchFieldException) {
                     RobotLogger.warn("The field \"%s\" doesnt exist in RobotMap!", key)
