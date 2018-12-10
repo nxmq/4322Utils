@@ -1,47 +1,46 @@
 package org.usfirst.frc.team4322.motion
 
-import org.usfirst.frc.team4322.math.Rotation
+import org.usfirst.frc.team4322.math.Interpolable
 import org.usfirst.frc.team4322.math.TemporalLerpMap
-import org.usfirst.frc.team4322.math.Transform
-import org.usfirst.frc.team4322.math.Twist
 
 object RobotPositionIntegrator
 {
 
-    private val posTracker = TemporalLerpMap<Transform>()
+    class RobotPose(val x: Double, val y: Double, val theta: Double) : Interpolable<RobotPose> {
+        override fun lerp(other: RobotPose, diff: Double): RobotPose {
+            return RobotPose(x * (1 - diff) + other.x * diff, y * (1 - diff) + other.y * diff, theta * (1 - diff) + other.theta * diff)
+        }
+
+    }
+
+    private val posTracker = TemporalLerpMap<RobotPose>()
     var distanceDriven : Double = 0.0
-    var lastVelocity: Twist = Twist.identity
-    var lastUpdate : Transform = Transform()
+    var lastPose: RobotPose = RobotPose(0.0, 0.0, 0.0)
 
     @JvmStatic
-    fun update(timestamp: Double, leftEncoderDeltaDistance: Double, rightEncoderDeltaDistance: Double, currentGyroAngle: Rotation) {
-        val delta = Twist(((leftEncoderDeltaDistance + rightEncoderDeltaDistance) / 2.0), 0.0, currentGyroAngle.radians())
-        distanceDriven += delta.dx
-        lastVelocity = delta
-        lastUpdate = lastUpdate.transformBy(Transform.fromArc(delta))
-        lastUpdate = Transform(lastUpdate.translation, currentGyroAngle)
-        posTracker[timestamp] = lastUpdate
+    fun update(timestamp: Double, leftEncoderDeltaDistance: Double, rightEncoderDeltaDistance: Double, currentGyroAngle: Double) {
+        val localDX = (leftEncoderDeltaDistance + rightEncoderDeltaDistance) / 2
+        val deltaTheta = (currentGyroAngle - lastPose.theta) % (2 * Math.PI)
+        val deltaX = (localDX * Math.cos(lastPose.theta) * Math.sin(deltaTheta) - localDX * Math.sin(lastPose.theta) +
+                localDX * Math.cos(deltaTheta) * Math.sin(lastPose.theta)) / deltaTheta
+        val deltaY = (localDX * Math.cos(lastPose.theta) - localDX * Math.cos(deltaTheta) * Math.cos(lastPose.theta) +
+                localDX * Math.sin(deltaTheta) * Math.sin(lastPose.theta)) / deltaTheta
+        val newPose = RobotPose(lastPose.x + deltaX, lastPose.y + deltaY, lastPose.theta + deltaTheta)
+        lastPose = newPose
     }
 
     @JvmStatic
-    fun getPoseAtTime(time: Double): Transform {
+    fun getPoseAtTime(time: Double): RobotPose {
         return posTracker[time]
     }
 
     @JvmStatic
-    fun getCurrentPose() : Transform {
-        return lastUpdate
+    fun getCurrentPose(): RobotPose {
+        return lastPose
     }
 
     @JvmStatic
     fun reset() {
-        lastUpdate = Transform()
-        lastVelocity = Twist.identity
+        lastPose = RobotPose(0.0, 0.0, 0.0)
     }
-
-    @JvmStatic
-    fun getFuturePose(lookahead : Double) : Transform {
-        return lastUpdate.transformBy(Transform.fromArc(lastVelocity.scale(lookahead)))
-    }
-
 }

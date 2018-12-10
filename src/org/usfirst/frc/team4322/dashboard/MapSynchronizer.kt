@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4322.dashboard
 
-import edu.wpi.first.networktables.*
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.usfirst.frc.team4322.configuration.RobotConfigFileReader.primitiveMap
@@ -45,7 +44,7 @@ class MapSynchronizer {
                 RobotLogger.info("Setting field \"%s\" to \"%s\".", key, value.toString())
                 if (persistent) {
                     if (type.isArray) {
-                        RobotPersistenceFileWriter[key] = Arrays.toString(store.get(null)!! as Array<Any>).replace('[', '{').replace(']', '}')
+                        RobotPersistenceFileWriter[key] = Arrays.toString(store.get(null)!! as Array<*>).replace('[', '{').replace(']', '}')
                     } else {
                         RobotPersistenceFileWriter[key] = store.get(null).toString()
                     }
@@ -97,7 +96,7 @@ class MapSynchronizer {
             }
             val type = f.type
             if (type.isArray) {
-                RobotLogger.err("Arrays are not supported by MapUtils at this time. The field %s will not be synchronized with the SmartDashboard.", f.name)
+                RobotLogger.err("Arrays are not supported by MapSynchronizer at this time. The field %s will not be synchronized with the SmartDashboard.", f.name)
             }
             try {
                 if (type == Double::class.javaPrimitiveType || type == Float::class.javaPrimitiveType) {
@@ -120,7 +119,7 @@ class MapSynchronizer {
                     }
                     val enumChooser = SendableChooser<Any>()
                     for (i in 0 until type.enumConstants.size) {
-                        enumChooser.addObject(type.enumConstants[i].toString(), type.enumConstants[i])
+                        enumChooser.addOption(type.enumConstants[i].toString(), type.enumConstants[i])
                     }
                     SmartDashboard.putData(field, enumChooser)
                     SendableChooserListener(enumChooser, f, field)
