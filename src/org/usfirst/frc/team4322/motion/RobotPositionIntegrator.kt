@@ -14,7 +14,6 @@ object RobotPositionIntegrator
     }
 
     private val posTracker = TemporalLerpMap<RobotPose>()
-    var distanceDriven : Double = 0.0
     var lastPose: RobotPose = RobotPose(0.0, 0.0, 0.0)
 
     @JvmStatic
@@ -27,6 +26,7 @@ object RobotPositionIntegrator
                 localDX * Math.sin(deltaTheta) * Math.sin(lastPose.theta)) / deltaTheta
         val newPose = RobotPose(lastPose.x + deltaX, lastPose.y + deltaY, lastPose.theta + deltaTheta)
         lastPose = newPose
+        posTracker[timestamp] = newPose
     }
 
     @JvmStatic
