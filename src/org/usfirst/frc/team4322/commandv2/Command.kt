@@ -21,8 +21,9 @@ abstract class Command() : SendableBase() {
     protected var interruptBehavior = InterruptBehavior.Terminate
     private var timeout: Double = 0.0
     private var startTime: Double = 0.0
-    private var subsystem: Subsystem? = null
-    protected var job: Deferred<Unit>? = null
+    internal var subsystem: Subsystem? = null
+    internal var job: Deferred<Unit>? = null
+
 
 
     /**
@@ -66,6 +67,8 @@ abstract class Command() : SendableBase() {
             /**** INIT CODE ****/
             /*******************/
             subsystem?.commandStack?.push(job)
+            Scheduler.runningCommands.add(this@Command)
+            Scheduler.commandsChanged = true
             startTime = Timer.getFPGATimestamp()
             initialize()
             /*******************/
@@ -92,6 +95,8 @@ abstract class Command() : SendableBase() {
             /*******************/
             end()
             subsystem?.commandStack?.remove(job)
+            Scheduler.runningCommands.remove(this@Command)
+            Scheduler.commandsChanged = true
             job = null
         }
         return job!!
@@ -145,6 +150,7 @@ abstract class Command() : SendableBase() {
      */
     protected fun require(s: Subsystem) {
         subsystem = s
+        setSubsystem(s.javaClass.simpleName)
     }
 
     override fun initSendable(builder: SendableBuilder) {
