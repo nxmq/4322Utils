@@ -1,8 +1,8 @@
 package org.usfirst.frc.team4322.motion
 
-import edu.wpi.first.wpilibj.Filesystem
 import java.io.IOException
 import java.nio.file.Files
+import java.nio.file.Path
 
 class Trajectory(var segments: Array<Segment>) {
 
@@ -43,10 +43,10 @@ class Trajectory(var segments: Array<Segment>) {
 
     companion object {
         @JvmStatic
-        fun load(pathName: String): Trajectory? {
+        fun load(pathFile: String): Trajectory? {
             val segs = mutableListOf<Segment>()
             try {
-                val csvLines = Files.readAllLines(Filesystem.getDeployDirectory().toPath().resolve("$pathName.csv"))
+                val csvLines = Files.readAllLines(Path.of(pathFile))
                 for (line in csvLines) {
                     val values = line.split(",")
                     segs.add(Segment(values[0].toDouble(),
