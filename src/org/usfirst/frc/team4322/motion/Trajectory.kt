@@ -48,6 +48,8 @@ class Trajectory(var segments: Array<Segment>) {
             try {
                 val csvLines = Files.readAllLines(FileSystems.getDefault().getPath(pathFile))
                 for (line in csvLines) {
+                    if (line.startsWith("dt"))
+                        continue
                     val values = line.split(",")
                     segs.add(Segment(values[0].toDouble(),
                             values[1].toDouble(),
