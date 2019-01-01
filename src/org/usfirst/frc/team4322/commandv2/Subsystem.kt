@@ -10,7 +10,8 @@ import java.util.concurrent.ConcurrentLinkedDeque
 
 open class Subsystem : SendableBase() {
     val commandStack: ConcurrentLinkedDeque<Deferred<Unit>> = ConcurrentLinkedDeque()
-    internal var defaultCommand: Command? = null
+    var defaultCommand: Command? = null
+        protected set
 
     init {
         Scheduler.subsystems.add(this)
