@@ -31,14 +31,6 @@ object Scheduler : SendableBase() {
         }
         Trigger.updateTriggers()
         RobotPerformanceData.update()
-        synchronized(runningCommands) {
-            for (cmd: Command in runningCommands) {
-                if (cmd.job == null || cmd.job?.isCancelled == true || cmd.job?.isCompleted == true) {
-                    cmd.subsystem?.commandStack?.remove(cmd.job)
-                    runningCommands.remove(cmd)
-                }
-            }
-        }
     }
 
     @JvmStatic
