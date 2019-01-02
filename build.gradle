@@ -33,7 +33,7 @@ wrapper {
 jar {
     manifest {
         attributes 'Implementation-Title': '4322Utils',
-                'Implementation-Version': '2019-0.2.4-beta'
+                'Implementation-Version': '2019-0.2.5-beta'
     }
 }
 compileKotlin {
