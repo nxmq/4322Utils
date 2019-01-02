@@ -31,10 +31,12 @@ object Scheduler : SendableBase() {
         }
         Trigger.updateTriggers()
         RobotPerformanceData.update()
-        for (cmd: Command in runningCommands) {
-            if (cmd.job == null || cmd.job?.isCancelled == true || cmd.job?.isCompleted == true) {
-                cmd.subsystem?.commandStack?.remove(cmd.job)
-                runningCommands.remove(cmd)
+        synchronized(runningCommands) {
+            for (cmd: Command in runningCommands) {
+                if (cmd.job == null || cmd.job?.isCancelled == true || cmd.job?.isCompleted == true) {
+                    cmd.subsystem?.commandStack?.remove(cmd.job)
+                    runningCommands.remove(cmd)
+                }
             }
         }
     }
@@ -53,10 +55,12 @@ object Scheduler : SendableBase() {
             // Get the commands to cancel
             val toCancel = cancelEntry.getDoubleArray(DoubleArray(0))
             if (toCancel.isNotEmpty()) {
-                for (c in runningCommands) {
-                    for (d in toCancel) {
-                        if (c.hashCode() == d.toInt()) {
-                            c.cancel()
+                synchronized(runningCommands) {
+                    for (c in runningCommands) {
+                        for (d in toCancel) {
+                            if (c.hashCode() == d.toInt()) {
+                                c.cancel()
+                            }
                         }
                     }
                 }
