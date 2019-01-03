@@ -7,6 +7,7 @@ class RamseteController(val path: Trajectory, val robotWheelBase: Double, val kb
     var goalYLast = 0.0
     var goalXDeltaLast = 0.0
     var goalYDeltaLast = 0.0
+    private var initMod = Double.NaN
 
     fun reset() {
         seg = 0
@@ -15,6 +16,7 @@ class RamseteController(val path: Trajectory, val robotWheelBase: Double, val kb
         goalYLast = 0.0
         goalXDeltaLast = 0.0
         goalYDeltaLast = 0.0
+        initMod = Double.NaN
     }
 
     fun isFinished(): Boolean {
@@ -25,7 +27,9 @@ class RamseteController(val path: Trajectory, val robotWheelBase: Double, val kb
 
         if (isFinished())
             return Pair(0.0, 0.0)
-        var initMod = Math.round((RobotPositionIntegrator.lastPose.theta - (path[0].heading + Math.PI)) / (2.0 * Math.PI)) * 2.0 * Math.PI
+        if (initMod.isNaN()) {
+            initMod = Math.round((RobotPositionIntegrator.lastPose.theta - (path[0].heading + Math.PI)) / (2.0 * Math.PI)) * 2.0 * Math.PI
+        }
 
         if (path[seg].heading + initMod + Math.PI - lastGoalAngle >= Math.PI) {
             initMod -= path[seg].heading + initMod + Math.PI - lastGoalAngle
