@@ -34,6 +34,7 @@ object Scheduler : SendableBase() {
         RobotPerformanceData.update()
     }
 
+    @JvmStatic
     fun initialize() {
         for (subsystem in subsystems) {
             subsystem.initDefaultCommand()
