@@ -12,6 +12,7 @@ import org.usfirst.frc.team4322.logging.RobotPerformanceData
  * Runs the lööps
  * Just make sure to call Scheduler.update()
  * in periodic modes.
+ * and Scheduler.initialize() at the end of robotInit.
  */
 object Scheduler : SendableBase() {
     init {
@@ -31,6 +32,12 @@ object Scheduler : SendableBase() {
         }
         Trigger.updateTriggers()
         RobotPerformanceData.update()
+    }
+
+    fun initialize() {
+        for (subsystem in subsystems) {
+            subsystem.initDefaultCommand()
+        }
     }
 
     @JvmStatic

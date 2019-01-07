@@ -20,7 +20,7 @@ class RamseteController(val path: Trajectory, val robotWheelBase: Double, val kb
     }
 
     fun isFinished(): Boolean {
-        return seg == path.length()
+        return seg + 1 == path.length()
     }
 
     fun run(): Pair<Double, Double> {
@@ -39,14 +39,14 @@ class RamseteController(val path: Trajectory, val robotWheelBase: Double, val kb
         // This is the path vel and can be used for vd
         val goalVelocity = -path[seg].velocity
 
-        val goalAngleDelta = (goalAngle - lastGoalAngle) / path[seg].dt
+        val goalAngleDelta = (goalAngle - lastGoalAngle) * (1.0 / path[seg].dt)
         lastGoalAngle = goalAngle
 
         //ez stuff
         val goalX = path[seg].x
         val goalY = path[seg].y
-        val goalXDelta = (goalX - goalXLast) / path[seg].dt
-        val goalYDelta = (goalY - goalYLast) / path[seg].dt
+        val goalXDelta = (goalX - goalXLast) * (1.0 / path[seg].dt)
+        val goalYDelta = (goalY - goalYLast) * (1.0 / path[seg].dt)
         goalXLast = goalX
         goalYLast = goalY
         goalXDeltaLast = goalXDelta
@@ -68,13 +68,13 @@ class RamseteController(val path: Trajectory, val robotWheelBase: Double, val kb
          */
         val angleError = Math.max(goalAngle - angle, Math.nextUp(0.0))
         val ramv = goalVelocity * Math.cos(angleError) + k1 * (Math.cos(angle) * xError + Math.sin(angle) * yError)
-        var ramw = goalAngleDelta + kb * goalVelocity * (Math.sin(angleError) / angleError) * (Math.cos(angle) * yError - Math.sin(angle) * xError) + k1 * angleError
+        var ramw = goalAngleDelta + kb * goalVelocity * (Math.sin(angleError) * (1.0 / angleError)) * (Math.cos(angle) * yError - Math.sin(angle) * xError) + k1 * angleError
 
         if (Math.abs(ramw) > 100) {
             ramw = 0.0
         }
-        val velr = ramv + ramw * robotWheelBase / 2
-        val vell = ramv - ramw * robotWheelBase / 2
-        return Pair(vell, velr)
+        val velr = ramv + ramw * (robotWheelBase / 2.0)
+        val vell = ramv - ramw * (robotWheelBase / 2.0)
+        return Pair(ramv, ramw)
     }
 }

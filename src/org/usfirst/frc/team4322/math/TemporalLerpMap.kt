@@ -24,4 +24,11 @@ class TemporalLerpMap<V : Interpolable<V>> {
             floor.value.lerp(ceil.value,(timestamp-floor.key)/diff)
         }
     }
+
+    fun getLastKey(): Double {
+        if (list.isEmpty()) {
+            return 0.0
+        }
+        return list.lastKey()
+    }
 }

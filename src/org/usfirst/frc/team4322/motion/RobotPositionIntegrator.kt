@@ -20,10 +20,20 @@ object RobotPositionIntegrator
     fun update(timestamp: Double, leftEncoderDeltaDistance: Double, rightEncoderDeltaDistance: Double, currentGyroAngle: Double) {
         val localDX = (leftEncoderDeltaDistance + rightEncoderDeltaDistance) / 2
         val deltaTheta = (currentGyroAngle - lastPose.theta) % (2 * Math.PI)
-        val deltaX = (localDX * Math.cos(lastPose.theta) * Math.sin(deltaTheta) - localDX * Math.sin(lastPose.theta) +
-                localDX * Math.cos(deltaTheta) * Math.sin(lastPose.theta)) / deltaTheta
-        val deltaY = (localDX * Math.cos(lastPose.theta) - localDX * Math.cos(deltaTheta) * Math.cos(lastPose.theta) +
-                localDX * Math.sin(deltaTheta) * Math.sin(lastPose.theta)) / deltaTheta
+        val deltaT = timestamp - posTracker.getLastKey()
+        val deltaX =
+                if (deltaTheta == 0.0) {
+                    localDX * Math.cos(lastPose.theta) * deltaT
+                } else {
+                    (localDX * Math.cos(lastPose.theta) * Math.sin(deltaTheta) - localDX * Math.sin(lastPose.theta) +
+                            localDX * Math.cos(deltaTheta) * Math.sin(lastPose.theta)) / deltaTheta
+                }
+        val deltaY = if (deltaTheta == 0.0) {
+            localDX * Math.sin(lastPose.theta) * deltaT
+        } else {
+            (localDX * Math.cos(lastPose.theta) - localDX * Math.cos(deltaTheta) * Math.cos(lastPose.theta) +
+                    localDX * Math.sin(deltaTheta) * Math.sin(lastPose.theta)) / deltaTheta
+        }
         val newPose = RobotPose(lastPose.x + deltaX, lastPose.y + deltaY, lastPose.theta + deltaTheta)
         lastPose = newPose
         posTracker[timestamp] = newPose
