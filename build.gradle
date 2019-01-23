@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "org.jetbrains.kotlin.jvm" version "1.3.11"
+    id "org.jetbrains.kotlin.jvm" version "1.3.20"
     id "idea"
     id "maven"
 }
@@ -19,10 +19,11 @@ allprojects {
     }
 }
 dependencies {
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.11"
-    compileOnly "edu.wpi.first.wpilibj:wpilibj-java:2019.1.1"
-    compileOnly "edu.wpi.first.ntcore:ntcore-java:2019.1.1"
-    compileOnly "edu.wpi.first.hal:hal-java:2019.1.1"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.20"
+    compileOnly "edu.wpi.first.wpilibj:wpilibj-java:2019.2.1"
+    compileOnly "edu.wpi.first.ntcore:ntcore-java:2019.2.1"
+    compileOnly "edu.wpi.first.wpiutil:wpiutil-java:2019.2.1"
+    compileOnly "edu.wpi.first.hal:hal-java:2019.2.1"
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1'
 }
 
@@ -33,7 +34,7 @@ wrapper {
 jar {
     manifest {
         attributes 'Implementation-Title': '4322Utils',
-                'Implementation-Version': '2019-1.1'
+                'Implementation-Version': '2019-2.1'
     }
 }
 compileKotlin {

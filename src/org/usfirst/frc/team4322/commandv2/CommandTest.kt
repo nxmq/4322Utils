@@ -54,6 +54,9 @@ suspend fun main(args: Array<String>) {
         sequential {
             +TestCommand("inst5", 10, s1)
             +TestCommand("inst6", 10, s2)
+            +lambda {
+                System.out.println("Lambda test!")
+            }
         }
     }
     bar().await()

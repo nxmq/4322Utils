@@ -31,6 +31,9 @@ class Trig {
             return Math.toDegrees(Math.atan2(dy, dx))
         }
 
-        //more to come
+        @JvmStatic
+        fun minSignedAngularDistance(a: Double, b: Double): Double {
+            return Math.atan2(Math.sin(a - b), Math.cos(a - b))
+        }
     }
 }

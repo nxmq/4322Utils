@@ -15,8 +15,7 @@ import java.util.regex.Pattern
 
 object RobotConfigFileReader {
     private const val CONFIG_FILE = "/home/lvuser/robotConfig.ini"
-    private var _instance: RobotConfigFileReader? = null
-    private val arrayFinder = Pattern.compile("\\{\\s*([^}]+)\\s*\\}")
+    private val arrayFinder = Pattern.compile("\\{\\s*([^}]+)\\s*}")
     var primitiveMap: MutableMap<Class<*>, Method> = HashMap()
 
     init {
@@ -81,7 +80,7 @@ object RobotConfigFileReader {
                     //apply the matcher to the string.
                     m.find()
                     //get our values into a string array.
-                    val arrayValues = m.group().split("[\\s,]+".toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()
+                    val arrayValues = m.group().split("[\\s,]+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                     //remove the brackets from the first and last values.
                     arrayValues[0] = arrayValues[0].replace("{", "")
                     arrayValues[arrayValues.size - 1] = arrayValues[arrayValues.size - 1].replace("}", "")

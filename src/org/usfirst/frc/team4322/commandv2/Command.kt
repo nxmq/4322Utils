@@ -25,6 +25,25 @@ abstract class Command() : SendableBase() {
     internal var job: Deferred<Unit>? = null
 
 
+    companion object {
+        /**
+         * Creates a command derived from the lambda passed in.
+         */
+        @JvmStatic
+        fun lambda(fn: () -> Unit): Command {
+            return object : Command() {
+                override fun execute() {
+                    fn()
+                }
+
+                override fun isFinished(): Boolean {
+                    return true
+                }
+            }
+        }
+    }
+
+
 
     /**
      * Create command with timeout. Timeouts are incompatible with commands that do not terminate on suspension, and will be ignored in this case.

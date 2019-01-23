@@ -58,11 +58,14 @@ abstract class SubSet : CommandSet() {
         add(Router(route))
     }
 
+    fun lambda(fn: () -> Unit): Command {
+        return Command.lambda(fn)
+    }
+
     fun add(op: Any) {
         commands.add(op)
         order.add(Pair(Location.Commands, commands.size - 1))
     }
-
 
     operator fun Router.unaryPlus() {
         add(this)
