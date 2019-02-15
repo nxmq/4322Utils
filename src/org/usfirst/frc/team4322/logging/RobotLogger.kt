@@ -31,11 +31,6 @@ object RobotLogger {
     private val driverStation = DriverStation.getInstance()
     // Instances for the log files
     private val logFolder = System.getProperty("user.home") + "/logs"
-    private const val LOG_FILE = "RobotInitLog"
-    private const val Robot_Disabled_Log = "RobotDisabledLog"
-    private const val Robot_Auto_Log = "RobotAutoLog"
-    private const val Robot_Teleop_Log = "RobotTeleopLog"
-    private const val Robot_Test_Log = "RobotTestLog"
     // Constants for file
     private const val MAX_FILE_LENGTH: Long = 10485760
     // Log writer
@@ -49,21 +44,13 @@ object RobotLogger {
     var currentLogLevel = LogLevel.DEBUG
 
 
-    private val properLogFile: String
+    private val logFile: String
         get() {
-            var file = logFolder + LOG_FILE
+            var file = logFolder + "RobotLog"
             if (driverStation.isFMSAttached) {
-                return logFolder + String.format("RobotCompetitionMatch-%s-%s-%d-%d.txt", driverStation.eventName, driverStation.matchType.name, driverStation.matchNumber, driverStation.replayNumber)
+                return logFolder + String.format("RobotCompetitionLog-%s-%s-%d-%d.log", driverStation.eventName, driverStation.matchType.name, driverStation.matchNumber, driverStation.replayNumber)
             }
-            if (driverStation.isDisabled)
-                file = logFolder + Robot_Disabled_Log
-            if (driverStation.isAutonomous)
-                file = logFolder + Robot_Auto_Log
-            if (driverStation.isOperatorControl)
-                file = logFolder + Robot_Teleop_Log
-            if (driverStation.isTest)
-                file = logFolder + Robot_Test_Log
-            file += " [" + currentReadableDateTime() + "].txt"
+            file += " [" + currentReadableDateTime() + "].log"
             return file
         }
 
@@ -78,11 +65,11 @@ object RobotLogger {
 
     init {
         val enumChooser = SendableChooser<LogLevel>()
-        for (i in 0 until LogLevel::class.java.enumConstants.size) {
-            if (i == 3) {
-                enumChooser.setDefaultOption(LogLevel.values()[i].toString(), LogLevel.values()[i])
+        for (i in LogLevel::class.java.enumConstants) {
+            if (i == LogLevel.INFO) {
+                enumChooser.setDefaultOption(i.toString(), i)
             } else {
-                enumChooser.addOption(LogLevel.values()[i].toString(), LogLevel.values()[i])
+                enumChooser.addOption(i.toString(), i)
             }
         }
         SmartDashboard.putData("Logging Level", enumChooser)
@@ -92,7 +79,7 @@ object RobotLogger {
         if (closed) {
             try {
                 // Get the correct file
-                var log = File(properLogFile)
+                var log = File(logFile)
 
                 // Make sure the log directory exists.
                 if (!log.parentFile.exists()) {
@@ -106,7 +93,7 @@ object RobotLogger {
                         val archivedLog = File(log.absolutePath.replace(".txt", "") + " [" +
                                 currentReadableDateTime() + "]" + ".txt")
                         log.renameTo(archivedLog)
-                        log = File(properLogFile)
+                        log = File(logFile)
                     }
                 } else {
                     if (!log.createNewFile())
@@ -218,16 +205,17 @@ object RobotLogger {
             closed = true
         }
     }
-        // Gets the date in yyyy-MM-dd format
-        private fun currentReadableDateTime(): String {
-            return sdf_.format(Calendar.getInstance().time)
-        }
 
-        // Creates a string out of a throwable
-        private fun getString(e: Throwable): String {
-            val sw = StringWriter()
-            val pw = PrintWriter(sw)
-            e.printStackTrace(pw)
-            return sw.toString()
-        }
+    // Gets the date in yyyy-MM-dd format
+    private fun currentReadableDateTime(): String {
+        return sdf_.format(Calendar.getInstance().time)
+    }
+
+    // Creates a string out of a throwable
+    private fun getString(e: Throwable): String {
+        val sw = StringWriter()
+        val pw = PrintWriter(sw)
+        e.printStackTrace(pw)
+        return sw.toString()
+    }
 }

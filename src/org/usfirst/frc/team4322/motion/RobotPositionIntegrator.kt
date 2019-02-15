@@ -15,17 +15,13 @@ object RobotPositionIntegrator
     private val posTracker = TemporalLerpMap<RobotPose>()
     var lastPose: RobotPose = RobotPose(0.0, 0.0, 0.0)
 
+    @JvmStatic
     fun updateWithoutGyro(timestamp: Double, leftEncoderVelocity: Double, rightEncoderVelocity: Double, wheelbase: Double) {
-        val deltaT = timestamp - posTracker.getLastKey()
-        var vx = (rightEncoderVelocity + leftEncoderVelocity) / 2.0
-        var omega = (rightEncoderVelocity - leftEncoderVelocity) / wheelbase
-        val deltaX = vx * Math.cos((lastPose.theta)) * deltaT
-        val deltaY = vx * Math.sin((lastPose.theta)) * deltaT
-        val newPose = RobotPose(lastPose.x + deltaX, lastPose.y + deltaY, (lastPose.theta + omega * deltaT))
-        lastPose = newPose
-        posTracker[timestamp] = newPose
+        updateWithGyro(timestamp, leftEncoderVelocity, rightEncoderVelocity, (rightEncoderVelocity - leftEncoderVelocity) / wheelbase)
+
     }
 
+    @JvmStatic
     fun updateWithGyro(timestamp: Double, leftEncoderVelocity: Double, rightEncoderVelocity: Double, gyroAngularVelocity: Double) {
         val deltaT = timestamp - posTracker.getLastKey()
         var vx = (rightEncoderVelocity + leftEncoderVelocity) / 2.0
@@ -36,15 +32,19 @@ object RobotPositionIntegrator
         posTracker[timestamp] = newPose
     }
 
+    @JvmStatic
     fun getPoseAtTime(time: Double): RobotPose {
         return posTracker[time]
     }
 
+    @JvmStatic
     fun getCurrentPose(): RobotPose {
         return lastPose
     }
 
+    @JvmStatic
     fun reset() {
         lastPose = RobotPose(0.0, 0.0, 0.0)
+        posTracker.clear()
     }
 }

@@ -6,7 +6,6 @@ import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.SendableBase
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
-import org.usfirst.frc.team4322.logging.RobotPerformanceData
 
 /*
  * Runs the lööps
@@ -18,6 +17,7 @@ object Scheduler : SendableBase() {
     init {
         HAL.report(FRCNetComm.tResourceType.kResourceType_Command, FRCNetComm.tInstances.kCommand_Scheduler)
         HAL.report(FRCNetComm.tResourceType.kResourceType_Command, FRCNetComm.tInstances.kFramework_CommandControl)
+
     }
     val subsystems = mutableListOf<Subsystem>()
     val runningCommands = mutableListOf<Command>()
@@ -31,7 +31,6 @@ object Scheduler : SendableBase() {
             subsystems.forEach { it.pump(); it.periodic() }
         }
         Trigger.updateTriggers()
-        RobotPerformanceData.update()
     }
 
     @JvmStatic

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.SendableBase
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 import kotlinx.coroutines.*
+import org.usfirst.frc.team4322.logging.RobotLogger
 import java.util.concurrent.TimeUnit
 
 /**
@@ -43,7 +44,9 @@ abstract class Command() : SendableBase() {
         }
     }
 
-
+    init {
+        name = this.javaClass.simpleName
+    }
 
     /**
      * Create command with timeout. Timeouts are incompatible with commands that do not terminate on suspension, and will be ignored in this case.
@@ -86,10 +89,12 @@ abstract class Command() : SendableBase() {
             /**** INIT CODE ****/
             /*******************/
             subsystem?.commandStack?.push(job)
+            RobotLogger.info("Command ${name} started.")
             Scheduler.runningCommands.add(this@Command)
             Scheduler.commandsChanged = true
             startTime = Timer.getFPGATimestamp()
             initialize()
+            RobotLogger.info("Command ${name} command initialized.")
             /*******************/
             /**** LOOP CODE ****/
             /*******************/
@@ -98,10 +103,13 @@ abstract class Command() : SendableBase() {
                 if (currentTop != null && currentTop != job) {
                     if (interruptBehavior == InterruptBehavior.Terminate) {
                         cancelled = true
+                        RobotLogger.info("Command ${name} cancelled.")
                     } else if (interruptBehavior == InterruptBehavior.Suspend) {
                         interrupted()
+                        RobotLogger.info("Command ${name} interrupted.")
                         currentTop.join()
                         resumed()
+                        RobotLogger.info("Command ${name} resumed.")
                         execute()
                     }
                 } else {
@@ -113,6 +121,7 @@ abstract class Command() : SendableBase() {
             /**** END CODE ****/
             /*******************/
             end()
+            RobotLogger.info("Command ${name} finished.")
             subsystem?.commandStack?.remove(job)
             Scheduler.runningCommands.remove(this@Command)
             Scheduler.commandsChanged = true
@@ -164,7 +173,7 @@ abstract class Command() : SendableBase() {
     protected abstract fun isFinished(): Boolean
 
     /**
-     * Sets the [Subsystem] associated with a Command. All commands _must_ have an associated [Subsystem].
+     * Sets the [Subsystem] associated with a Command. Commands may only require 1 subsystem.
      * @param [s] Subsystem to be associated with this Command.
      */
     protected fun require(s: Subsystem) {

@@ -9,10 +9,6 @@ class TemporalLerpMap<V : Interpolable<V>> {
         list[timestamp] = value
     }
 
-    fun last() : V {
-        return list.lastEntry().value
-    }
-
     operator fun get(timestamp: Double) : V {
         return if(list.containsKey(timestamp)) {
             list[timestamp]!!
@@ -30,5 +26,9 @@ class TemporalLerpMap<V : Interpolable<V>> {
             return 0.0
         }
         return list.lastKey()
+    }
+
+    fun clear() {
+        list.clear()
     }
 }
