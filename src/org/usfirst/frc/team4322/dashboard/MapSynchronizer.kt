@@ -1,8 +1,8 @@
 package org.usfirst.frc.team4322.dashboard
 
+import edu.wpi.first.networktables.*
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import edu.wpi.first.networktables.*
 import org.usfirst.frc.team4322.configuration.RobotConfigFileReader.primitiveMap
 import org.usfirst.frc.team4322.configuration.RobotPersistenceFileWriter
 import org.usfirst.frc.team4322.logging.RobotLogger
@@ -16,13 +16,13 @@ import java.util.*
  * Created by nicolasmachado on 3/30/16.
  */
 
-class MapSynchronizer {
+object MapSynchronizer {
 
     private val valMap = HashMap<String, FieldInfo>()
 
-    private inner class FieldInfo(internal var persistent: Boolean, internal var field: Field)
+    private class FieldInfo(internal var persistent: Boolean, internal var field: Field)
 
-    private inner class KeyListener(private val store: Field, private val persistent: Boolean) : TableEntryListener {
+    private class KeyListener(private val store: Field, private val persistent: Boolean) : TableEntryListener {
         private val type: Class<*> = store.type
 
         override fun valueChanged(table: NetworkTable, key: String, entry: NetworkTableEntry, value: NetworkTableValue, flags: Int) {
@@ -133,9 +133,5 @@ class MapSynchronizer {
             }
 
         }
-    }
-
-    companion object {
-        val instance = MapSynchronizer()
     }
 }

@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4322.commandv2
 
 import edu.wpi.first.wpilibj.SendableBase
-import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 import kotlinx.coroutines.*
 import org.usfirst.frc.team4322.logging.RobotLogger
@@ -92,7 +91,7 @@ abstract class Command() : SendableBase() {
             RobotLogger.info("Command ${name} started.")
             Scheduler.runningCommands.add(this@Command)
             Scheduler.commandsChanged = true
-            startTime = Timer.getFPGATimestamp()
+            startTime = System.currentTimeMillis().toDouble() / 1000 //Timer.getFPGATimestamp()
             initialize()
             RobotLogger.info("Command ${name} command initialized.")
             /*******************/
@@ -116,12 +115,12 @@ abstract class Command() : SendableBase() {
                     execute()
                 }
                 delay(TimeUnit.MILLISECONDS.toMillis((periodMS * 1000).toLong()))
-            } while (!isFinished() && !cancelled && (timeout == 0.0 || startTime + timeout > Timer.getFPGATimestamp()))
+            } while (!isFinished() && !cancelled && (timeout == 0.0 || startTime + timeout > System.currentTimeMillis().toDouble() / 1000)) //Timer.getFPGATimestamp()))
             /*******************/
             /**** END CODE ****/
             /*******************/
             end()
-            RobotLogger.info("Command ${name} finished.")
+            //RobotLogger.info("Command ${name} finished.")
             subsystem?.commandStack?.remove(job)
             Scheduler.runningCommands.remove(this@Command)
             Scheduler.commandsChanged = true
