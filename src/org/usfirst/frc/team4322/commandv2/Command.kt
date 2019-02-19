@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4322.commandv2
 
 import edu.wpi.first.wpilibj.SendableBase
+import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 import kotlinx.coroutines.*
 import org.usfirst.frc.team4322.logging.RobotLogger
@@ -84,47 +85,56 @@ abstract class Command() : SendableBase() {
      */
     open operator fun invoke(coroutineScope: CoroutineScope = GlobalScope): Deferred<Unit> {
         job = coroutineScope.async(start = CoroutineStart.LAZY) {
-            /*******************/
-            /**** INIT CODE ****/
-            /*******************/
-            subsystem?.commandStack?.push(job)
-            RobotLogger.info("Command ${name} started.")
-            Scheduler.runningCommands.add(this@Command)
-            Scheduler.commandsChanged = true
-            startTime = System.currentTimeMillis().toDouble() / 1000 //Timer.getFPGATimestamp()
-            initialize()
-            RobotLogger.info("Command ${name} command initialized.")
-            /*******************/
-            /**** LOOP CODE ****/
-            /*******************/
-            do {
-                val currentTop = subsystem?.commandStack?.peek()
-                if (currentTop != null && currentTop != job) {
-                    if (interruptBehavior == InterruptBehavior.Terminate) {
-                        cancelled = true
-                        RobotLogger.info("Command ${name} cancelled.")
-                    } else if (interruptBehavior == InterruptBehavior.Suspend) {
-                        interrupted()
-                        RobotLogger.info("Command ${name} interrupted.")
-                        currentTop.join()
-                        resumed()
-                        RobotLogger.info("Command ${name} resumed.")
+            try {
+                /*******************/
+                /**** INIT CODE ****/
+                /*******************/
+                subsystem?.commandStack?.push(job)
+                RobotLogger.info("Command ${name} started.")
+                Scheduler.runningCommands.add(this@Command)
+                Scheduler.commandsChanged = true
+                startTime = Timer.getFPGATimestamp()
+                initialize()
+                RobotLogger.info("Command ${name} initialized.")
+                /*******************/
+                /**** LOOP CODE ****/
+                /*******************/
+                do {
+                    val currentTop = subsystem?.commandStack?.peek()
+                    if (currentTop != null && currentTop != job) {
+                        if (interruptBehavior == InterruptBehavior.Terminate) {
+                            cancelled = true
+                            RobotLogger.info("Command ${name} cancelled.")
+                        } else if (interruptBehavior == InterruptBehavior.Suspend) {
+                            interrupted()
+                            RobotLogger.info("Command ${name} interrupted.")
+                            currentTop.join()
+                            resumed()
+                            RobotLogger.info("Command ${name} resumed.")
+                            execute()
+                        }
+                    } else {
                         execute()
+                        RobotLogger.debug("Command ${name} executed.")
                     }
-                } else {
-                    execute()
-                }
-                delay(TimeUnit.MILLISECONDS.toMillis((periodMS * 1000).toLong()))
-            } while (!isFinished() && !cancelled && (timeout == 0.0 || startTime + timeout > System.currentTimeMillis().toDouble() / 1000)) //Timer.getFPGATimestamp()))
-            /*******************/
-            /**** END CODE ****/
-            /*******************/
-            end()
-            //RobotLogger.info("Command ${name} finished.")
-            subsystem?.commandStack?.remove(job)
-            Scheduler.runningCommands.remove(this@Command)
-            Scheduler.commandsChanged = true
-            job = null
+                    delay(TimeUnit.MILLISECONDS.toMillis((periodMS * 1000).toLong()))
+                } while (!isFinished() && !cancelled && (timeout == 0.0 || startTime + timeout > Timer.getFPGATimestamp()))
+                /*******************/
+                /**** END CODE ****/
+                /*******************/
+                end()
+                RobotLogger.info("Command ${name} finished.")
+                subsystem?.commandStack?.remove(job)
+                Scheduler.runningCommands.remove(this@Command)
+                Scheduler.commandsChanged = true
+                job = null
+            } catch (ex: Exception) {
+                RobotLogger.exc("Exception in command main loop:", ex)
+                subsystem?.commandStack?.remove(job)
+                Scheduler.runningCommands.remove(this@Command)
+                Scheduler.commandsChanged = true
+                job = null
+            }
         }
         return job!!
     }

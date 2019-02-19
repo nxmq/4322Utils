@@ -8,7 +8,7 @@ plugins {
 
 }
 
-version = '2019-2.4'
+version = '2019-2.5'
 
 sourceSets {
     main.kotlin.srcDirs += 'src/'
