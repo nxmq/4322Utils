@@ -6,7 +6,7 @@ import kotlinx.coroutines.async
 import org.usfirst.frc.team4322.dashboard.MapSynchronizer
 import org.usfirst.frc.team4322.logging.RobotLogger
 
-class CommandV2Robot : TimedRobot() {
+open class CommandV2Robot : TimedRobot() {
     var fmsHasConnected = false
     open fun dsConnected() {}
     open fun fmsConnected() {}
