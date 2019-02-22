@@ -158,6 +158,3 @@ val foo = group {
     }
 }
 */
-/*
-remember to call .synthesize() on the group to turn the DSL into CommandGroup instances.
-*/

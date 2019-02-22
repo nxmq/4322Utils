@@ -128,6 +128,12 @@ abstract class Command() : SendableBase() {
                 Scheduler.runningCommands.remove(this@Command)
                 Scheduler.commandsChanged = true
                 job = null
+            } catch (ex: CancellationException) {
+                RobotLogger.info("Command ${name} cancelled.")
+                subsystem?.commandStack?.remove(job)
+                Scheduler.runningCommands.remove(this@Command)
+                Scheduler.commandsChanged = true
+                job = null
             } catch (ex: Exception) {
                 RobotLogger.exc("Exception in command main loop:", ex)
                 subsystem?.commandStack?.remove(job)

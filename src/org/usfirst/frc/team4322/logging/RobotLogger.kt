@@ -5,21 +5,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.usfirst.frc.team4322.dashboard.DashboardInputField
 import java.io.*
+import java.nio.file.Files
 import java.text.SimpleDateFormat
 import java.util.*
 
 /**
  * @NOTE: The following methods are used in this class:
- * getInstance() - gets the instance for the class (Singleton method)
- * update() - opens and updates the file system [FileWriter and BufferedWriter] ONLY when the system is initially
- * closed, then sets closed to false
+ * initialize() - opens and updates the file system
  * writeToFile(String) - writes message to log file ONLY when the system is open
  * writeErrorToFile(String, Throwable) - writes exception to log file
  * sendToConsole(String) - writes message to system output (Riolog) AND to the log file
- * addFileToZip(File, String) - sends a file to a zip folder
- * CurrentReadable_DateTime() - gets the current date and time
  * getString(Throwable) - gets a string out of a throwable
- * close() - closes the FileWriter and BufferedWriter
+ * switchToMatchLog - Initiates match logging mode.
  */
 
 /**
@@ -35,25 +32,15 @@ object RobotLogger {
     private const val MAX_FILE_LENGTH: Long = 10485760
     // Log writer
     private var pw: PrintWriter? = null
-    // Log File status
-    private var closed = true
-    // Get Date Format
-    private val sdf_ = SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS")
+    // Log Entry Date Format
+    private val logTimeFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS")
+    // Log File Date Format
+    private val logFileDateFormat = SimpleDateFormat("yyyy-MM-dd-hh:mm:ss")
+    // Log File Name
+    private var logFile = File("/")
     // Logging Level
     @DashboardInputField(field = "Logging Level")
     var currentLogLevel = LogLevel.DEBUG
-
-
-    private val logFile: String
-        get() {
-            var file = logFolder + "RobotLog"
-            if (driverStation.isFMSAttached) {
-                return logFolder + String.format("RobotCompetitionLog-%s-%s-%d-%d.log", driverStation.eventName, driverStation.matchType.name, driverStation.matchNumber, driverStation.replayNumber)
-            }
-            file += " [" + currentReadableDateTime() + "].log"
-            return file
-        }
-
 
     enum class LogLevel {
         DEBUG,
@@ -75,38 +62,33 @@ object RobotLogger {
         SmartDashboard.putData("Logging Level", enumChooser)
     }
 
-    fun update() {
-        if (closed) {
+    @Synchronized
+    fun switchToMatchLogging() {
+        var oldFile = logFile
+        logFile = File("$logFolder/${String.format("RobotCompetitionLog-%s-%s-%d-%d.log", driverStation.eventName, driverStation.matchType.name, driverStation.matchNumber, driverStation.replayNumber)}")
+        pw?.flush()
+        pw?.close()
+        Files.move(oldFile.toPath(), logFile.toPath())
+        pw = PrintWriter(BufferedWriter(FileWriter(logFile, true)))
+    }
+
+    @Synchronized
+    fun initialize() {
             try {
-                // Get the correct file
-                var log = File(logFile)
+                // Get the  file
+                logFile = File("$logFolder/RobotLog_${logFileDateFormat.format(Calendar.getInstance().time)}.log")
 
                 // Make sure the log directory exists.
-                if (!log.parentFile.exists()) {
-                    log.parentFile.mkdirs()
-                    log.createNewFile()
+                if (!logFile.parentFile.exists()) {
+                    logFile.parentFile.mkdirs()
+                    logFile.createNewFile()
                 }
-
-                // If the file exists & the length is too long, send it to ZIP
-                if (log.exists()) {
-                    if (log.length() > MAX_FILE_LENGTH) {
-                        val archivedLog = File(log.absolutePath.replace(".txt", "") + " [" +
-                                currentReadableDateTime() + "]" + ".txt")
-                        log.renameTo(archivedLog)
-                        log = File(logFile)
-                    }
-                } else {
-                    if (!log.createNewFile())
-                        println("****************ERROR IN CREATING FILE: $log ***********")
-                }// If log file does not exist, create it
-                pw = PrintWriter(BufferedWriter(FileWriter(log)))
-                closed = false
+                pw = PrintWriter(BufferedWriter(FileWriter(logFile)))
             } catch (ex: IOException) {
-                writeErrorToFile("RobotLogger.update()", ex)
+                writeErrorToFile("RobotLogger.initialize()", ex)
             }
 
             info("Successfully updated logging file system.")
-        }
     }
 
     fun setLogLevel(l: LogLevel) {
@@ -118,14 +100,11 @@ object RobotLogger {
 	 * If there is not, create the file.
 	 */
     private fun writeToFile(msg: String, vararg args: Any) {
-        pw!!.format(msg, *args)
+        pw?.format(msg, *args)
     }
 
     // Writes the throwable error to the .txt log file
     private fun writeErrorToFile(method: String, t: Throwable) {
-        if (closed) {
-            update()
-        }
         val msg = "\nException in " + method + ": " + getString(t)
         if (!DriverStation.getInstance().isFMSAttached) {
             System.err.println(msg)
@@ -166,7 +145,7 @@ object RobotLogger {
 
     @Synchronized
     fun exc(thisMessage: String, exc: Throwable) {
-        writeLogEntry("$thisMessage\n%s", LogLevel.ERR, exc.message!!)
+        writeLogEntry("$thisMessage\n%s", LogLevel.ERR, exc.message ?: "")
     }
 
     private fun writeLogEntry(message: String, level: LogLevel, vararg args: Any) {
@@ -174,7 +153,7 @@ object RobotLogger {
         if (level.ordinal < currentLogLevel.ordinal)
             return
         // Output logging messages to the console with a standard format
-        val datetimeFormat = "\n [" + currentReadableDateTime() + "] - Robot4322: - " + level.name + " - "
+        val datetimeFormat = "\n [" + currentReadableDateTime() + "] - Robot: - " + level.name + " - "
         if (!DriverStation.getInstance().isFMSAttached) {
             System.out.format(datetimeFormat + message + "\n", *args)
         }
@@ -197,18 +176,9 @@ object RobotLogger {
         exc.printStackTrace(pw)
     }
 
-    fun close() {
-        if (closed)
-            return
-        if (pw != null) {
-            pw!!.close()
-            closed = true
-        }
-    }
-
     // Gets the date in yyyy-MM-dd format
     private fun currentReadableDateTime(): String {
-        return sdf_.format(Calendar.getInstance().time)
+        return logTimeFormat.format(Calendar.getInstance().time)
     }
 
     // Creates a string out of a throwable

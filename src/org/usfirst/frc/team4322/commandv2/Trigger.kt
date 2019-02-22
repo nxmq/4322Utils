@@ -2,11 +2,15 @@ package org.usfirst.frc.team4322.commandv2
 
 abstract class Trigger {
 
+
     companion object {
         val triggers = mutableListOf<Trigger>()
+        var enabled = true
+
         @JvmStatic
         fun updateTriggers() {
-            triggers.forEach { it.poll() }
+            if (enabled)
+                triggers.forEach { it.poll() }
         }
     }
 
