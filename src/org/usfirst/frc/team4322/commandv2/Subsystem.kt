@@ -13,6 +13,7 @@ open class Subsystem
     val commandStack: ConcurrentLinkedDeque<Deferred<Unit>> = ConcurrentLinkedDeque()
     var defaultCommand: Command? = null
         protected set
+    var defaultCommandUninitialized = false
 
     init {
         Scheduler.subsystems.add(this)
@@ -34,6 +35,10 @@ open class Subsystem
 
     internal fun pump() {
         if (commandStack.isEmpty()) {
+            if (defaultCommand == null && defaultCommandUninitialized) {
+                initDefaultCommand()
+                defaultCommandUninitialized = true
+            }
             defaultCommand?.start()
         }
     }

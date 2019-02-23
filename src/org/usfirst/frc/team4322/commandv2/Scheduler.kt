@@ -22,22 +22,14 @@ object Scheduler : SendableBase() {
     val subsystems = mutableListOf<Subsystem>()
     val runningCommands = mutableListOf<Command>()
     var commandsChanged = true
-    var subsystemsPolled = false
 
     @JvmStatic
     fun update() {
-        if (!subsystemsPolled) {
-            for (subsystem in Scheduler.subsystems) {
-                subsystem.initDefaultCommand()
-            }
-            subsystemsPolled = true
-        }
         if (DriverStation.getInstance().isTest) {
             subsystems.forEach { it.periodic() }
         } else {
             subsystems.forEach { it.pump(); it.periodic() }
         }
-        Trigger.updateTriggers()
     }
 
     @JvmStatic

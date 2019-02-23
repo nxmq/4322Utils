@@ -50,6 +50,7 @@ open class CommandV2Robot : TimedRobot() {
                 RobotLogger.switchToMatchLogging()
             }
         }
+        Trigger.updateTriggers()
         Scheduler.update()
     }
 }
