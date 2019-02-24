@@ -1,8 +1,6 @@
 package org.usfirst.frc.team4322.logging
 
 import edu.wpi.first.wpilibj.DriverStation
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.usfirst.frc.team4322.dashboard.DashboardInputField
 import java.io.*
 import java.nio.file.Files
@@ -28,8 +26,6 @@ object RobotLogger {
     private val driverStation = DriverStation.getInstance()
     // Instances for the log files
     private val logFolder = System.getProperty("user.home") + "/logs"
-    // Constants for file
-    private const val MAX_FILE_LENGTH: Long = 10485760
     // Log writer
     private var pw: PrintWriter? = null
     // Log Entry Date Format
@@ -50,18 +46,6 @@ object RobotLogger {
         ERR
     }
 
-    init {
-        val enumChooser = SendableChooser<LogLevel>()
-        for (i in LogLevel::class.java.enumConstants) {
-            if (i == LogLevel.INFO) {
-                enumChooser.setDefaultOption(i.toString(), i)
-            } else {
-                enumChooser.addOption(i.toString(), i)
-            }
-        }
-        SmartDashboard.putData("Logging Level", enumChooser)
-    }
-
     @Synchronized
     fun switchToMatchLogging() {
         var oldFile = logFile
@@ -77,7 +61,6 @@ object RobotLogger {
             try {
                 // Get the  file
                 logFile = File("$logFolder/RobotLog_${logFileDateFormat.format(Calendar.getInstance().time)}.log")
-
                 // Make sure the log directory exists.
                 if (!logFile.parentFile.exists()) {
                     logFile.parentFile.mkdirs()
@@ -89,10 +72,6 @@ object RobotLogger {
             }
 
             info("Successfully updated logging file system.")
-    }
-
-    fun setLogLevel(l: LogLevel) {
-        currentLogLevel = l
     }
 
     /*

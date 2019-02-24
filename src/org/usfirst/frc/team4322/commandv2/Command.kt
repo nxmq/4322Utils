@@ -115,7 +115,6 @@ abstract class Command() : SendableBase() {
                         }
                     } else {
                         execute()
-                        RobotLogger.debug("Command ${name} executed.")
                     }
                     delay(TimeUnit.MILLISECONDS.toMillis((periodMS * 1000).toLong()))
                 } while (!isFinished() && !cancelled && (timeout == 0.0 || startTime + timeout > Timer.getFPGATimestamp()))
