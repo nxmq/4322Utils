@@ -50,9 +50,11 @@ object RobotLogger {
     fun switchToMatchLogging() {
         var oldFile = logFile
         logFile = File("$logFolder/${String.format("RobotCompetitionLog-%s-%s-%d-%d.log", driverStation.eventName, driverStation.matchType.name, driverStation.matchNumber, driverStation.replayNumber)}")
+        if(logFile.toPath().equals(oldFile.toPath()))
+            return
         pw?.flush()
         pw?.close()
-        Files.move(oldFile.toPath(), logFile.toPath())
+        Files.move(oldFile.toPath(), logFile.toPath(),StandardCopyOption.REPLACE_EXISTING)
         pw = PrintWriter(BufferedWriter(FileWriter(logFile, true)))
     }
 
