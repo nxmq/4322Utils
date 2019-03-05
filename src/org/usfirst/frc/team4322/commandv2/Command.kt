@@ -15,7 +15,6 @@ abstract class Command() : SendableBase() {
         Suspend,
         Terminate
     }
-
     internal var parented = false
     private var cancelled = false
     private var periodMS: Double = .02
@@ -24,7 +23,6 @@ abstract class Command() : SendableBase() {
     private var startTime: Double = 0.0
     internal var subsystem: Subsystem? = null
     internal var job: Deferred<Unit>? = null
-
 
     companion object {
         /**
@@ -42,6 +40,29 @@ abstract class Command() : SendableBase() {
                 }
             }
         }
+
+        /**
+         * Creates a command derived from the lambda passed in, requr
+         */
+        @JvmStatic
+        fun lambda(subsystem: Subsystem, fn: () -> Unit): Command {
+            return object : Command() {
+                init {
+                    require(subsystem)
+                }
+
+                override fun execute() {
+                    fn()
+                }
+
+                override fun isFinished(): Boolean {
+                    return true
+                }
+            }
+        }
+
+        @JvmStatic
+        val empty: Command = lambda {}
     }
 
     init {
@@ -68,6 +89,7 @@ abstract class Command() : SendableBase() {
      * @return true if the command was successfully cancelled or was not running, false if the command couldnt be cancelled.
      */
     fun cancel(): Boolean {
+        System.err.println("Cancel")
         if (isRunning()) {
             job?.cancel()
         }
@@ -118,23 +140,13 @@ abstract class Command() : SendableBase() {
                     }
                     delay(TimeUnit.MILLISECONDS.toMillis((periodMS * 1000).toLong()))
                 } while (!isFinished() && !cancelled && (timeout == 0.0 || startTime + timeout > Timer.getFPGATimestamp()))
-                /*******************/
-                /**** END CODE ****/
-                /*******************/
-                end()
-                RobotLogger.info("Command ${name} finished.")
-                subsystem?.commandStack?.remove(job)
-                Scheduler.runningCommands.remove(this@Command)
-                Scheduler.commandsChanged = true
-                job = null
-            } catch (ex: CancellationException) {
-                RobotLogger.info("Command ${name} cancelled.")
-                subsystem?.commandStack?.remove(job)
-                Scheduler.runningCommands.remove(this@Command)
-                Scheduler.commandsChanged = true
-                job = null
             } catch (ex: Exception) {
-                RobotLogger.exc("Exception in command main loop:", ex)
+                if (ex is CancellationException) {
+                    RobotLogger.info("Command ${name} cancelled.")
+                } else {
+                    RobotLogger.exc("Exception in command main loop:", ex)
+                }
+                this@Command.end()
                 subsystem?.commandStack?.remove(job)
                 Scheduler.runningCommands.remove(this@Command)
                 Scheduler.commandsChanged = true

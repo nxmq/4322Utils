@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4322.commandv2
 
-
 class TestCommand(val title: String, val maxCounts: Long, subsystem: Subsystem) : Command() {
     var counter = 0
 
@@ -37,7 +36,7 @@ class TestCommand(val title: String, val maxCounts: Long, subsystem: Subsystem) 
 }
 
 
-suspend fun main(args: Array<String>) {
+suspend fun main() {
 
     val s1 = Subsystem()
     val s2 = Subsystem()
@@ -54,10 +53,14 @@ suspend fun main(args: Array<String>) {
         sequential {
             +TestCommand("inst5", 10, s1)
             +TestCommand("inst6", 10, s2)
-            +lambda {
-                System.out.println("Lambda test!")
+            +first {
+                +TestCommand("inst7", 10, s2)
+                +lambda(s1) {
+                    System.out.println("Lambda test!")
+                }
             }
+
         }
     }
-    bar().await()
+    bar().join()
 }

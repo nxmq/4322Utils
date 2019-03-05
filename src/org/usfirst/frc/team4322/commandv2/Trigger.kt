@@ -12,6 +12,13 @@ abstract class Trigger {
             if (enabled)
                 triggers.forEach { it.poll() }
         }
+
+        @JvmStatic
+        fun on(trigFun: () -> Boolean): Trigger {
+            return object : Trigger() {
+                override fun get() = trigFun()
+            }
+        }
     }
 
     init {
@@ -26,6 +33,8 @@ abstract class Trigger {
     private var toggleCmd: Command? = null
     private var holdStarted: Boolean = false
     private var toggleState: Boolean = false
+    private var holdRunsLimit: Int = 0
+    private var holdRunsCount: Int = 0
 
 
     operator fun invoke(): Boolean {
@@ -38,9 +47,9 @@ abstract class Trigger {
         pressCmd = c
     }
 
-
-    fun whileHeld(c: Command) {
+    fun whileHeld(c: Command, runs: Int = 0) {
         holdCmd = c
+        holdRunsLimit = runs
     }
 
     fun whenReleased(c: Command) {
@@ -56,13 +65,14 @@ abstract class Trigger {
     }
 
     fun poll() {
-        var cur = get()
+        val cur = get()
         if (cur && prevState) {
             if (!holdStarted) {
                 holdStarted = true
                 holdCmd?.start()
+                holdRunsCount += 1
             } else {
-                if (holdCmd?.isRunning() != true) {
+                if (holdCmd?.isRunning() != true && (holdRunsLimit == 0 || holdRunsCount < holdRunsLimit)) {
                     holdCmd?.start()
                 }
             }
@@ -77,6 +87,7 @@ abstract class Trigger {
             cancelCmd?.cancel()
         } else if (!cur && prevState) {
             holdStarted = false
+            holdRunsCount = 0
             holdCmd?.cancel()
             releaseCmd?.start()
         }

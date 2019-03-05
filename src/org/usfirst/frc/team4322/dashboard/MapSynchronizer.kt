@@ -84,14 +84,9 @@ object MapSynchronizer {
 
     fun link(robotMap: Class<*>) {
         for (f in robotMap.fields) {
-            val persistent: Boolean
-            val field: String
+            val tag: DashboardInputField
             if (f.isAnnotationPresent(DashboardInputField::class.java)) {
-                persistent = false
-                field = f.getAnnotation<DashboardInputField>(DashboardInputField::class.java).field
-            } else if (f.isAnnotationPresent(PersistentDashboardInputField::class.java)) {
-                persistent = true
-                field = f.getAnnotation<PersistentDashboardInputField>(PersistentDashboardInputField::class.java).field
+                tag = f.getAnnotation<DashboardInputField>(DashboardInputField::class.java)
             } else {
                 continue
             }
@@ -101,20 +96,20 @@ object MapSynchronizer {
             }
             try {
                 if (type == Double::class.javaPrimitiveType || type == Float::class.javaPrimitiveType) {
-                    SmartDashboard.putNumber(field, f.getDouble(null))
-                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(field, KeyListener(f, persistent), TableEntryListener.kUpdate)
+                    SmartDashboard.putNumber(tag.field, f.getDouble(null))
+                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(tag.field, KeyListener(f, tag.persistent), TableEntryListener.kUpdate)
                 } else if (type == Long::class.javaPrimitiveType || type == Int::class.javaPrimitiveType || type == Short::class.javaPrimitiveType || type == Byte::class.javaPrimitiveType) {
-                    SmartDashboard.putNumber(field, f.getLong(null).toDouble())
-                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(field, KeyListener(f, persistent), TableEntryListener.kUpdate)
+                    SmartDashboard.putNumber(tag.field, f.getLong(null).toDouble())
+                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(tag.field, KeyListener(f, tag.persistent), TableEntryListener.kUpdate)
                 } else if (type == Boolean::class.javaPrimitiveType) {
-                    SmartDashboard.putBoolean(field, f.getBoolean(null))
-                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(field, KeyListener(f, persistent), TableEntryListener.kUpdate)
+                    SmartDashboard.putBoolean(tag.field, f.getBoolean(null))
+                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(tag.field, KeyListener(f, tag.persistent), TableEntryListener.kUpdate)
                 } else if (type == String::class.java) {
-                    SmartDashboard.putString(field, f.get(null) as String)
-                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(field, KeyListener(f, persistent), TableEntryListener.kUpdate)
+                    SmartDashboard.putString(tag.field, f.get(null) as String)
+                    NetworkTableInstance.getDefault().getTable("SmartDashboard").addEntryListener(tag.field, KeyListener(f, tag.persistent), TableEntryListener.kUpdate)
 
                 } else if (type.isEnum) {
-                    if (persistent) {
+                    if (tag.persistent) {
                         RobotLogger.err("SendableChoosers cannot be persistent. Sorry.")
                         continue
                     }
@@ -122,8 +117,8 @@ object MapSynchronizer {
                     for (i in 0 until type.enumConstants.size) {
                         enumChooser.addOption(type.enumConstants[i].toString(), type.enumConstants[i])
                     }
-                    SmartDashboard.putData(field, enumChooser)
-                    SendableChooserListener(enumChooser, f, field)
+                    SmartDashboard.putData(tag.field, enumChooser)
+                    SendableChooserListener(enumChooser, f, tag.field)
                 } else {
                     RobotLogger.err("The type of field %s is unsupported by MapUtils at this time. This will not be synchronized with the SmartDashboard.", f.name)
                 }

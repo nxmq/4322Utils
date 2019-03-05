@@ -8,8 +8,7 @@ import kotlinx.coroutines.Deferred
 import java.util.concurrent.ConcurrentLinkedDeque
 
 
-open class Subsystem
-    : SendableBase() {
+open class Subsystem : SendableBase() {
     val commandStack: ConcurrentLinkedDeque<Deferred<Unit>> = ConcurrentLinkedDeque()
     var defaultCommand: Command? = null
         protected set

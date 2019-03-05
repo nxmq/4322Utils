@@ -3,64 +3,25 @@ package org.usfirst.frc.team4322.input
 import edu.wpi.first.wpilibj.GenericHID
 import edu.wpi.first.wpilibj.Joystick
 import org.usfirst.frc.team4322.commandv2.ButtonTrigger
-import org.usfirst.frc.team4322.logging.RobotLogger
+import org.usfirst.frc.team4322.commandv2.Trigger
 
 
 class InputXbox
-@JvmOverloads constructor(private val port: Int = 0) : Joystick(port) {
-    val leftStick: Thumbstick
-    val rightStick: Thumbstick
-    val lt: Trigger
-    val rt: Trigger
-    val dPad: DirectionalPad
-    val a: ButtonTrigger
-    val b: ButtonTrigger
-    val x: ButtonTrigger
-    val y: ButtonTrigger
-    val lb: ButtonTrigger
-    val rb: ButtonTrigger
-    val back: ButtonTrigger
-    val start: ButtonTrigger
+@JvmOverloads constructor(port: Int = 0) : Joystick(port) {
 
-    fun leftStick() = leftStick.get()
-    fun rightStick() = leftStick.get()
-    fun lt() = lt.axis()
-    fun rt() = rt.axis()
-    fun a() = a.get()
-    fun b() = b.get()
-    fun x() = x.get()
-    fun y() = y.get()
-    fun lb() = lb.get()
-    fun rb() = rb.get()
-    fun back() = back.get()
-    fun start() = start.get()
-
-    private val joystick: Joystick = Joystick(port)
-
-
-    init {
-        leftStick = Thumbstick(joystick, HAND.LEFT)
-        rightStick = Thumbstick(joystick, HAND.RIGHT)
-        dPad = DirectionalPad(joystick)
-        lt = Trigger(joystick, HAND.LEFT)
-        rt = Trigger(joystick, HAND.RIGHT)
-        a = ButtonTrigger(joystick, A_BUTTON_ID)
-        b = ButtonTrigger(joystick, B_BUTTON_ID)
-        x = ButtonTrigger(joystick, X_BUTTON_ID)
-        y = ButtonTrigger(joystick, Y_BUTTON_ID)
-        lb = ButtonTrigger(joystick, LB_BUTTON_ID)
-        rb = ButtonTrigger(joystick, RB_BUTTON_ID)
-        back = ButtonTrigger(joystick, BACK_BUTTON_ID)
-        start = ButtonTrigger(joystick, START_BUTTON_ID)
-    }// Extends Joystick...
-    /* Initialize */
-
-    /**
-     * @return The port of this InputXbox
-     */
-    override fun getPort(): Int {
-        return port
-    }
+    val leftStick: Thumbstick by lazy { Thumbstick(HAND.LEFT) }
+    val rightStick: Thumbstick by lazy { Thumbstick(HAND.RIGHT) }
+    val dPad: DirectionalPad by lazy { DirectionalPad() }
+    val lt: Trigger by lazy { XboxTrigger(HAND.LEFT) }
+    val rt: Trigger by lazy { XboxTrigger(HAND.RIGHT) }
+    val a: ButtonTrigger by lazy { ButtonTrigger(this, A_BUTTON_ID) }
+    val b: ButtonTrigger by lazy { ButtonTrigger(this, B_BUTTON_ID) }
+    val x: ButtonTrigger by lazy { ButtonTrigger(this, X_BUTTON_ID) }
+    val y: ButtonTrigger by lazy { ButtonTrigger(this, Y_BUTTON_ID) }
+    val lb: ButtonTrigger by lazy { ButtonTrigger(this, LB_BUTTON_ID) }
+    val rb: ButtonTrigger by lazy { ButtonTrigger(this, RB_BUTTON_ID) }
+    val back: ButtonTrigger by lazy { ButtonTrigger(this, BACK_BUTTON_ID) }
+    val start: ButtonTrigger by lazy { ButtonTrigger(this, START_BUTTON_ID) }
 
     /**
      * Make the controller vibrate
@@ -69,11 +30,10 @@ class InputXbox
      * @param intensity How strong the rumble is
      */
     fun setRumble(hand: HAND, intensity: Double) {
-
         if (hand == HAND.LEFT) {
-            joystick.setRumble(GenericHID.RumbleType.kLeftRumble, intensity)
+            setRumble(GenericHID.RumbleType.kLeftRumble, intensity)
         } else {
-            joystick.setRumble(GenericHID.RumbleType.kRightRumble, intensity)
+            setRumble(GenericHID.RumbleType.kRightRumble, intensity)
         }
     }
 
@@ -84,8 +44,8 @@ class InputXbox
      */
     fun setRumble(intensity: Double) {
 
-        joystick.setRumble(GenericHID.RumbleType.kLeftRumble, intensity)
-        joystick.setRumble(GenericHID.RumbleType.kRightRumble, intensity)
+        setRumble(GenericHID.RumbleType.kLeftRumble, intensity)
+        setRumble(GenericHID.RumbleType.kRightRumble, intensity)
     }
 
     /*
@@ -134,17 +94,11 @@ class InputXbox
              * @return DPAD with matching angle
              */
             fun getEnum(angle: Int): DPAD {
-                var modifiedAngle = Math.round(((Math.abs(angle) % 360) / 45).toFloat()) * 45    // May have rounding errors. Due to rounding errors.
-                val all = DPAD.values()
-
-                for (i in all.indices) {
-                    if (all[i].value == modifiedAngle) {
-                        return all[i]
-                    }
+                var modifiedAngle: Int = (Math.abs(angle) % 360)
+                if ((modifiedAngle % 45) != 0) {
+                    modifiedAngle = ((modifiedAngle / 45) + 1) * 45
                 }
-
-                RobotLogger.warn("[InputXbox.DPAD.getEnum()] Angle supplied ($angle) has no related DPad direction")
-                return DPAD.UP
+                return DPAD.values()[modifiedAngle / 45]
             }
         }
     }
@@ -155,35 +109,20 @@ class InputXbox
      * This class is used to represent the thumbsticks on the
      * Xbox360 controller.
      */
-    class Thumbstick
+    inner class Thumbstick
     /**
      * Constructor
      *
-     * @param parent
      * @param hand
      */
-    internal constructor(private val parent: Joystick, private val hand: HAND) : org.usfirst.frc.team4322.commandv2.Trigger() {
+    internal constructor(private val hand: HAND) : Trigger() {
         val x: JoystickAxis
         val y: JoystickAxis
         private val buttonID: Int
 
         override fun get(): Boolean {
-            return parent.getRawButton(buttonID)
+            return this@InputXbox.getRawButton(buttonID)
         }
-
-        /**
-         * x
-         *
-         * @return x axis value with a deadzone and ramp applied
-         */
-        fun x(): Double = x.get()
-
-        /**
-         * getRawY
-         *
-         * @return y axis value with a deadzone and ramp applied
-         */
-        fun y(): Double = y.get()
 
         /**
          * 0    = Up;
@@ -219,12 +158,12 @@ class InputXbox
         init {
 
             if (hand == HAND.LEFT) {
-                x = JoystickAxis(parent, LEFT_THUMBSTICK_X_AXIS_ID)
-                y = JoystickAxis(parent, LEFT_THUMBSTICK_Y_AXIS_ID)
+                x = JoystickAxis(this@InputXbox, LEFT_THUMBSTICK_X_AXIS_ID)
+                y = JoystickAxis(this@InputXbox, LEFT_THUMBSTICK_Y_AXIS_ID)
                 buttonID = LEFT_THUMBSTICK_BUTTON_ID
             } else {                                            // If right hand
-                x = JoystickAxis(parent, RIGHT_THUMBSTICK_X_AXIS_ID)
-                y = JoystickAxis(parent, RIGHT_THUMBSTICK_Y_AXIS_ID)
+                x = JoystickAxis(this@InputXbox, RIGHT_THUMBSTICK_X_AXIS_ID)
+                y = JoystickAxis(this@InputXbox, RIGHT_THUMBSTICK_Y_AXIS_ID)
                 buttonID = RIGHT_THUMBSTICK_BUTTON_ID
             }
             x.deadband = DEFAULT_THUMBSTICK_DEADZONE
@@ -292,19 +231,16 @@ class InputXbox
      * This class is used to represent one of the two
      * Triggers on an Xbox360 controller.
      */
-    class Trigger
+    inner class XboxTrigger
     /**
      * Constructor
      *
-     * @param parent
      * @param hand
      */
-    internal constructor(/* Instance Values */
-            private val parent: Joystick,
-            private val hand: HAND) : org.usfirst.frc.team4322.commandv2.Trigger() {
+    internal constructor(private val hand: HAND) : Trigger() {
 
-        private var deadZone: Double = 0.0
-        private var sensitivity: Double = 0.0
+        var deadZone: Double = 0.0
+        var sensitivity: Double = 0.0
 
         /**
          * 0 = Not pressed
@@ -314,12 +250,12 @@ class InputXbox
          */
         fun axis(): Double {
                 val rawInput: Double = if (hand == HAND.LEFT) {
-                    parent.getRawAxis(LEFT_TRIGGER_AXIS_ID)
+                    this@InputXbox.getRawAxis(LEFT_TRIGGER_AXIS_ID)
                 } else {
-                    parent.getRawAxis(RIGHT_TRIGGER_AXIS_ID)
+                    this@InputXbox.getRawAxis(RIGHT_TRIGGER_AXIS_ID)
                 }
 
-                return createDeadZone(rawInput, deadZone)
+            return if (rawInput < deadZone) 0.0 else rawInput
             }
 
         init {
@@ -333,39 +269,12 @@ class InputXbox
             return axis() > sensitivity
         }
 
-
-        /* Set Methods */
-
-        /**
-         * Set the deadzone of this trigger
-         *
-         * @param number
-         */
-        fun setTriggerDeadZone(number: Double) {
-            deadZone = number
-        }
-
-        /**
-         * How far you need to press this trigger to activate a button press
-         *
-         * @param number
-         */
-        fun setTriggerSensitivity(number: Double) {
-            sensitivity = number
-        }
     }
 
     /**
      * This is a weird object which is essentially just 8 buttons.
      */
-    class DirectionalPad
-    /**
-     * Constructor
-     *
-     * @param parent
-     */
-    internal constructor(/* Instance Values */
-            private val parent: Joystick) {
+    inner class DirectionalPad internal constructor() {
 
         val up: DPadButton
         val upRight: DPadButton
@@ -397,39 +306,33 @@ class InputXbox
 
 
         init {
-            up = DPadButton(this, DPAD.UP)
-            upRight = DPadButton(this, DPAD.UP_RIGHT)
-            right = DPadButton(this, DPAD.RIGHT)
-            downRight = DPadButton(this, DPAD.DOWN_RIGHT)
-            down = DPadButton(this, DPAD.DOWN)
-            downLeft = DPadButton(this, DPAD.DOWN_LEFT)
-            left = DPadButton(this, DPAD.LEFT)
-            upLeft = DPadButton(this, DPAD.UP_LEFT)
+            up = DPadButton(DPAD.UP)
+            upRight = DPadButton(DPAD.UP_RIGHT)
+            right = DPadButton(DPAD.RIGHT)
+            downRight = DPadButton(DPAD.DOWN_RIGHT)
+            down = DPadButton(DPAD.DOWN)
+            downLeft = DPadButton(DPAD.DOWN_LEFT)
+            left = DPadButton(DPAD.LEFT)
+            upLeft = DPadButton(DPAD.UP_LEFT)
         }/* Initialize */
 
         fun angle(): Int {
-            return parent.pov
+            return this@InputXbox.pov
         }
 
         /**
          * This class is used to represent each of the 8 values a
          * dPad has as a button.
          */
-        class DPadButton
+        inner class DPadButton
         /**
          * Constructor
          *
-         * @param parent
          * @param direction
          */
-        internal constructor(private val parent: DirectionalPad, /* Instance Values */
-                             private val direction: DPAD)/* Initialize */ : org.usfirst.frc.team4322.commandv2.Trigger()
+        internal constructor(private val direction: DPAD) : Trigger()
         {
-
-            /* Extended Methods */
-            override fun get(): Boolean {
-                return parent.angle() == direction.value
-            }
+            override fun get(): Boolean = this@DirectionalPad.angle() == direction.value
         }
     }
 
@@ -459,32 +362,5 @@ class InputXbox
         private const val RIGHT_TRIGGER_AXIS_ID = 3
         private const val RIGHT_THUMBSTICK_X_AXIS_ID = 4
         private const val RIGHT_THUMBSTICK_Y_AXIS_ID = 5
-
-        /**
-         * Creates a deadzone, but without clipping the lower values.
-         * turns this
-         * |--1--2--3--4--5--|
-         * into this
-         * ______|-1-2-3-4-5-|
-         *
-         * @param input
-         * @param deadZoneSize
-         * @return adjusted_input
-         */
-        private fun createDeadZone(input: Double, deadZoneSize: Double): Double {
-            val negative: Double = (if (input < 0) -1 else 1).toDouble()
-            var deadZoneSizeClamp = deadZoneSize
-            var adjusted: Double
-
-            if (deadZoneSizeClamp < 0 || deadZoneSizeClamp >= 1) {
-                deadZoneSizeClamp = 0.0  // Prevent any weird errors
-            }
-
-            adjusted = Math.abs(input) - deadZoneSizeClamp  // Subtract the deadzone from the magnitude
-            adjusted = if (adjusted < 0) 0.0 else adjusted          // if the new input is negative, make it zero
-            adjusted /= (1 - deadZoneSizeClamp)   // Adjust the adjustment so it can max at 1
-
-            return negative * adjusted
-        }
     }
 }

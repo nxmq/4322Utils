@@ -6,4 +6,4 @@ package org.usfirst.frc.team4322.dashboard
  */
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD)
-annotation class DashboardInputField(val field: String)
+annotation class DashboardInputField(val field: String, val persistent: Boolean = false)
