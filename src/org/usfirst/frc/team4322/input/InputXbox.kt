@@ -12,8 +12,8 @@ class InputXbox
     val leftStick: Thumbstick by lazy { Thumbstick(HAND.LEFT) }
     val rightStick: Thumbstick by lazy { Thumbstick(HAND.RIGHT) }
     val dPad: DirectionalPad by lazy { DirectionalPad() }
-    val lt: Trigger by lazy { XboxTrigger(HAND.LEFT) }
-    val rt: Trigger by lazy { XboxTrigger(HAND.RIGHT) }
+    val lt: XboxTrigger by lazy { XboxTrigger(HAND.LEFT) }
+    val rt: XboxTrigger by lazy { XboxTrigger(HAND.RIGHT) }
     val a: ButtonTrigger by lazy { ButtonTrigger(this, A_BUTTON_ID) }
     val b: ButtonTrigger by lazy { ButtonTrigger(this, B_BUTTON_ID) }
     val x: ButtonTrigger by lazy { ButtonTrigger(this, X_BUTTON_ID) }
