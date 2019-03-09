@@ -82,7 +82,11 @@ abstract class SubSet : CommandSet() {
         return Command.lambda(subsystem, fn)
     }
 
-    fun add(op: Any) {
+    fun waitFor(cond: () -> Boolean) {
+        add(Command.waitFor(cond))
+    }
+
+    private fun add(op: Any) {
         commands.add(op)
         order.add(Pair(Location.Commands, commands.size - 1))
     }

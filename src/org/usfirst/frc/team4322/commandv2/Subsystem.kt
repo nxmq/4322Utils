@@ -12,7 +12,8 @@ open class Subsystem : SendableBase() {
     val commandStack: ConcurrentLinkedDeque<Deferred<Unit>> = ConcurrentLinkedDeque()
     var defaultCommand: Command? = null
         protected set
-    var defaultCommandUninitialized = false
+    var defaultCommandInitialized = false
+    var currentCommandName: String = ""
 
     init {
         Scheduler.subsystems.add(this)
@@ -25,7 +26,6 @@ open class Subsystem : SendableBase() {
     }
 
     open fun initDefaultCommand() {
-
     }
 
     open fun periodic() {
@@ -34,9 +34,9 @@ open class Subsystem : SendableBase() {
 
     internal fun pump() {
         if (commandStack.isEmpty()) {
-            if (defaultCommand == null && defaultCommandUninitialized) {
+            if (defaultCommand == null && !defaultCommandInitialized) {
                 initDefaultCommand()
-                defaultCommandUninitialized = true
+                defaultCommandInitialized = true
             }
             defaultCommand?.start()
         }
@@ -49,26 +49,7 @@ open class Subsystem : SendableBase() {
      */
     fun getDefaultCommandName(): String {
         val defaultCommand = this.defaultCommand
-        return if (defaultCommand != null) {
-            defaultCommand.javaClass.name
-        } else {
-            ""
-        }
-    }
-
-
-    /**
-     * Returns the current command title, or empty string if no current command.
-     *
-     * @return the current command title
-     */
-    fun getCurrentCommandName(): String {
-        val currentCommand = commandStack.peek()
-        return if (currentCommand != null) {
-            currentCommand.javaClass.name
-        } else {
-            ""
-        }
+        return defaultCommand?.javaClass?.name ?: ""
     }
 
     /**
@@ -102,6 +83,6 @@ open class Subsystem : SendableBase() {
         builder.addBooleanProperty(".hasDefault", { defaultCommand != null }, null)
         builder.addStringProperty(".default", { getDefaultCommandName() }, null)
         builder.addBooleanProperty(".hasCommand", { !commandStack.isEmpty() }, null)
-        builder.addStringProperty(".command", { getCurrentCommandName() }, null)
+        builder.addStringProperty(".command", { currentCommandName }, null)
     }
 }

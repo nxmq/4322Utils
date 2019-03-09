@@ -1,12 +1,13 @@
 package org.usfirst.frc.team4322.logging
 
 import edu.wpi.first.wpilibj.DriverStation
-import org.usfirst.frc.team4322.dashboard.DashboardInputField
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.LinkedBlockingQueue
+
 
 /**
  * @NOTE: The following methods are used in this class:
@@ -36,8 +37,31 @@ object RobotLogger {
     // Log File Name
     private var logFile = File("/")
     // Logging Level
-    @DashboardInputField(field = "Logging Level")
     var currentLogLevel = LogLevel.DEBUG
+
+    var enableStdoutLogging = false
+
+    data class Message(val level: LogLevel, val text: String)
+
+    val messageQueue: LinkedBlockingQueue<Message> = LinkedBlockingQueue()
+
+    val logThread = Thread {
+        while (true) {
+            val message = messageQueue.take()
+            //check current logging level
+            if (message.level.ordinal < currentLogLevel.ordinal)
+                continue
+            if (!DriverStation.getInstance().isFMSAttached && enableStdoutLogging) {
+                System.out.println(message.text)
+            }
+            // Output logging messages to a .txt log file
+            try {
+                pw?.println(message.text)
+            } catch (ex: IOException) {
+
+            }
+        }
+    }
 
     enum class LogLevel {
         DEBUG,
@@ -47,9 +71,13 @@ object RobotLogger {
         ERR
     }
 
+    init {
+        logThread.start()
+    }
+
     @Synchronized
     fun switchToMatchLogging() {
-        var oldFile = logFile
+        val oldFile = logFile
         logFile = File("$logFolder/${String.format("RobotCompetitionLog-%s-%s-%d-%d.log", driverStation.eventName, driverStation.matchType.name, driverStation.matchNumber, driverStation.replayNumber)}")
         if(logFile.toPath().equals(oldFile.toPath()))
             return
@@ -62,7 +90,7 @@ object RobotLogger {
     @Synchronized
     fun initialize() {
             try {
-                // Get the  file
+                // Get the file
                 logFile = File("$logFolder/RobotLog_${logFileDateFormat.format(Calendar.getInstance().time)}.log")
                 // Make sure the log directory exists.
                 if (!logFile.parentFile.exists()) {
@@ -71,103 +99,55 @@ object RobotLogger {
                 }
                 pw = PrintWriter(BufferedWriter(FileWriter(logFile)))
             } catch (ex: IOException) {
-                writeErrorToFile("RobotLogger.initialize()", ex)
+                exc("RobotLogger.initialize()", ex)
             }
-
             info("Successfully updated logging file system.")
     }
 
-    /*
-	 * If there already is a file, write the data to it.
-	 * If there is not, create the file.
-	 */
-    private fun writeToFile(msg: String, vararg args: Any) {
-        pw?.format(msg, *args)
+    @Synchronized
+    fun debug(message: String, vararg args: Any) {
+        submitLogEntry(message, LogLevel.DEBUG, *args)
     }
 
-    // Writes the throwable error to the .txt log file
-    private fun writeErrorToFile(method: String, t: Throwable) {
-        val msg = "\nException in " + method + ": " + getString(t)
-        if (!DriverStation.getInstance().isFMSAttached) {
-            System.err.println(msg)
-        }
-        writeToFile(msg)
+    @Synchronized
+    fun info(message: String, vararg args: Any) {
+        submitLogEntry(message, LogLevel.INFO, *args)
     }
 
-    //Writes throwable error to DS.
-    private fun writeErrorToDS(message: String) {
+    @Synchronized
+    fun log(message: String, vararg args: Any) {
+        submitLogEntry(message, LogLevel.LOG, *args)
+    }
+
+    @Synchronized
+    fun warn(message: String, vararg args: Any) {
+        submitLogEntry(message, LogLevel.WARN, *args)
+    }
+
+    @Synchronized
+    fun err(message: String, vararg args: Any) {
+        submitLogEntry(message, LogLevel.ERR, *args)
         DriverStation.reportError(message, false)
+
     }
 
     @Synchronized
-    fun debug(thisMessage: String, vararg args: Any) {
-        writeLogEntry(thisMessage, LogLevel.DEBUG, *args)
-    }
-
-    @Synchronized
-    fun info(thisMessage: String, vararg args: Any) {
-        writeLogEntry(thisMessage, LogLevel.INFO, *args)
-    }
-
-    @Synchronized
-    fun log(thisMessage: String, vararg args: Any) {
-        writeLogEntry(thisMessage, LogLevel.LOG, *args)
-    }
-
-    @Synchronized
-    fun warn(thisMessage: String, vararg args: Any) {
-        writeLogEntry(thisMessage, LogLevel.WARN, *args)
-    }
-
-    @Synchronized
-    fun err(thisMessage: String, vararg args: Any) {
-        writeLogEntry(thisMessage, LogLevel.ERR, *args)
-        writeErrorToDS(String.format(thisMessage, *args))
-    }
-
-    @Synchronized
-    fun exc(thisMessage: String, exc: Throwable) {
-        writeLogEntry("$thisMessage\n%s", LogLevel.ERR, exc.message ?: "")
-    }
-
-    private fun writeLogEntry(message: String, level: LogLevel, vararg args: Any) {
-        //check current logging level
-        if (level.ordinal < currentLogLevel.ordinal)
-            return
-        // Output logging messages to the console with a standard format
-        val datetimeFormat = "\n [" + currentReadableDateTime() + "] - Robot: - " + level.name + " - "
-        if (!DriverStation.getInstance().isFMSAttached) {
-            System.out.format(datetimeFormat + message + "\n", *args)
-        }
-        // Output logging messages to a .txt log file
-        writeToFile(datetimeFormat + message + "\n", *args)
-    }
-
-    private fun writeException(message: String, level: LogLevel, exc: Exception) {
-        //check current logging level
-        if (level.ordinal < currentLogLevel.ordinal)
-            return
-        // Output logging messages to the console with a standard format
-        val datetimeFormat = "\n [" + currentReadableDateTime() + "] - Robot: - " + level.name + " - "
-        if (!DriverStation.getInstance().isFMSAttached) {
-            System.out.format(datetimeFormat + message + "\n")
-            exc.printStackTrace()
-        }
-        // Output logging messages to a .txt log file
-        writeToFile(datetimeFormat + message + "\n")
+    fun exc(message: String, exc: java.lang.Exception) {
+        val sw = StringWriter()
+        val pw = PrintWriter(sw)
         exc.printStackTrace(pw)
+        submitLogEntry("$message\n%s", LogLevel.ERR, sw.toString())
+        DriverStation.reportError(message, exc.stackTrace)
+    }
+
+    private fun submitLogEntry(message: String, level: LogLevel, vararg args: Any) {
+        // Output logging messages to the console wih a standard format
+        val datetimeFormat = "\n [" + currentReadableDateTime() + "] - Robot: - " + level.name + " - "
+        messageQueue.add(Message(level, String.format(datetimeFormat + message + "\n", *args)))
     }
 
     // Gets the date in yyyy-MM-dd format
     private fun currentReadableDateTime(): String {
         return logTimeFormat.format(Calendar.getInstance().time)
-    }
-
-    // Creates a string out of a throwable
-    private fun getString(e: Throwable): String {
-        val sw = StringWriter()
-        val pw = PrintWriter(sw)
-        e.printStackTrace(pw)
-        return sw.toString()
     }
 }

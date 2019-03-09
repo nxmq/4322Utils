@@ -57,9 +57,6 @@ class InputXbox
         rightStick.setDeadZone(number)
     }
 
-
-    /* Get Methods */
-
     /**
      * Rather than use an integer (which might not be what we expect)
      * we use an enum which has a set amount of possibilities.
@@ -143,7 +140,6 @@ class InputXbox
          *
          * @return A number between 0 and 1
          */
-        // Prevent any errors that might arise
         val magnitude: Double
             get() {
                 var magnitude = scaleMagnitude(x.unramped(), y.unramped())
@@ -156,7 +152,6 @@ class InputXbox
             }
 
         init {
-
             if (hand == HAND.LEFT) {
                 x = JoystickAxis(this@InputXbox, LEFT_THUMBSTICK_X_AXIS_ID)
                 y = JoystickAxis(this@InputXbox, LEFT_THUMBSTICK_Y_AXIS_ID)
@@ -168,7 +163,7 @@ class InputXbox
             }
             x.deadband = DEFAULT_THUMBSTICK_DEADZONE
             y.deadband = DEFAULT_THUMBSTICK_DEADZONE
-        }/* Initialize */
+        }
 
         /**
          * magnitude
@@ -276,25 +271,15 @@ class InputXbox
      */
     inner class DirectionalPad internal constructor() {
 
-        val up: DPadButton
-        val upRight: DPadButton
-        val right: DPadButton
-        val downRight: DPadButton
-        val down: DPadButton
-        val downLeft: DPadButton
-        val left: DPadButton
-        val upLeft: DPadButton
+        val up: DPadButton by lazy { DPadButton(DPAD.UP) }
+        val upRight: DPadButton by lazy { DPadButton(DPAD.UP_RIGHT) }
+        val right: DPadButton by lazy { DPadButton(DPAD.RIGHT) }
+        val downRight: DPadButton by lazy { DPadButton(DPAD.DOWN_RIGHT) }
+        val down: DPadButton by lazy { DPadButton(DPAD.DOWN) }
+        val downLeft: DPadButton by lazy { DPadButton(DPAD.DOWN_LEFT) }
+        val left: DPadButton by lazy { DPadButton(DPAD.LEFT) }
+        val upLeft: DPadButton by lazy { DPadButton(DPAD.UP_LEFT) }
 
-        fun up() = up.get()
-        fun upRight() = upRight.get()
-        fun right() = right.get()
-        fun downRight() = downRight.get()
-        fun down() = down.get()
-        fun downLeft() = downLeft.get()
-        fun left() = left.get()
-        fun upLeft() = upLeft.get()
-
-        /* Get Methods */
 
         /**
          * Just like getAngle, but returns a direction instead of an angle
@@ -305,17 +290,6 @@ class InputXbox
             get() = DPAD.getEnum(angle())
 
 
-        init {
-            up = DPadButton(DPAD.UP)
-            upRight = DPadButton(DPAD.UP_RIGHT)
-            right = DPadButton(DPAD.RIGHT)
-            downRight = DPadButton(DPAD.DOWN_RIGHT)
-            down = DPadButton(DPAD.DOWN)
-            downLeft = DPadButton(DPAD.DOWN_LEFT)
-            left = DPadButton(DPAD.LEFT)
-            upLeft = DPadButton(DPAD.UP_LEFT)
-        }/* Initialize */
-
         fun angle(): Int {
             return this@InputXbox.pov
         }
@@ -324,14 +298,7 @@ class InputXbox
          * This class is used to represent each of the 8 values a
          * dPad has as a button.
          */
-        inner class DPadButton
-        /**
-         * Constructor
-         *
-         * @param direction
-         */
-        internal constructor(private val direction: DPAD) : Trigger()
-        {
+        inner class DPadButton internal constructor(private val direction: DPAD) : Trigger() {
             override fun get(): Boolean = this@DirectionalPad.angle() == direction.value
         }
     }

@@ -16,7 +16,6 @@ abstract class Command() : SendableBase() {
         Terminate
     }
     internal var parented = false
-    private var cancelled = false
     private var periodMS: Double = .02
     protected var interruptBehavior = InterruptBehavior.Terminate
     private var timeout: Double = 0.0
@@ -31,6 +30,9 @@ abstract class Command() : SendableBase() {
         @JvmStatic
         fun lambda(fn: () -> Unit): Command {
             return object : Command() {
+                init {
+                    name = "Lambda"
+                }
                 override fun execute() {
                     fn()
                 }
@@ -42,13 +44,14 @@ abstract class Command() : SendableBase() {
         }
 
         /**
-         * Creates a command derived from the lambda passed in, requr
+         * Creates a command derived from the lambda passed in, requiring the passed subsystem.
          */
         @JvmStatic
         fun lambda(subsystem: Subsystem, fn: () -> Unit): Command {
             return object : Command() {
                 init {
                     require(subsystem)
+                    name = "Lambda"
                 }
 
                 override fun execute() {
@@ -63,6 +66,36 @@ abstract class Command() : SendableBase() {
 
         @JvmStatic
         val empty: Command = lambda {}
+
+        @JvmStatic
+        fun waitFor(fn: () -> Boolean): Command {
+            return object : Command() {
+                init {
+                    name = "WaitFor"
+                }
+
+                override fun execute() {
+
+                }
+
+                override fun isFinished(): Boolean {
+                    return fn()
+                }
+            }
+        }
+
+        @JvmStatic
+        fun delay(seconds: Double): Command {
+
+            return object : Command(seconds) {
+                init {
+                    name = "Delay"
+                }
+
+                override fun isFinished() = false
+            }
+        }
+
     }
 
     init {
@@ -89,7 +122,6 @@ abstract class Command() : SendableBase() {
      * @return true if the command was successfully cancelled or was not running, false if the command couldnt be cancelled.
      */
     fun cancel(): Boolean {
-        System.err.println("Cancel")
         if (isRunning()) {
             job?.cancel()
         }
@@ -112,6 +144,7 @@ abstract class Command() : SendableBase() {
                 /**** INIT CODE ****/
                 /*******************/
                 subsystem?.commandStack?.push(job)
+                subsystem?.currentCommandName = this@Command.name
                 RobotLogger.info("Command ${name} started.")
                 Scheduler.runningCommands.add(this@Command)
                 Scheduler.commandsChanged = true
@@ -125,12 +158,13 @@ abstract class Command() : SendableBase() {
                     val currentTop = subsystem?.commandStack?.peek()
                     if (currentTop != null && currentTop != job) {
                         if (interruptBehavior == InterruptBehavior.Terminate) {
-                            cancelled = true
+                            this@Command.cancel()
                             RobotLogger.info("Command ${name} cancelled.")
                         } else if (interruptBehavior == InterruptBehavior.Suspend) {
                             interrupted()
                             RobotLogger.info("Command ${name} interrupted.")
                             currentTop.join()
+                            subsystem?.currentCommandName = this@Command.name
                             resumed()
                             RobotLogger.info("Command ${name} resumed.")
                             execute()
@@ -139,13 +173,14 @@ abstract class Command() : SendableBase() {
                         execute()
                     }
                     delay(TimeUnit.MILLISECONDS.toMillis((periodMS * 1000).toLong()))
-                } while (!isFinished() && !cancelled && (timeout == 0.0 || startTime + timeout > Timer.getFPGATimestamp()))
+                } while (!isFinished() && (timeout == 0.0 || startTime + timeout > Timer.getFPGATimestamp()))
             } catch (ex: Exception) {
                 if (ex is CancellationException) {
                     RobotLogger.info("Command ${name} cancelled.")
                 } else {
                     RobotLogger.exc("Exception in command main loop:", ex)
                 }
+            } finally {
                 this@Command.end()
                 subsystem?.commandStack?.remove(job)
                 Scheduler.runningCommands.remove(this@Command)
