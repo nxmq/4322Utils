@@ -5,10 +5,9 @@ plugins {
     id "maven"
     id 'java-library'
     id 'maven-publish'
-
 }
 
-version = '2019-3.5'
+version = '2019-4.2'
 
 sourceSets {
     main.kotlin.srcDirs += 'src/'
@@ -50,6 +49,7 @@ compileKotlin {
     }
 }
 
+
 task sourcesJar(type: Jar) {
     from sourceSets.main.allJava
     archiveClassifier = 'sources'
@@ -58,4 +58,30 @@ task sourcesJar(type: Jar) {
 task javadocJar(type: Jar) {
     from javadoc
     archiveClassifier = 'javadoc'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.github.Nico1999'
+            artifactId = '4322Utils'
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+        }
+    }
+}
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
 }

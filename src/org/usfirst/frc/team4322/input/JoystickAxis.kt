@@ -3,9 +3,11 @@ package org.usfirst.frc.team4322.input
 import edu.wpi.first.wpilibj.Joystick
 import kotlin.math.absoluteValue
 
-class JoystickAxis(val parent: Joystick, val axisNum: Int) {
+open class JoystickAxis(val parent: Joystick, val axisNum: Int) {
     var deadband = 0.0
     var rampFunction: (Double) -> Double = { x: Double -> x }
+
+    operator fun invoke() = get()
 
     fun get(): Double {
         return rampFunction(unramped())

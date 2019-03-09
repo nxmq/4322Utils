@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4322.commandv2
 
 import kotlinx.coroutines.*
+import kotlinx.coroutines.selects.select
 
 
 interface Element {
@@ -17,6 +18,16 @@ enum class Location {
     Commands
 }
 
+/**
+ * uses a block to determine what command to run. Easiest way to include conditionals into a [Group].
+ */
+internal class Router(private val block: () -> Command) {
+    fun route(): Command {
+        return block()
+    }
+}
+
+
 @CommandMarker
 abstract class CommandSet : Element {
     protected val children = arrayListOf<Element>()
@@ -27,9 +38,14 @@ abstract class CommandSet : Element {
     fun parallel(init: Parallel.() -> Unit) = initTag(Parallel(), init)
 
     /**
-     * Creates a block of commands that run in sequential order. This block will run until all it's members terminate.
+     * Creates a block of commands that run sequentially. This block will run until all it's members terminate.
      */
     fun sequential(init: Sequential.() -> Unit) = initTag(Sequential(), init)
+
+    /**
+     * Creates a block of commands that run in parallel. This block will run until any of it's members terminate.
+     */
+    fun first(init: First.() -> Unit) = initTag(First(), init)
 
     private fun <T : Element> initTag(tag: T, init: T.() -> Unit): T {
         tag.init()
@@ -62,17 +78,57 @@ abstract class SubSet : CommandSet() {
         return Command.lambda(fn)
     }
 
-    fun add(op: Any) {
+    fun lambda(subsystem: Subsystem, fn: () -> Unit): Command {
+        return Command.lambda(subsystem, fn)
+    }
+
+    fun waitFor(cond: () -> Boolean) {
+        add(Command.waitFor(cond))
+    }
+
+    private fun add(op: Any) {
         commands.add(op)
         order.add(Pair(Location.Commands, commands.size - 1))
     }
 
-    operator fun Router.unaryPlus() {
-        add(this)
-    }
-
     operator fun CommandSet.unaryPlus() {
         this@SubSet.add(this)
+    }
+}
+
+
+class First : SubSet() {
+    override operator fun invoke(sc: CoroutineScope): Deferred<Unit> {
+        return sc.async {
+            val tasks = mutableListOf<Deferred<Unit>>()
+            for (entry in order) {
+                when (entry.first) {
+                    Location.Commands -> {
+                        val command = commands[entry.second]
+                        when (command) {
+                            is Command -> tasks.add(command())
+                            is Router -> tasks.add(command.route()())
+                        }
+                    }
+                    Location.Children -> {
+                        tasks.add(children[entry.second](sc))
+                    }
+                }
+            }
+
+            val firstJob = select<Deferred<Unit>> {
+                tasks.forEach { job ->
+                    job.onAwait {
+                        job
+                    }
+                }
+            }
+            tasks.forEach { task ->
+                if (task != firstJob) {
+                    task.cancel()
+                }
+            }
+        }
     }
 }
 
@@ -88,8 +144,8 @@ class Parallel : SubSet() {
                     Location.Commands -> {
                         val command = commands[entry.second]
                         when (command) {
-                            is Router -> tasks.add(async { command.route()().await() })
-                            is Command -> tasks.add(async { command().await() })
+                            is Router -> tasks.add(command.route()())
+                            is Command -> tasks.add(command())
                         }
                     }
                 }
@@ -121,6 +177,7 @@ class Sequential : SubSet() {
     }
 }
 
+
 /**
  * Starts a CommandSet DSL. Inside the DSL, commands may be placed in [CommandSet.sequential] and [CommandSet.parallel] blocks.
  * Commands are added to blocks via putting a plus symbol ahead of their declaration.
@@ -141,20 +198,15 @@ fun group(init: Group.() -> Unit): Command {
     }
 }
 
-/* Example:
-
-val foo = group {
-    parallel {
-        +CommandBuilder.create().build()
-        +CommandBuilder.create().build()
+/**
+ * Starts a CommandSet DSL. Inside the DSL, commands may be placed in [CommandSet.sequential] and [CommandSet.parallel] blocks.
+ * Commands are added to blocks via putting a plus symbol ahead of their declaration.
+ */
+fun router(route: () -> Command): Command {
+    return group {
         sequential {
-            +CommandBuilder.create().build()
-            +CommandBuilder.create().build()
+            router(route)
         }
-    }
-    sequential {
-        +CommandBuilder.create().build()
-        +CommandBuilder.create().build()
+
     }
 }
-*/
