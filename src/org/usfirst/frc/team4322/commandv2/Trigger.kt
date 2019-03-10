@@ -10,7 +10,9 @@ abstract class Trigger {
         @JvmStatic
         fun updateTriggers() {
             if (enabled)
-                triggers.forEach { it.poll() }
+                synchronized(triggers) {
+                    triggers.forEach { it.poll() }
+                }
         }
 
         @JvmStatic
@@ -22,7 +24,9 @@ abstract class Trigger {
     }
 
     init {
-        triggers.add(this)
+        synchronized(triggers) {
+            triggers.add(this)
+        }
     }
 
     private var prevState: Boolean = false
