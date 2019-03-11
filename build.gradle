@@ -7,7 +7,7 @@ plugins {
     id 'maven-publish'
 }
 
-version = '2019-4.2.1'
+version = '2019-4.2.2'
 
 sourceSets {
     main.kotlin.srcDirs += 'src/'

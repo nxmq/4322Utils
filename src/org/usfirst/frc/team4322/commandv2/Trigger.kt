@@ -1,18 +1,16 @@
 package org.usfirst.frc.team4322.commandv2
 
+import java.util.concurrent.CopyOnWriteArrayList
+
 abstract class Trigger {
-
-
     companion object {
-        val triggers = mutableListOf<Trigger>()
+        val triggers = CopyOnWriteArrayList<Trigger>()
         var enabled = true
 
         @JvmStatic
         fun updateTriggers() {
             if (enabled)
-                synchronized(triggers) {
-                    triggers.forEach { it.poll() }
-                }
+                triggers.forEach { it.poll() }
         }
 
         @JvmStatic
@@ -24,9 +22,7 @@ abstract class Trigger {
     }
 
     init {
-        synchronized(triggers) {
-            triggers.add(this)
-        }
+        triggers.add(this)
     }
 
     private var prevState: Boolean = false
