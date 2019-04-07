@@ -106,8 +106,8 @@ class First : SubSet() {
                     Location.Commands -> {
                         val command = commands[entry.second]
                         when (command) {
-                            is Command -> tasks.add(command())
-                            is Router -> tasks.add(command.route()())
+                            is Command -> tasks.add(command(sc))
+                            is Router -> tasks.add(command.route()(sc))
                         }
                     }
                     Location.Children -> {
@@ -139,13 +139,13 @@ class Parallel : SubSet() {
             for (entry in order) {
                 when (entry.first) {
                     Location.Children -> {
-                        tasks.add(async { children[entry.second](sc).await() })
+                        tasks.add(children[entry.second](sc))
                     }
                     Location.Commands -> {
                         val command = commands[entry.second]
                         when (command) {
-                            is Router -> tasks.add(command.route()())
-                            is Command -> tasks.add(command())
+                            is Router -> tasks.add(command.route()(sc))
+                            is Command -> tasks.add(command(sc))
                         }
                     }
                 }
@@ -167,8 +167,8 @@ class Sequential : SubSet() {
                     Location.Commands -> {
                         val command = commands[entry.second]
                         when (command) {
-                            is Router -> command.route()().await()
-                            is Command -> command().await()
+                            is Router -> command.route()(sc).await()
+                            is Command -> command(sc).await()
                         }
                     }
                 }
@@ -185,22 +185,17 @@ class Sequential : SubSet() {
 fun group(init: Group.() -> Unit): Command {
     val set = Group()
     set.init()
-
     return object : Command() {
-
         override operator fun invoke(coroutineScope: CoroutineScope): Deferred<Unit> {
             job = set()
             return job!!
         }
-
         override fun isFinished(): Boolean = job!!.isCompleted
-
     }
 }
 
 /**
- * Starts a CommandSet DSL. Inside the DSL, commands may be placed in [CommandSet.sequential] and [CommandSet.parallel] blocks.
- * Commands are added to blocks via putting a plus symbol ahead of their declaration.
+ * Shortcut for making a CommandSet consisting of solely a router.
  */
 fun router(route: () -> Command): Command {
     return group {

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team4322.math
 
-class Debouncer(var criterion: () -> Boolean, var counts: Int) {
+class Debouncer(val criterion: () -> Boolean, var counts: Int) {
     private var successes: Int = 0
     fun debounce(): Boolean {
         if (criterion()) {

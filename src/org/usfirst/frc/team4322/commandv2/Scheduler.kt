@@ -58,12 +58,16 @@ object Scheduler : SendableBase() {
                 cancelEntry.setDoubleArray(DoubleArray(0))
             }
             if (commandsChanged) {
-                val commands = runningCommands.map { command ->
-                    command.name
-                }.toTypedArray()
-                val ids = runningCommands.map { command ->
-                    command.hashCode().toDouble()
-                }.toTypedArray().toDoubleArray()
+                val commands: Array<String>
+                val ids: DoubleArray
+                synchronized(runningCommands) {
+                    commands = runningCommands.map { command ->
+                        command.name
+                    }.toTypedArray()
+                    ids = runningCommands.map { command ->
+                        command.hashCode().toDouble()
+                    }.toTypedArray().toDoubleArray()
+                }
                 namesEntry.setStringArray(commands)
                 idsEntry.setDoubleArray(ids)
             }

@@ -43,7 +43,6 @@ class InputXbox
      * @param intensity How strong the rumble is
      */
     fun setRumble(intensity: Double) {
-
         setRumble(GenericHID.RumbleType.kLeftRumble, intensity)
         setRumble(GenericHID.RumbleType.kRightRumble, intensity)
     }
@@ -91,11 +90,7 @@ class InputXbox
              * @return DPAD with matching angle
              */
             fun getEnum(angle: Int): DPAD {
-                var modifiedAngle: Int = (Math.abs(angle) % 360)
-                if ((modifiedAngle % 45) != 0) {
-                    modifiedAngle = ((modifiedAngle / 45) + 1) * 45
-                }
-                return DPAD.values()[modifiedAngle / 45]
+                return DPAD.values()[((Math.abs(angle) / 45) and 7)]
             }
         }
     }

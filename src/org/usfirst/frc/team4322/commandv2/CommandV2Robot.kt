@@ -2,7 +2,7 @@ package org.usfirst.frc.team4322.commandv2
 
 import edu.wpi.first.wpilibj.TimedRobot
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.usfirst.frc.team4322.dashboard.MapSynchronizer
 import org.usfirst.frc.team4322.logging.RobotLogger
 
@@ -15,7 +15,7 @@ open class CommandV2Robot : TimedRobot() {
         super.robotInit()
         MapSynchronizer.link(RobotLogger.javaClass)
         RobotLogger.initialize()
-        GlobalScope.async {
+        GlobalScope.launch {
             m_ds.waitForData(0.0)
             dsConnected()
         }

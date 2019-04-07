@@ -129,7 +129,7 @@ abstract class Command() : SendableBase() {
     }
 
     fun start(): Deferred<Unit> {
-        val ret = invoke(GlobalScope)
+        val ret = invoke()
         ret.start()
         return ret
     }
@@ -146,7 +146,9 @@ abstract class Command() : SendableBase() {
                 subsystem?.commandStack?.push(job)
                 subsystem?.currentCommandName = this@Command.name
                 RobotLogger.info("Command ${name} started.")
-                Scheduler.runningCommands.add(this@Command)
+                synchronized(Scheduler.runningCommands) {
+                    Scheduler.runningCommands.add(this@Command)
+                }
                 Scheduler.commandsChanged = true
                 startTime = Timer.getFPGATimestamp()
                 initialize()
@@ -183,7 +185,9 @@ abstract class Command() : SendableBase() {
             } finally {
                 this@Command.end()
                 subsystem?.commandStack?.remove(job)
-                Scheduler.runningCommands.remove(this@Command)
+                synchronized(Scheduler.runningCommands) {
+                    Scheduler.runningCommands.remove(this@Command)
+                }
                 Scheduler.commandsChanged = true
                 job = null
             }
