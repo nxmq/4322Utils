@@ -1,8 +1,6 @@
 package org.usfirst.frc.team4322.commandv2
 
-import edu.wpi.first.wpilibj.SendableBase
 import edu.wpi.first.wpilibj.Timer
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 import kotlinx.coroutines.*
 import org.usfirst.frc.team4322.logging.RobotLogger
 import java.util.concurrent.TimeUnit
@@ -10,7 +8,7 @@ import java.util.concurrent.TimeUnit
 /**
  * The base unit of work in this library. Commands are periodic tasks which run until their [isFinished] method returns true.
  */
-abstract class Command() : SendableBase() {
+abstract class Command() {
     enum class InterruptBehavior {
         Suspend,
         Terminate
@@ -30,9 +28,6 @@ abstract class Command() : SendableBase() {
         @JvmStatic
         fun lambda(fn: () -> Unit): Command {
             return object : Command() {
-                init {
-                    name = "Lambda"
-                }
                 override fun execute() {
                     fn()
                 }
@@ -48,12 +43,11 @@ abstract class Command() : SendableBase() {
          */
         @JvmStatic
         fun lambda(subsystem: Subsystem, fn: () -> Unit): Command {
+
             return object : Command() {
                 init {
                     require(subsystem)
-                    name = "Lambda"
                 }
-
                 override fun execute() {
                     fn()
                 }
@@ -70,10 +64,6 @@ abstract class Command() : SendableBase() {
         @JvmStatic
         fun waitFor(fn: () -> Boolean): Command {
             return object : Command() {
-                init {
-                    name = "WaitFor"
-                }
-
                 override fun execute() {
 
                 }
@@ -88,18 +78,10 @@ abstract class Command() : SendableBase() {
         fun delay(seconds: Double): Command {
 
             return object : Command(seconds) {
-                init {
-                    name = "Delay"
-                }
-
                 override fun isFinished() = false
             }
         }
 
-    }
-
-    init {
-        name = this.javaClass.simpleName
     }
 
     /**
@@ -144,15 +126,9 @@ abstract class Command() : SendableBase() {
                 /**** INIT CODE ****/
                 /*******************/
                 subsystem?.commandStack?.push(job)
-                subsystem?.currentCommandName = this@Command.name
-                RobotLogger.info("Command ${name} started.")
-                synchronized(Scheduler.runningCommands) {
-                    Scheduler.runningCommands.add(this@Command)
-                }
                 Scheduler.commandsChanged = true
                 startTime = Timer.getFPGATimestamp()
                 initialize()
-                RobotLogger.info("Command ${name} initialized.")
                 /*******************/
                 /**** LOOP CODE ****/
                 /*******************/
@@ -161,14 +137,10 @@ abstract class Command() : SendableBase() {
                     if (currentTop != null && currentTop != job) {
                         if (interruptBehavior == InterruptBehavior.Terminate) {
                             this@Command.cancel()
-                            RobotLogger.info("Command ${name} cancelled.")
                         } else if (interruptBehavior == InterruptBehavior.Suspend) {
                             interrupted()
-                            RobotLogger.info("Command ${name} interrupted.")
                             currentTop.join()
-                            subsystem?.currentCommandName = this@Command.name
                             resumed()
-                            RobotLogger.info("Command ${name} resumed.")
                             execute()
                         }
                     } else {
@@ -178,16 +150,12 @@ abstract class Command() : SendableBase() {
                 } while (!isFinished() && (timeout == 0.0 || startTime + timeout > Timer.getFPGATimestamp()))
             } catch (ex: Exception) {
                 if (ex is CancellationException) {
-                    RobotLogger.info("Command ${name} cancelled.")
                 } else {
                     RobotLogger.exc("Exception in command main loop:", ex)
                 }
             } finally {
                 this@Command.end()
                 subsystem?.commandStack?.remove(job)
-                synchronized(Scheduler.runningCommands) {
-                    Scheduler.runningCommands.remove(this@Command)
-                }
                 Scheduler.commandsChanged = true
                 job = null
             }
@@ -243,24 +211,6 @@ abstract class Command() : SendableBase() {
      */
     protected fun require(s: Subsystem) {
         subsystem = s
-        setSubsystem(s.javaClass.simpleName)
-    }
-
-    override fun initSendable(builder: SendableBuilder) {
-        builder.setSmartDashboardType("Command")
-        builder.addStringProperty(".title", { name }, null)
-        builder.addBooleanProperty("running", { isRunning() }, { value ->
-            if (value) {
-                if (!isRunning()) {
-                    start()
-                }
-            } else {
-                if (isRunning()) {
-                    cancel()
-                }
-            }
-        })
-        builder.addBooleanProperty(".isParented", { parented }, null)
     }
 
 }

@@ -1,5 +1,9 @@
 package org.usfirst.frc.team4322.math
 
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+
 /*
  * Some trig functions to make life a little easier
  * @author garrettluu
@@ -28,12 +32,12 @@ class Trig {
 
         @JvmStatic
         fun slopeToAngle(dy : Double, dx : Double): Double {
-            return Math.toDegrees(Math.atan2(dy, dx))
+            return Math.toDegrees(atan2(dy, dx))
         }
 
         @JvmStatic
         fun minSignedAngularDistance(a: Double, b: Double): Double {
-            return Math.atan2(Math.sin(a - b), Math.cos(a - b))
+            return atan2(sin(a - b), cos(a - b))
         }
     }
 }
